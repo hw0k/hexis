@@ -30,7 +30,7 @@ Target **Richardson Maturity Model Level 2** — HTTP verbs and resources. Level
 
 ## Query Parameters
 
-- Use **camelCase**: `?pageSize=20`, `?sortBy=createdAt`, `?includeArchived=true`
+- Use **camelCase**: `?limit=20`, `?sortBy=createdAt`, `?includeArchived=true`
 - API server must be **case-sensitive**: `?status=READY` and `?status=ready` are distinct values
 - Boolean params: `true` / `false` strings
 

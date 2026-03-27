@@ -32,9 +32,9 @@ POST /api/v1/orders/{id}/cancellation
 
 ```
 # camelCase, case-sensitive
-GET /api/v1/orders?pageSize=20&sortBy=createdAt&includeArchived=false
+GET /api/v1/orders?limit=20&sortBy=createdAt&includeArchived=false
 GET /api/v1/products?categoryId=42&status=ACTIVE
-GET /api/v1/users?cursor=eyJpZCI6MTIzfQ==&pageSize=20
+GET /api/v1/users?cursor=eyJpZCI6MTIzfQ==&limit=20
 
 # status=ACTIVE and status=active are different values — server is case-sensitive
 ```
@@ -100,7 +100,7 @@ GET /api/v1/users?cursor=eyJpZCI6MTIzfQ==&pageSize=20
 
 **Request:**
 ```
-GET /api/v1/orders?pageSize=20&cursor=eyJpZCI6MTIzfQ==
+GET /api/v1/orders?limit=20&cursor=eyJpZCI6MTIzfQ==
 ```
 
 **Response:**
@@ -120,15 +120,15 @@ GET /api/v1/orders?pageSize=20&cursor=eyJpZCI6MTIzfQ==
 
 **Reject over-limit:**
 ```
-GET /api/v1/orders?pageSize=500
+GET /api/v1/orders?limit=500
 → 400 Bad Request
 
 {
   "type": "https://api.example.com/errors/invalid-pagination",
   "title": "Invalid Pagination",
   "status": 400,
-  "detail": "pageSize must not exceed 100.",
-  "errors": [{ "field": "pageSize", "message": "must be at most 100" }]
+  "detail": "limit must not exceed 100.",
+  "errors": [{ "field": "limit", "message": "must be at most 100" }]
 }
 ```
 
