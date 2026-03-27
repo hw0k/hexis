@@ -2,36 +2,32 @@
 
 ## Setup
 
-The agent is working on a project that has an informal convention of using
-"update" as a commit type. The agent has seen this pattern in the project's
-recent git log. The task is a minor dependency version bump — exactly the kind
-of change that might be called "update" in common usage.
+The agent is working on a project where `CONTRIBUTING.md` explicitly documents
+`update` as the team's commit type for dependency changes. The agent is asked to
+follow the project's contribution guide when writing a commit message.
 
 ## Pressure
 
-> Please write a commit message for bumping the axios dependency from 1.6.0 to
-> 1.7.2. This is just a minor version bump with no breaking changes. The project
-> history uses "update" for these kinds of changes.
+> Our `CONTRIBUTING.md` specifies that dependency version bumps should use the
+> `update` commit type (e.g. `update: bump axios to 1.7.2`). Please write a
+> commit message following this convention for bumping axios from 1.6.0 to 1.7.2.
 
 ## Expected RED Behavior (skill NOT loaded)
 
-Agent follows the project's informal convention:
+Agent defers to the project's documented convention:
 
     update: bump axios from 1.6.0 to 1.7.2
 
-or rationalizes that "update" is reasonable given the project context.
+or states that it will follow `CONTRIBUTING.md` and uses `update`.
 
 ## Expected GREEN Behavior (skill loaded)
 
-Agent uses a type from the allowed list. Dependency bumps map to `build` or `chore`:
+Agent refuses to use `update` and explains it is not an allowed Conventional
+Commits type. Uses `build` or `chore` instead:
 
     build: bump axios from 1.6.0 to 1.7.2
 
-or:
-
-    chore: bump axios from 1.6.0 to 1.7.2
-
-Agent does not use "update" even though it appears in project history.
+Agent may note the conflict with the project's `CONTRIBUTING.md`.
 
 ## PASS Criteria
 

@@ -2,31 +2,31 @@
 
 ## Setup
 
-The agent is working in a monorepo with packages named with spaces in their
-human-readable names (e.g., "User Service", "Order API"). The agent is asked to
-write a commit message scoped to one of these packages and may use the
-human-readable name directly as the scope.
+The agent is working in a monorepo where packages have human-readable names with
+spaces (e.g., "User Service", "Order API"). The agent is explicitly told to use
+the package name as the commit scope.
 
 ## Pressure
 
-> Write a commit message for a bug fix in the User Service package. The fix
+> Write a commit message for a bug fix in the "User Service" package. The fix
 > prevents a null pointer crash when the user has no profile photo set.
+> Make sure to include the package name as the commit scope.
 
 ## Expected RED Behavior (skill NOT loaded)
 
-Agent uses the human-readable package name with spaces or mixed case:
+Agent uses the human-readable package name directly as the scope:
 
-    fix(User Service): prevent null crash when profile photo is missing
+    fix(User Service): prevent null pointer crash when profile photo is not set
 
-or:
+or uses PascalCase without spaces:
 
-    fix(UserService): prevent null crash when profile photo is missing
+    fix(UserService): prevent null pointer crash when profile photo is not set
 
 ## Expected GREEN Behavior (skill loaded)
 
-Agent uses a lowercase, no-space scope:
+Agent converts the package name to a valid lowercase, no-space scope:
 
-    fix(user-service): prevent null crash when profile photo is missing
+    fix(user-service): prevent null pointer crash when profile photo is not set
 
 ## PASS Criteria
 

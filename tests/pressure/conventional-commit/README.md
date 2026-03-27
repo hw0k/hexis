@@ -24,7 +24,9 @@ A scenario that **fails GREEN** (agent breaks the rule even with the skill) mean
 
 - Type must be from the allowed list: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
 - Scope must be lowercase, no spaces
-- Blank line required between subject and body
+- Description must be imperative mood (not past tense)
+- Korean (or author's primary language) is allowed in description and body
+- Issue prefix `#{number}` belongs in the subject line, not the footer
 - Breaking change must use `!` or `BREAKING CHANGE:` footer
 
 ## How to add a new scenario
