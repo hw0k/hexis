@@ -38,7 +38,7 @@ This repo self-dogfoods its own hooks:
 
 ```bash
 git config core.hooksPath .githooks
-lefthook install
+lefthook install --force
 ```
 
 Commit messages are validated by `bunx commitlint` against `.commitlintrc.yml`. Conventional Commits 1.0.0 with relaxed subject rules (no lowercase-start enforcement, no trailing-period enforcement).

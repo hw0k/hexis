@@ -75,16 +75,18 @@ If the project already has a `lefthook.yml`, merge only the sections marked `# h
 
 ```bash
 git config core.hooksPath .githooks
-lefthook install
+lefthook install --force
 ```
 
 `core.hooksPath .githooks` points git to the version-controlled hooks directory. This setting persists in the repo's local git config (`.git/config`) — each contributor who clones the repo must run this command once.
+
+`--force` is required because lefthook v2.1.0+ refuses to install when `core.hooksPath` is already set. The flag signals that the custom hooks path is intentional.
 
 To make this automatic for all contributors, add it to an onboarding script or `Makefile`:
 ```makefile
 setup:
 	git config core.hooksPath .githooks
-	lefthook install
+	lefthook install --force
 ```
 
 ### Step 6 — Verify hooks are active

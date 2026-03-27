@@ -1,12 +1,25 @@
 # .commitlintrc.yml
-# Conventional Commits 1.0.0 enforcement — relaxed subject rules
+# Conventional Commits 1.0.0 enforcement
 # type[(scope)][!]: description
 #
+# Inlined from @commitlint/config-conventional — no package.json required
 # subject-case and subject-full-stop are disabled intentionally:
 #   - subject-case: English-specific rule (lowercase-start); not imposed
-#   - subject-full-stop: No trailing period; not imposed
-extends:
-  - '@commitlint/config-conventional'
+#   - subject-full-stop: No trailing period rule
+# Issue prefix (#123) in subject: no rule needed, allowed by default
 rules:
+  body-leading-blank: [1, always]
+  body-max-line-length: [2, always, 100]
+  footer-leading-blank: [1, always]
+  footer-max-line-length: [2, always, 100]
+  header-max-length: [2, always, 100]
+  header-trim: [2, always]
   subject-case: [0]
+  subject-empty: [2, never]
   subject-full-stop: [0]
+  type-case: [2, always, lower-case]
+  type-empty: [2, never]
+  type-enum:
+    - 2
+    - always
+    - [build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test]
