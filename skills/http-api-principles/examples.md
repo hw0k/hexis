@@ -6,71 +6,93 @@ Extended examples for the `http-api-principles` skill.
 
 ```
 # Single resource
-GET    /users/{id}
-PUT    /users/{id}
-DELETE /users/{id}
+GET    /api/v1/users/{id}
+PUT    /api/v1/users/{id}
+DELETE /api/v1/users/{id}
 
 # Collection
-GET  /users
-POST /users
+GET  /api/v1/users
+POST /api/v1/users
 
 # Nested (max 2 levels)
-GET  /users/{id}/orders
-POST /users/{id}/orders
-GET  /users/{id}/orders/{orderId}
+GET  /api/v1/users/{id}/orders
+POST /api/v1/users/{id}/orders
+GET  /api/v1/users/{id}/orders/{orderId}
+
+# kebab-case multi-word resources
+GET  /api/v1/user-profiles
+GET  /api/v1/order-items/{id}
 
 # Action on resource (POST + noun path when no REST method fits)
-POST /users/{id}/password-reset
-POST /orders/{id}/cancellation
+POST /api/v1/users/{id}/password-reset
+POST /api/v1/orders/{id}/cancellation
 ```
 
-## Error Response Examples
+## Query Parameter Examples
+
+```
+# camelCase, case-sensitive
+GET /api/v1/orders?pageSize=20&sortBy=createdAt&includeArchived=false
+GET /api/v1/products?categoryId=42&status=ACTIVE
+GET /api/v1/users?cursor=eyJpZCI6MTIzfQ==&pageSize=20
+
+# status=ACTIVE and status=active are different values — server is case-sensitive
+```
+
+## Enum Examples
+
+```json
+// Bad — requires external reference to interpret the integer values
+{ "status": 1, "priority": 3 }
+
+// Good — self-documenting
+{ "status": "ACTIVE", "priority": "HIGH" }
+```
+
+## Error Response Examples (RFC 9457)
 
 **400 Validation Error (multiple fields):**
 ```json
 {
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "The request contains invalid fields.",
-    "details": [
-      { "field": "email", "message": "must not be blank" },
-      { "field": "email", "message": "must be a valid email address" },
-      { "field": "age", "message": "must be at least 18" }
-    ]
-  }
+  "type": "https://api.example.com/errors/validation-error",
+  "title": "Validation Error",
+  "status": 400,
+  "detail": "The request contains invalid fields.",
+  "errors": [
+    { "field": "email", "message": "must not be blank" },
+    { "field": "email", "message": "must be a valid email address" },
+    { "field": "age", "message": "must be at least 18" }
+  ]
 }
 ```
 
 **404 Not Found:**
 ```json
 {
-  "error": {
-    "code": "USER_NOT_FOUND",
-    "message": "No user exists with the given ID.",
-    "details": []
-  }
+  "type": "https://api.example.com/errors/not-found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "No user exists with the given ID."
 }
 ```
 
 **401 Unauthorized:**
 ```json
 {
-  "error": {
-    "code": "INVALID_TOKEN",
-    "message": "The provided authentication token is invalid or has expired.",
-    "details": []
-  }
+  "type": "https://api.example.com/errors/unauthorized",
+  "title": "Unauthorized",
+  "status": 401,
+  "detail": "The provided authentication token is invalid or has expired."
 }
 ```
 
 **500 Internal Server Error (never expose internals):**
 ```json
 {
-  "error": {
-    "code": "INTERNAL_ERROR",
-    "message": "An unexpected error occurred. Please try again later.",
-    "details": []
-  }
+  "type": "https://api.example.com/errors/internal-error",
+  "title": "Internal Server Error",
+  "status": 500,
+  "detail": "An unexpected error occurred. Please try again later."
 }
 ```
 
@@ -78,15 +100,15 @@ POST /orders/{id}/cancellation
 
 **Request:**
 ```
-GET /orders?limit=20&cursor=eyJpZCI6MTIzfQ==
+GET /api/v1/orders?pageSize=20&cursor=eyJpZCI6MTIzfQ==
 ```
 
 **Response:**
 ```json
 {
   "data": [
-    { "id": "ord_124", "status": "shipped", "createdAt": "2026-03-27T10:00:00Z" },
-    { "id": "ord_123", "status": "delivered", "createdAt": "2026-03-26T08:30:00Z" }
+    { "id": "ord_124", "status": "SHIPPED", "createdAt": "2026-03-27T10:00:00Z" },
+    { "id": "ord_123", "status": "DELIVERED", "createdAt": "2026-03-26T08:30:00Z" }
   ],
   "pagination": {
     "cursor": "eyJpZCI6MTIzfQ==",
@@ -98,14 +120,15 @@ GET /orders?limit=20&cursor=eyJpZCI6MTIzfQ==
 
 **Reject over-limit:**
 ```
-GET /orders?limit=500
+GET /api/v1/orders?pageSize=500
 → 400 Bad Request
+
 {
-  "error": {
-    "code": "INVALID_PAGINATION",
-    "message": "limit must not exceed 100.",
-    "details": [{ "field": "limit", "message": "must be at most 100" }]
-  }
+  "type": "https://api.example.com/errors/invalid-pagination",
+  "title": "Invalid Pagination",
+  "status": 400,
+  "detail": "pageSize must not exceed 100.",
+  "errors": [{ "field": "pageSize", "message": "must be at most 100" }]
 }
 ```
 
@@ -115,7 +138,7 @@ GET /orders?limit=500
 HTTP/1.1 200 OK
 Deprecation: true
 Sunset: Sat, 01 Jan 2028 00:00:00 GMT
-Link: <https://api.example.com/v2/users>; rel="successor-version"
+Link: <https://api.example.com/api/v2/users>; rel="successor-version"
 ```
 
 ## Status Code Decision Guide
@@ -135,4 +158,3 @@ Link: <https://api.example.com/v2/users>; rel="successor-version"
 | Rate limit | 429 |
 | Unexpected server failure | 500 |
 | Downstream dependency unavailable | 503 |
-```

@@ -1,20 +1,38 @@
 ---
 name: http-api-principles
-description: Opinionated HTTP API design standards — resource naming, HTTP methods, status codes, error response format, versioning, and pagination
+description: Opinionated HTTP API design standards — Richardson Level 2, /api/{version}/{resource} URL signature, JSON camelCase, RFC 9457 errors, and resource-centric modeling
 type: reference
 ---
 
 # HTTP API Design Principles
 
-## Resource Naming
+## Maturity Target
 
+Target **Richardson Maturity Model Level 2** — HTTP verbs and resources. Level 3 (HATEOAS) is explicitly out of scope; complexity overhead exceeds practical benefit for most production APIs.
+
+## URL Structure
+
+**Required signature:** `/api/{version}/{resource}`
+
+- The URL must identify itself as an API:
+  - ✅ `api.example.com/v1/users`
+  - ✅ `booking-api.example.com/v1/orders`
+  - ✅ `example.com/api/v1/users`
+  - ❌ `example.com/users` — not identifiable as an API from the URL alone
+- **Ordering principle:** segments go from least-to-most frequently changing — `api` → `version` → `resource`. This is the rationale for the structure, not arbitrary convention.
+- URI segments: **kebab-case**
+- Nest to show ownership, max 2 levels deep: `/api/v1/orders/{id}/items`
 - Use **plural nouns** for collections: `/users`, `/orders`, `/products`
-- Use **kebab-case** for multi-word resources: `/user-profiles`, `/order-items`
-- Nest to show ownership, max 2 levels deep: `/users/{id}/orders`
 - **Never use verbs in URLs:**
-  - ❌ `/getUser`, `/createOrder`, `/deleteAccount`
-  - ✅ `GET /users/{id}`, `POST /orders`, `DELETE /accounts/{id}`
-- IDs belong in the path, not the query: `/users/{userId}` not `/users?id={userId}`
+  - ❌ `/api/v1/getUser`, `/api/v1/createOrder`
+  - ✅ `GET /api/v1/users/{id}`, `POST /api/v1/orders`
+- IDs belong in the path, not the query: `/api/v1/users/{userId}` not `/api/v1/users?id={userId}`
+
+## Query Parameters
+
+- Use **camelCase**: `?pageSize=20`, `?sortBy=createdAt`, `?includeArchived=true`
+- API server must be **case-sensitive**: `?status=READY` and `?status=ready` are distinct values
+- Boolean params: `true` / `false` strings
 
 ## HTTP Methods
 
@@ -30,6 +48,24 @@ Rules:
 - Never use `POST` where `PUT` or `PATCH` belongs
 - Never use `GET` for mutations — even if it feels convenient
 - `PUT` replaces the full resource; `PATCH` updates specific fields
+
+## Request/Response Body
+
+- `Content-Type: application/json` required on all requests and responses with a body
+- JSON field names: **camelCase** (`userId`, `createdAt`, `orderItems`)
+- If the backend language uses `snake_case`, convert at the serialization layer:
+  - Python/Django: `djangorestframework-camel-case`
+  - Go: `json:"fieldName"` struct tags
+  - Spring Boot: `spring.jackson.property-naming-strategy=LOWER_CAMEL_CASE`
+- Dates in ISO 8601 UTC: `"2026-03-27T10:00:00Z"`
+- Never expose internal database IDs as the primary public identifier — use UUIDs or opaque IDs
+
+## Enum Values
+
+Represent enums as **strings**, not integers.
+
+- ❌ `"status": 1` — requires external reference to interpret
+- ✅ `"status": "READY"` — self-documenting
 
 ## Status Codes
 
@@ -51,31 +87,55 @@ Never use `200` for errors. Never use `500` for client errors.
 
 ## Error Response Format
 
-All error responses must use this exact structure:
+Follow **RFC 9457 (Problem Details for HTTP APIs)**. Minimum required fields:
 
 ```json
 {
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Email address is required.",
-    "details": [
-      { "field": "email", "message": "must not be blank" },
-      { "field": "email", "message": "must be a valid email address" }
-    ]
-  }
+  "type": "https://api.example.com/errors/validation-error",
+  "title": "Validation Error",
+  "status": 400,
+  "detail": "The request contains invalid fields.",
+  "errors": [
+    { "field": "email", "message": "must not be blank" }
+  ]
 }
 ```
 
-- `code`: machine-readable identifier, SCREAMING_SNAKE_CASE
-- `message`: human-readable, complete sentence, ends with period
-- `details`: optional array, used when multiple field-level errors exist
+- `type`: URI identifying the error class (absolute URL or relative path)
+- `title`: human-readable summary, same for all instances of this error type
+- `status`: HTTP status code as integer
+- `detail`: human-readable explanation of this specific occurrence
+- Additional members allowed (e.g., `errors` for field-level details)
 
-Never expose stack traces, internal error codes, or database error messages in the response.
+Never expose stack traces, internal error codes, or database error messages.
+
+## Resource-Centric Mapping
+
+APIs represent **domain resources**, not database tables. Internal implementation details (table structure, JOIN strategy, column names) must not leak into the API surface.
+
+- ✅ `GET /api/v1/orders/{id}/items` — `items` is a sub-resource of `Order`
+- ❌ Exposing an `order_items` table directly with DB column names as field names
+
+Design the API around the domain model. The database is an implementation detail.
+
+## Consistency
+
+The same concept must use the same name across the entire API. Align with the `general-naming-principles` consistency rule.
+
+```
+# Bad — same concept, inconsistent names
+GET /api/v1/orders?userId=123
+GET /api/v1/products?user_id=123   ← inconsistent field name AND casing
+
+# Good
+GET /api/v1/orders?userId=123
+GET /api/v1/products?userId=123
+```
 
 ## Versioning
 
-- Version in the URL path: `/v1/users`, `/v2/orders`
-- Increment the major version only for **breaking changes** (removed fields, changed semantics)
+- Version in the URL path as part of the required signature: `/api/v1/...`
+- Increment major version only for **breaking changes** (removed fields, changed semantics)
 - Keep old versions alive for at least one deprecation cycle
 - Advertise deprecation with response headers:
   ```
@@ -103,13 +163,10 @@ Use cursor-based pagination for all list endpoints:
 - Reject requests with `limit > 100` with a `400`
 - Never return unbounded collections — all list endpoints must be paginated
 
-## Request/Response Conventions
+## Reference
 
-- `Content-Type: application/json` on all requests and responses with a body
-- Field names in camelCase: `userId`, `createdAt`, `orderItems`
-- Dates in ISO 8601 UTC: `"2026-03-27T10:00:00Z"`
-- Never expose internal database IDs as the primary public identifier — use UUIDs or opaque IDs
+[Microsoft REST API Design Guidelines](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)
 
 ## Extended Examples
 
-For full JSON error response examples, pagination request/response examples, URL structure patterns, and status code decision guide, see [examples.md](examples.md).
+For URL structure examples, error response variations, enum and query parameter examples, pagination examples, and status code decision guide, see [examples.md](examples.md).
