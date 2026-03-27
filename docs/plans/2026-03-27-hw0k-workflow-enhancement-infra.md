@@ -41,7 +41,7 @@
 commit_msg:
   commands:
     validate-conventional-commit:
-      run: npx --no -- commitlint --edit {1}
+      run: bunx commitlint --edit {1}
 
 pre_commit:
   parallel: true
@@ -63,15 +63,7 @@ pre_commit:
         - rebase
 ```
 
-- [ ] **Step 2: Install commitlint**
-
-```bash
-npm install --save-dev @commitlint/cli @commitlint/config-conventional
-```
-
-Expected: `package.json` updated with `@commitlint/cli` and `@commitlint/config-conventional` in `devDependencies`.
-
-- [ ] **Step 3: Create `.commitlintrc.yml`**
+- [ ] **Step 2: Create `.commitlintrc.yml`**
 
 ```yaml
 # .commitlintrc.yml
@@ -92,28 +84,28 @@ rules:
 
 Test valid messages exit 0:
 ```bash
-echo "feat: add login flow" | npx --no -- commitlint
+echo "feat: add login flow" | bunx commitlint
 # Expected: exit 0
 
-echo "feat(auth): Add login flow" | npx --no -- commitlint
+echo "feat(auth): Add login flow" | bunx commitlint
 # Expected: exit 0 (uppercase start allowed)
 
-echo "feat!: remove v1 endpoint" | npx --no -- commitlint
+echo "feat!: remove v1 endpoint" | bunx commitlint
 # Expected: exit 0
 
-echo "fix: resolve timeout issue." | npx --no -- commitlint
+echo "fix: resolve timeout issue." | bunx commitlint
 # Expected: exit 0 (trailing period allowed)
 ```
 
 Test violations exit 1:
 ```bash
-echo "update: bump dependency" | npx --no -- commitlint
+echo "update: bump dependency" | bunx commitlint
 # Expected: exit 1, reason: type "update" not allowed
 
-echo "added login flow" | npx --no -- commitlint
+echo "added login flow" | bunx commitlint
 # Expected: exit 1, reason: missing type prefix
 
-echo "feat(user service): add login" | npx --no -- commitlint
+echo "feat(user service): add login" | bunx commitlint
 # Expected: exit 1, reason: scope contains space
 ```
 
@@ -122,7 +114,7 @@ All 3 violation cases must exit 1 with a reason message.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .githooks/lefthook.yml .commitlintrc.yml package.json package-lock.json
+git add .githooks/lefthook.yml .commitlintrc.yml
 git commit -m "feat: add lefthook config and commitlint conventional commit enforcement"
 ```
 
@@ -266,7 +258,7 @@ This is the template users copy to their project root. Annotated so they know wh
 commit_msg:
   commands:
     validate-conventional-commit:  # hw0k-workflow
-      run: npx --no -- commitlint --edit {1}
+      run: bunx commitlint --edit {1}
 
 pre_commit:
   parallel: true
@@ -314,7 +306,7 @@ Follow these steps to apply hw0k-workflow standards to a new project. After setu
 
 - `git` installed and repo initialized
 - `lefthook` installed (one-time per machine — see Step 1)
-- `node` and `npm` available (commitlint requires Node — see Step 2)
+- `bun` installed (commitlint runs via `bunx` — no separate install needed)
 - Plugin dir accessible: wherever `hw0k-workflow` is installed (e.g. `~/.claude/plugins/hw0k-workflow/`)
 
 ## Steps
@@ -336,25 +328,19 @@ go install github.com/evilmartians/lefthook@latest
 
 Verify: `lefthook --version`
 
-### Step 2 — Install commitlint
+### Step 2 — Copy the commitlint config
 
-commitlint validates commit messages against Conventional Commits 1.0.0. Install it in the project:
-
-```bash
-npm install --save-dev @commitlint/cli @commitlint/config-conventional
-```
-
-Then copy the hw0k-workflow commitlint config to the project root:
+commitlint validates commit messages against Conventional Commits 1.0.0. It runs via `bunx` — no installation required. Copy the hw0k-workflow config to the project root:
 
 ```bash
 PLUGIN_DIR=~/.claude/plugins/hw0k-workflow   # adjust to your install path
 cp "$PLUGIN_DIR/skills/new-project-setup/.commitlintrc.yml" ./.commitlintrc.yml
 ```
 
-Commit both files:
+Commit the config:
 ```bash
-git add package.json package-lock.json .commitlintrc.yml
-git commit -m "chore: add commitlint for conventional commit enforcement"
+git add .commitlintrc.yml
+git commit -m "chore: add commitlint config for conventional commit enforcement"
 ```
 
 ### Step 3 — Copy hook files to the project
@@ -398,15 +384,15 @@ setup:
 
 ```bash
 # Test a bad commit message — should be blocked
-echo "bad commit message" | npx --no -- commitlint
+echo "bad commit message" | bunx commitlint
 # Expected: exit 1 with error message
 
 # Test a good commit message — should pass
-echo "feat: add initial setup" | npx --no -- commitlint
+echo "feat: add initial setup" | bunx commitlint
 # Expected: exit 0
 
 # Test that relaxed rules work (uppercase start, trailing period allowed)
-echo "feat: Add initial setup." | npx --no -- commitlint
+echo "feat: Add initial setup." | bunx commitlint
 # Expected: exit 0
 ```
 
@@ -516,15 +502,15 @@ This uses lefthook's standard bypass mechanism — no `--no-verify` needed.
 - [ ] **Step 4: Verify**
 
 Check `SKILL.md` contains:
-- [ ] Prerequisites section (git, lefthook, node/npm, plugin dir)
-- [ ] 7 numbered steps: install lefthook, install commitlint, copy hook files, copy lefthook template, git config + install, verify hooks active, optional auto-sync
+- [ ] Prerequisites section (git, lefthook, bun, plugin dir)
+- [ ] 7 numbered steps: install lefthook, copy commitlint config, copy hook files, copy lefthook template, git config + install, verify hooks active, optional auto-sync
 - [ ] `run-if-exists.sh` pattern section (explains 4-step detection, 3 task types)
 - [ ] Custom test scope section (example script with `git diff --cached`)
 - [ ] Auto-sync enable/disable guidance (team-wide vs personal, how to disable without deleting)
 - [ ] Global bypass (`LEFTHOOK=0`)
 
 Check `lefthook.yml` template contains:
-- [ ] `commit_msg` section with `npx --no -- commitlint --edit {1}`
+- [ ] `commit_msg` section with `bunx commitlint --edit {1}`
 - [ ] `pre_commit` section with `lint`, `format`, `test` all using `run-if-exists.sh`
 - [ ] `skip: [merge, rebase]` on all pre-commit commands
 - [ ] `parallel: true` on pre_commit
@@ -570,4 +556,4 @@ No TBDs, TODOs, or incomplete sections. All shell script content is complete and
 
 ### Type Consistency
 
-`run-if-exists.sh` task names (`lint`/`format`/`test`) align with `lefthook.yml` command names. commitlint invocation `npx --no -- commitlint --edit {1}` matches between `.githooks/lefthook.yml` and `skills/new-project-setup/lefthook.yml`. `.commitlintrc.yml` rule names (`subject-case`, `subject-full-stop`) are valid commitlint rule identifiers. No inconsistencies.
+`run-if-exists.sh` task names (`lint`/`format`/`test`) align with `lefthook.yml` command names. commitlint invocation `bunx commitlint --edit {1}` matches between `.githooks/lefthook.yml` and `skills/new-project-setup/lefthook.yml`. `.commitlintrc.yml` rule names (`subject-case`, `subject-full-stop`) are valid commitlint rule identifiers. No inconsistencies.

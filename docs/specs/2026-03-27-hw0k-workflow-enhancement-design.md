@@ -237,7 +237,7 @@ The following are checkable without judgment:
 commit_msg:
   commands:
     validate-conventional-commit:
-      run: npx --no -- commitlint --edit {1}
+      run: bunx commitlint --edit {1}
 
 pre_commit:
   parallel: true
