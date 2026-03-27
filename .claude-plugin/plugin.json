@@ -1,0 +1,12 @@
+{
+  "name": "hw0k-workflow",
+  "description": "Heavily opinionated common workflow plugin for Claude — covers the full development workflow.",
+  "version": "0.1.0",
+  "keywords": [
+    "workflow",
+    "conventional-commit",
+    "http-api",
+    "principles",
+    "opinionated"
+  ]
+}
