@@ -2,14 +2,41 @@
 
 Extended edge cases and examples for the `conventional-commit` skill.
 
+## Author Language
+
+Type and scope are English — they are parsed by tools (commitlint, changelog generators). Everything else may be in the team's primary language.
+
+```
+# English team
+feat(auth): add OAuth2 login flow
+fix(api): fix rate limit header missing
+
+# Korean team — equally valid
+feat(auth): OAuth2 로그인 플로우 추가
+fix(api): rate limit 헤더 누락 수정
+
+# Mixed (scope stays English, description in Korean)
+feat(auth): #525 소셜 로그인 Google/Kakao 지원 추가
+
+# Body in Korean — fully valid
+feat(auth): OAuth2 로그인 플로우 추가
+
+소셜 로그인 요청이 많아 Google/Kakao OAuth2를 우선 지원.
+세션 방식 대신 JWT 발급으로 stateless 유지.
+```
+
 ## WIP Commits
 
 WIP commits must still follow Conventional Commits format. There is no WIP exemption.
 
 ```
-# Good — typed WIP
+# Good — typed WIP (English)
 chore: wip auth flow
 feat: wip add payment webhook handler
+
+# Good — typed WIP (Korean)
+chore: wip 인증 플로우
+feat: wip 결제 웹훅 핸들러 추가
 
 # Bad — no type
 WIP
