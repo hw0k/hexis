@@ -96,3 +96,7 @@ function processUser(user: User)         // "process" tells nothing
   - ✅ `date-formatter.ts` not `helpers.ts`
   - ✅ `order-errors.ts` not `errors.ts`
 - If you find yourself reaching for a `utils` file, ask whether the function belongs in the domain module that uses it most.
+
+## Extended Examples
+
+For before/after naming comparisons, file naming patterns, class/interface examples, and constants reference, see [examples.md](examples.md).

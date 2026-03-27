@@ -76,3 +76,7 @@ Before committing, verify:
 - [ ] Description uses imperative mood
 - [ ] If breaking change: `!` is present OR `BREAKING CHANGE:` footer is present
 - [ ] Scope (if used) is lowercase and meaningful
+
+## Extended Reference
+
+For WIP commits, scope examples by project type, breaking change patterns, and revert commit guidance, see [reference.md](reference.md).

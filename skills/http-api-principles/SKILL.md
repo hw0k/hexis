@@ -109,3 +109,7 @@ Use cursor-based pagination for all list endpoints:
 - Field names in camelCase: `userId`, `createdAt`, `orderItems`
 - Dates in ISO 8601 UTC: `"2026-03-27T10:00:00Z"`
 - Never expose internal database IDs as the primary public identifier — use UUIDs or opaque IDs
+
+## Extended Examples
+
+For full JSON error response examples, pagination request/response examples, URL structure patterns, and status code decision guide, see [examples.md](examples.md).
