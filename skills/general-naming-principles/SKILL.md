@@ -1,6 +1,6 @@
 ---
 name: general-naming-principles
-description: Opinionated naming conventions — variables, functions, classes, constants, files, and packages, with good/bad examples for each
+description: Language-agnostic naming conventions — follow each language's official style guide first, with universal consistency and reserved-word rules on top
 type: reference
 ---
 
@@ -10,93 +10,147 @@ type: reference
 
 A name should tell the reader **what** something is or does without requiring them to look at the implementation. If a name needs a comment to explain it, rename it.
 
-## Variables
+## Language-Official Conventions First
 
-- **camelCase** for mutable variables: `userList`, `orderCount`, `activeSession`
-- **Descriptive nouns**: `user` not `u`, `errorMessage` not `msg`, `retryCount` not `n`
-- **Boolean prefix with `is`, `has`, `can`, `should`**: `isActive`, `hasPermission`, `canDelete`, `shouldRetry`
-- **Avoid single letters** except loop indices (`i`, `j`) and established conventions (`err`, `ctx`, `req`, `res`)
-- **No abbreviations** unless universally known: `url`, `id`, `db`, `api`, `ctx` are fine — `usr`, `mgr`, `svc`, `cfg` are not
+Follow each language's official style guide as the primary rule. This skill does not override official conventions — it supplements them where they have gaps.
+
+| Language | Variables / Functions | Classes | Constants | Reference |
+|---|---|---|---|---|
+| Python | `snake_case` | `PascalCase` | `UPPER_SNAKE_CASE` | PEP 8 |
+| JavaScript / TypeScript | `camelCase` | `PascalCase` | `UPPER_SNAKE_CASE` | MDN / TS Handbook |
+| Go | `camelCase` / `PascalCase` (by visibility) | `PascalCase` | `ALL_CAPS` or `camelCase` | Effective Go |
+| Java | `camelCase` | `PascalCase` | `UPPER_SNAKE_CASE` | Google Java Style |
+| Rust | `snake_case` | `PascalCase` | `UPPER_SNAKE_CASE` | Rust API Guidelines |
+
+For languages not listed, follow the language's official style guide. When no official guide exists, follow the dominant community convention.
+
+## Universal Rules (Language-Agnostic)
+
+These apply in every language, supplementing the official convention.
+
+### Descriptive Names
+
+Names must communicate what something is or does. Abbreviations are prohibited unless universally recognized in the domain (`url`, `id`, `api`, `db`, `ctx`, `err`).
+
+```python
+# Python — Good
+user_list = fetch_users()
+is_authenticated = check_auth(token)
+retry_count = 0
+
+# Python — Bad
+ul = fetch_users()
+auth = check_auth(token)   # ambiguous: result? flag? service?
+n = 0
+```
 
 ```typescript
-// Good
+// TypeScript — Good
 const userList = await fetchUsers()
 const isAuthenticated = checkAuth(token)
-const hasPermission = user.roles.includes("admin")
 const retryCount = 0
 
-// Bad
+// TypeScript — Bad
 const ul = await fetchUsers()
 const auth = checkAuth(token)
-const perm = user.roles.includes("admin")
 const n = 0
 ```
+
+### Boolean Prefix
+
+Boolean variables and functions use a predicate prefix: `is`, `has`, `can`, `should`.
+
+```python
+is_active, has_permission, can_delete, should_retry   # Python
+```
+```typescript
+isActive, hasPermission, canDelete, shouldRetry       // TypeScript
+```
+
+### Consistency
+
+Once a term is chosen for a concept, use it exclusively across the entire project. If `history` is chosen, then `details`, `log`, `records` for the same concept are forbidden.
+
+- Decisions are made at first use
+- Changes require full replacement — no partial migrations
+- Applies to: variable names, field names, URL segments, database column names, event names
+
+```
+# Bad — same concept, three different names
+GET /orders/{id}/history   (API endpoint)
+order.activityLog          (field name)
+getOrderRecords()          (function name)
+
+# Good — consistent term throughout
+GET /orders/{id}/history
+order.history
+getOrderHistory()
+```
+
+### Reserved Word Prohibition
+
+Do not use language keywords as identifiers. When a keyword collision is unavoidable, add a prefix or suffix that communicates intent.
+
+```python
+# Python — Bad
+type = "admin"        # shadows built-in
+class = "premium"     # SyntaxError
+
+# Python — Good
+user_type = "admin"
+user_class = "premium"
+```
+
+```typescript
+// TypeScript — Bad
+const type = "admin"      // conflicts with built-in type keyword
+const class = "premium"   // SyntaxError
+
+// TypeScript — Good
+const userType = "admin"
+const userClass = "premium"
+```
+
+## File and Directory Naming
+
+Language or framework convention takes priority. When none exists, default to `kebab-case`.
+
+| Language / Ecosystem | Convention | Example |
+|---|---|---|
+| Python | `snake_case` | `user_service.py` |
+| JavaScript / TypeScript | `kebab-case` | `user-service.ts` |
+| Go | `snake_case` | `user_service.go` |
+| Java | `PascalCase` | `UserService.java` |
+
+Test files mirror the source path and name, using the language convention for test suffixes:
+- Python: `user_service.py` → `test_user_service.py`
+- TypeScript: `user-service.ts` → `user-service.test.ts`
+- Go: `user_service.go` → `user_service_test.go`
+- Java: `UserService.java` → `UserServiceTest.java`
 
 ## Functions and Methods
 
 - **Verb + noun**: `createUser`, `fetchOrders`, `validateEmail`, `calculateTotal`
-- **Query functions** (return values, no side effects): `getUser`, `findById`, `calculateTotal`, `formatDate`
-- **Command functions** (side effects): `saveUser`, `deleteOrder`, `sendEmail`, `publishEvent`
-- **Boolean functions** use predicate form: `isValid`, `hasExpired`, `canAccess`, `meetsRequirements`
-- **Async functions** do not need an `async` prefix — the return type communicates it
-
-```typescript
-// Good
-async function fetchUserById(id: string): Promise<User>
-function validateEmail(email: string): boolean
-function createOrderFromCart(cart: Cart): Order
-async function sendWelcomeEmail(user: User): Promise<void>
-
-// Bad
-async function asyncGetUser(id: string)  // async prefix is redundant
-function check(email: string): boolean   // too vague
-function doOrder(cart: Cart): Order      // "do" is meaningless
-function processUser(user: User)         // "process" tells nothing
-```
+- **Query functions** (return values, no side effects): `getUser`, `findById`, `calculateTotal`
+- **Command functions** (side effects): `saveUser`, `deleteOrder`, `sendEmail`
+- **Boolean functions** use predicate form: `isValid`, `hasExpired`, `canAccess`
+- Async functions do not need an `async` prefix — the return type communicates it
 
 ## Classes, Types, and Interfaces
 
-- **PascalCase**: `UserService`, `OrderRepository`, `PaymentError`, `SessionToken`
-- **No `I` prefix for interfaces**: `UserRepository` not `IUserRepository`
-- **No `Abstract` prefix**: `BaseRepository` not `AbstractRepository`
-- **Suffix communicates role**:
-  - `UserService` — business logic
-  - `UserRepository` — data access
-  - `UserController` — HTTP handler
-  - `UserError` — domain error
-  - `UserEvent` — event type
-  - `UserDto` — data transfer object
-
-## Constants
-
-- **SCREAMING_SNAKE_CASE** for compile-time constants (never reassigned, module-level values):
-  ```typescript
-  const MAX_RETRY_COUNT = 3
-  const DEFAULT_PAGE_SIZE = 20
-  const SESSION_EXPIRY_SECONDS = 3600
-  ```
-- **camelCase** for runtime-determined "constants" (env vars, config loaded at startup):
-  ```typescript
-  const databaseUrl = process.env.DATABASE_URL
-  const jwtSecret = config.get("jwt.secret")
-  ```
-
-## Files
-
-- **kebab-case** for all file names: `user-service.ts`, `order-repository.ts`, `payment-error.ts`
-- **File name matches its primary export**: `user-service.ts` exports `UserService`
-- **Test files mirror source path and name**: `src/user-service.ts` → `tests/user-service.test.ts`
-- **Index files for barrel exports only** — never put logic in `index.ts`
+- `PascalCase` in all languages that have class constructs
+- No `I` prefix for interfaces: `UserRepository` not `IUserRepository`
+- No `Abstract` prefix: `BaseRepository` not `AbstractRepository`
+- Suffix communicates role: `UserService`, `UserRepository`, `UserController`, `UserError`, `UserEvent`, `UserDto`
 
 ## Packages and Modules
 
-- **kebab-case**: `my-library`, `order-service`, `auth-middleware`
-- **Domain-specific, not generic** — avoid names like `utils`, `helpers`, `common`, `shared`:
-  - ✅ `user-validation.ts` not `utils.ts`
+- Follow language convention (see table above)
+- **Domain-specific, not generic** — avoid `utils`, `helpers`, `common`, `shared`
+  - ✅ `user_validation.py` not `utils.py`
   - ✅ `date-formatter.ts` not `helpers.ts`
-  - ✅ `order-errors.ts` not `errors.ts`
 - If you find yourself reaching for a `utils` file, ask whether the function belongs in the domain module that uses it most.
 
 ## Extended Examples
 
-For before/after naming comparisons, file naming patterns, class/interface examples, and constants reference, see [examples.md](examples.md).
+For before/after naming comparisons by language and class/interface examples, see [examples.md](examples.md).

@@ -2,17 +2,27 @@
 
 Extended examples for the `general-naming-principles` skill.
 
-## Variable Naming: Before/After
+## Variable Naming: Before/After (TypeScript)
 
 | Before | After | Why |
 |--------|-------|-----|
 | `const u = await getUser()` | `const user = await getUser()` | Single letter hides type |
-| `const flg = isActive()` | `const active = checkIsActive()` | Abbreviation + no boolean prefix |
+| `const flg = isActive()` | `const isActive = checkIsActive()` | Abbreviation + no boolean prefix |
 | `const mgr = new SessionManager()` | `const sessionManager = new SessionManager()` | `mgr` is an unclear abbreviation |
 | `const d = new Date()` | `const createdAt = new Date()` | Context-free single letter |
 | `let cnt = 0` | `let retryCount = 0` | Abbreviation hides meaning |
 
-## Function Naming: Before/After
+## Variable Naming: Before/After (Python)
+
+| Before | After | Why |
+|--------|-------|-----|
+| `u = get_user()` | `user = get_user()` | Single letter hides type |
+| `flg = is_active()` | `is_active = check_is_active()` | Abbreviation + no boolean prefix |
+| `mgr = SessionManager()` | `session_manager = SessionManager()` | `mgr` is unclear |
+| `d = datetime.now()` | `created_at = datetime.now()` | Context-free single letter |
+| `cnt = 0` | `retry_count = 0` | Abbreviation hides meaning |
+
+## Function Naming: Before/After (TypeScript)
 
 | Before | After | Why |
 |--------|-------|-----|
@@ -22,7 +32,7 @@ Extended examples for the `general-naming-principles` skill.
 | `function doPayment(order)` | `function chargeOrder(order)` | "do" is meaningless |
 | `function handleError(e)` | `function logAndRethrow(error)` | Name should describe the action |
 
-## Class and Interface Naming
+## Class and Interface Naming (TypeScript)
 
 ```typescript
 // Good
@@ -43,32 +53,41 @@ class UserHelper {}            // Helper is vague
 ## File Naming Examples
 
 ```
-# Source files — kebab-case, named for primary export
+# TypeScript — kebab-case, named for primary export
 user-service.ts          → exports UserService
 order-repository.ts      → exports OrderRepository
-payment-error.ts         → exports PaymentError
+user-service.test.ts     ← mirrors user-service.ts
 
-# Test files — mirror source path and name
-src/user-service.ts      → tests/user-service.test.ts
-src/auth/token.ts        → tests/auth/token.test.ts
+# Python — snake_case
+user_service.py          → exports UserService
+test_user_service.py     ← mirrors user_service.py
 
-# Bad — don't use these
-utils.ts                 → too generic
-helpers.ts               → same
-index.ts with logic      → barrel exports only
+# Go — snake_case
+user_service.go
+user_service_test.go     ← mirrors user_service.go
+
+# Java — PascalCase
+UserService.java
+UserServiceTest.java     ← mirrors UserService.java
 ```
 
-## Package/Module Naming
+## Consistency: Good vs. Bad
 
 ```
-# Good — domain-specific names
-user-validation.ts       (not utils.ts)
-date-formatter.ts        (not helpers.ts)
-order-errors.ts          (not errors.ts)
-auth-middleware.ts       (not middleware.ts)
+# Bad — same concept, different names across the codebase
+GET /orders/{id}/history     (API endpoint)
+order.activityLog            (model field)
+getOrderRecords()            (function name)
+order_details table          (DB table)
+
+# Good — "history" used consistently
+GET /orders/{id}/history
+order.history
+getOrderHistory()
+order_history table
 ```
 
-## Constants: SCREAMING_SNAKE vs camelCase
+## Constants: SCREAMING_SNAKE vs camelCase (TypeScript)
 
 ```typescript
 // SCREAMING_SNAKE_CASE: compile-time, never reassigned, module-level
@@ -79,4 +98,17 @@ const SESSION_EXPIRY_SECONDS = 3600
 // camelCase: runtime-determined (env vars, config loaded at startup)
 const databaseUrl = process.env.DATABASE_URL
 const jwtSecret = config.get('jwt.secret')
+```
+
+## Constants (Python)
+
+```python
+# UPPER_SNAKE_CASE: module-level constants per PEP 8
+MAX_RETRY_COUNT = 3
+DEFAULT_PAGE_SIZE = 20
+SESSION_EXPIRY_SECONDS = 3600
+
+# Runtime-determined — still UPPER_SNAKE_CASE in Python (PEP 8)
+DATABASE_URL = os.environ["DATABASE_URL"]
+JWT_SECRET = config.get("jwt.secret")
 ```
