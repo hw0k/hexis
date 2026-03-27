@@ -1,0 +1,7 @@
+# .worktreeinclude
+# Files to copy from main worktree to Claude-created worktrees (claude --worktree).
+# Uses .gitignore syntax. Only gitignored files matching these patterns are copied.
+
+# Generated lefthook hook scripts — gitignored but needed for commits to work in worktrees
+.githooks/commit-msg
+.githooks/pre-commit

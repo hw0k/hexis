@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-lefthook run pre-commit "$@"

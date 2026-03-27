@@ -41,7 +41,11 @@ git config core.hooksPath .githooks
 lefthook install --force
 ```
 
+`lefthook install --force` generates `.githooks/commit-msg` and `.githooks/pre-commit` — these are gitignored artifacts, not tracked files. Run this command once after cloning.
+
 Commit messages are validated by `bunx commitlint` against `.commitlintrc.yml`. Conventional Commits 1.0.0 with relaxed subject rules (no lowercase-start enforcement, no trailing-period enforcement).
+
+When using `claude --worktree`, the generated hook scripts are automatically copied to the new worktree via `.worktreeinclude`. For manual `git worktree add`, run `lefthook install --force` inside the worktree.
 
 ## Pressure Tests
 
