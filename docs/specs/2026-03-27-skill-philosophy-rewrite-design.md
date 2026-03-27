@@ -163,11 +163,24 @@ fix(api): #312 rate limit 헤더 누락 수정
 
 ### Change 3: commitlint Configuration Update
 
-Both `.commitlintrc.yml` (repo root) and `skills/new-project-setup/.commitlintrc.yml` (template) must be updated with clarifying comments and kept in sync:
+Both `.commitlintrc.yml` (repo root) and `skills/new-project-setup/.commitlintrc.yml` (template) must be kept in sync. `extends` is removed — all rules are inlined to eliminate the `@commitlint/config-conventional` package dependency:
 
 ```yaml
+# Inlined from @commitlint/config-conventional — no package.json required
 rules:
-  subject-case: [0]       # Non-English subjects (Korean, etc.) allowed
-  subject-full-stop: [0]  # No trailing period rule
-  # Issue prefix (#123) in subject: no rule needed, allowed by default
+  body-leading-blank: [1, always]
+  body-max-line-length: [2, always, 100]
+  footer-leading-blank: [1, always]
+  footer-max-line-length: [2, always, 100]
+  header-max-length: [2, always, 100]
+  header-trim: [2, always]
+  subject-case: [0]        # Non-English subjects (Korean, etc.) allowed
+  subject-empty: [2, never]
+  subject-full-stop: [0]   # No trailing period rule
+  type-case: [2, always, lower-case]
+  type-empty: [2, never]
+  type-enum:
+    - 2
+    - always
+    - [build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test]
 ```
