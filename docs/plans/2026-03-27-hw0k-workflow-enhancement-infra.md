@@ -4,9 +4,9 @@
 
 **Goal:** Implement the infrastructure layer of the hw0k-workflow enhancement — lefthook git hooks and the new-project-setup skill — as defined in `docs/specs/2026-03-27-hw0k-workflow-enhancement-design.md`.
 
-**Architecture:** Two deliverables: (1) `.githooks/` directory with lefthook config and shell scripts committed to the plugin repo, providing both self-dogfooding hooks and a template for user projects; (2) `skills/new-project-setup/` skill that guides onboarding. All files are either markdown or shell scripts — no compiled code.
+**Architecture:** Two deliverables: (1) `.githooks/` directory with lefthook config committed to the plugin repo, providing both self-dogfooding hooks and a template for user projects; (2) `skills/new-project-setup/` skill that guides onboarding. Commit message validation is delegated to `commitlint` + `@commitlint/config-conventional` — no custom validator shell script.
 
-**Tech Stack:** lefthook (Go binary, no runtime dependency), bash (POSIX-compatible shell scripts), Markdown (SKILL.md format)
+**Tech Stack:** lefthook (Go binary, no runtime dependency), commitlint + @commitlint/config-conventional (Node/npm), bash (POSIX-compatible shell scripts), Markdown (SKILL.md format)
 
 **Prerequisite:** Plan A (content) does not need to be complete before this plan can run — the two plans are independent.
 
@@ -17,18 +17,19 @@
 | Path | Action | Task |
 |------|--------|------|
 | `.githooks/lefthook.yml` | Create | 1 |
-| `.githooks/check-commit-msg.sh` | Create | 1 |
+| `.commitlintrc.yml` | Create | 1 |
 | `.githooks/run-if-exists.sh` | Create | 2 |
 | `skills/new-project-setup/SKILL.md` | Create | 3 |
 | `skills/new-project-setup/lefthook.yml` | Create | 3 |
+| `skills/new-project-setup/.commitlintrc.yml` | Create | 3 |
 
 ---
 
-### Task 1: lefthook Config and Commit Message Validator
+### Task 1: lefthook Config and commitlint Setup
 
 **Files:**
 - Create: `.githooks/lefthook.yml`
-- Create: `.githooks/check-commit-msg.sh`
+- Create: `.commitlintrc.yml`
 
 - [ ] **Step 1: Create `.githooks/lefthook.yml`**
 
@@ -40,7 +41,7 @@
 commit_msg:
   commands:
     validate-conventional-commit:
-      run: .githooks/check-commit-msg.sh {1}
+      run: npx --no -- commitlint --edit {1}
 
 pre_commit:
   parallel: true
@@ -62,155 +63,67 @@ pre_commit:
         - rebase
 ```
 
-- [ ] **Step 2: Create `.githooks/check-commit-msg.sh`**
+- [ ] **Step 2: Install commitlint**
 
 ```bash
-#!/bin/bash
-# check-commit-msg.sh
-# Validates commit message against Conventional Commits 1.0.0
-# Usage: check-commit-msg.sh <path-to-commit-msg-file>
-
-set -euo pipefail
-
-MSG_FILE="${1:?Usage: check-commit-msg.sh <commit-msg-file>}"
-
-# Read subject line (first non-empty, non-comment line)
-SUBJECT=$(grep -v '^#' "$MSG_FILE" | sed '/^[[:space:]]*$/d' | head -1)
-
-if [[ -z "$SUBJECT" ]]; then
-  echo "ERROR: Commit message is empty." >&2
-  exit 1
-fi
-
-# Exempt git-generated messages
-if echo "$SUBJECT" | grep -qE '^Merge '; then
-  exit 0
-fi
-if echo "$SUBJECT" | grep -qE '^Revert "'; then
-  exit 0
-fi
-if echo "$SUBJECT" | grep -qE '^(fixup|squash)! '; then
-  exit 0
-fi
-
-# Allowed types
-TYPES="feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert"
-
-# Full pattern: type[(scope)][!]: description
-PATTERN="^($TYPES)(\([a-z0-9][a-z0-9._-]*\))?(!)?: [a-z].*[^.]$"
-
-if ! echo "$SUBJECT" | grep -qE "$PATTERN"; then
-  # Diagnose which rule was violated for a helpful error message
-  TYPE=$(echo "$SUBJECT" | grep -oE '^[a-z]+' || true)
-  REASON=""
-
-  if [[ -z "$TYPE" ]]; then
-    REASON="Missing type prefix. Subject must start with a type (e.g. feat, fix, chore)."
-  elif ! echo "$TYPE" | grep -qE "^($TYPES)$"; then
-    REASON="Type \"$TYPE\" is not in the allowed list."$'\n'"  Allowed: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
-  elif ! echo "$SUBJECT" | grep -qE "^($TYPES)(\([a-z0-9][a-z0-9._-]*\))?(!)?: "; then
-    if echo "$SUBJECT" | grep -qE "^($TYPES)\([A-Z]"; then
-      REASON="Scope must be lowercase (e.g. feat(auth): not feat(Auth):)."
-    elif echo "$SUBJECT" | grep -qE "^($TYPES)\(.*\s"; then
-      REASON="Scope must not contain spaces (e.g. feat(user-service): not feat(user service):)."
-    else
-      REASON="Missing \": \" separator after type/scope. Expected format: type: description"
-    fi
-  elif echo "$SUBJECT" | grep -qE "^($TYPES)(\([a-z0-9][a-z0-9._-]*\))?(!)?: [A-Z]"; then
-    REASON="Description must start with a lowercase letter."
-  elif echo "$SUBJECT" | grep -qE "\.$"; then
-    REASON="Description must not end with a period."
-  else
-    REASON="Does not match Conventional Commits format."
-  fi
-
-  echo "" >&2
-  echo "ERROR: Invalid commit message." >&2
-  echo "" >&2
-  echo "  Subject: \"$SUBJECT\"" >&2
-  echo "" >&2
-  echo "  Reason: $REASON" >&2
-  echo "" >&2
-  echo "  Expected format: <type>[optional scope]: <description>" >&2
-  echo "  Example:         feat(auth): add token refresh logic" >&2
-  echo "" >&2
-  echo "  See hw0k-workflow:conventional-commit for full rules." >&2
-  echo "" >&2
-  exit 1
-fi
-
-# Advisory: warn if subject exceeds 72 characters (do not fail)
-if [[ ${#SUBJECT} -gt 72 ]]; then
-  echo "WARNING: Subject line is ${#SUBJECT} characters (recommended max: 72)." >&2
-fi
-
-exit 0
+npm install --save-dev @commitlint/cli @commitlint/config-conventional
 ```
 
-- [ ] **Step 3: Make scripts executable**
+Expected: `package.json` updated with `@commitlint/cli` and `@commitlint/config-conventional` in `devDependencies`.
 
-```bash
-chmod +x .githooks/check-commit-msg.sh
+- [ ] **Step 3: Create `.commitlintrc.yml`**
+
+```yaml
+# .commitlintrc.yml
+# Conventional Commits 1.0.0 enforcement — relaxed subject rules
+# type[(scope)][!]: description
+#
+# subject-case and subject-full-stop are disabled intentionally:
+#   - subject-case: English-specific rule (lowercase-start); not imposed
+#   - subject-full-stop: No trailing period; not imposed
+extends:
+  - '@commitlint/config-conventional'
+rules:
+  subject-case: [0]
+  subject-full-stop: [0]
 ```
 
-- [ ] **Step 4: Verify `check-commit-msg.sh` manually**
+- [ ] **Step 4: Verify commitlint works**
 
 Test valid messages exit 0:
 ```bash
-echo "feat: add login flow" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 0
+echo "feat: add login flow" | npx --no -- commitlint
+# Expected: exit 0
 
-echo "feat(auth): add login flow" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 0
+echo "feat(auth): Add login flow" | npx --no -- commitlint
+# Expected: exit 0 (uppercase start allowed)
 
-echo "feat!: remove v1 endpoint" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 0
+echo "feat!: remove v1 endpoint" | npx --no -- commitlint
+# Expected: exit 0
+
+echo "fix: resolve timeout issue." | npx --no -- commitlint
+# Expected: exit 0 (trailing period allowed)
 ```
 
-Test exempt messages exit 0:
+Test violations exit 1:
 ```bash
-echo "Merge branch 'main' into feature/x" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 0
+echo "update: bump dependency" | npx --no -- commitlint
+# Expected: exit 1, reason: type "update" not allowed
 
-echo 'Revert "feat: add login flow"' > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 0
+echo "added login flow" | npx --no -- commitlint
+# Expected: exit 1, reason: missing type prefix
+
+echo "feat(user service): add login" | npx --no -- commitlint
+# Expected: exit 1, reason: scope contains space
 ```
 
-Test violations exit 1 with helpful messages:
-```bash
-echo "Added login flow" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 1, reason: missing type prefix
-
-echo "update: bump dependency" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 1, reason: type not in allowed list
-
-echo "feat: Add login flow" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 1, reason: uppercase start
-
-echo "feat: add login flow." > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 1, reason: trailing period
-
-echo "feat(Auth): add login" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
-echo "Exit: $?"   # Expected: Exit: 1, reason: uppercase scope
-```
-
-All 5 violation cases must produce exit 1 with a specific reason message.
+All 3 violation cases must exit 1 with a reason message.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .githooks/lefthook.yml .githooks/check-commit-msg.sh
-git commit -m "feat: add lefthook config and commit message validator"
+git add .githooks/lefthook.yml .commitlintrc.yml package.json package-lock.json
+git commit -m "feat: add lefthook config and commitlint conventional commit enforcement"
 ```
 
 ---
@@ -315,8 +228,28 @@ git commit -m "feat: add project-aware pre-commit delegator script"
 **Files:**
 - Create: `skills/new-project-setup/SKILL.md`
 - Create: `skills/new-project-setup/lefthook.yml`
+- Create: `skills/new-project-setup/.commitlintrc.yml`
 
-- [ ] **Step 1: Create `skills/new-project-setup/lefthook.yml`**
+- [ ] **Step 1: Create `skills/new-project-setup/.commitlintrc.yml`**
+
+This is the template users copy to their project root.
+
+```yaml
+# .commitlintrc.yml
+# Conventional Commits 1.0.0 enforcement — relaxed subject rules
+# type[(scope)][!]: description
+#
+# subject-case and subject-full-stop are disabled intentionally:
+#   - subject-case: English-specific rule (lowercase-start); not imposed
+#   - subject-full-stop: No trailing period; not imposed
+extends:
+  - '@commitlint/config-conventional'
+rules:
+  subject-case: [0]
+  subject-full-stop: [0]
+```
+
+- [ ] **Step 2: Create `skills/new-project-setup/lefthook.yml`**
 
 This is the template users copy to their project root. Annotated so they know which sections are hw0k-workflow defaults vs project-specific.
 
@@ -329,11 +262,11 @@ This is the template users copy to their project root. Annotated so they know wh
 # Project-specific sections are marked # project-specific — customize these
 
 # hw0k-workflow: validates commit message format (Conventional Commits 1.0.0)
-# Copy .githooks/check-commit-msg.sh from hw0k-workflow to your .githooks/
+# Requires: commitlint installed in the project (see new-project-setup SKILL.md Step 2)
 commit_msg:
   commands:
     validate-conventional-commit:  # hw0k-workflow
-      run: .githooks/check-commit-msg.sh {1}
+      run: npx --no -- commitlint --edit {1}
 
 pre_commit:
   parallel: true
@@ -364,12 +297,12 @@ pre_commit:
 #       run: npm run test:e2e
 ```
 
-- [ ] **Step 2: Create `skills/new-project-setup/SKILL.md`**
+- [ ] **Step 3: Create `skills/new-project-setup/SKILL.md`**
 
 ```markdown
 ---
 name: new-project-setup
-description: Guides onboarding of a new project to hw0k-workflow standards — installs lefthook git hooks, sets up version-controlled hook config, and optionally configures Claude Code auto-sync
+description: Guides onboarding of a new project to hw0k-workflow standards — installs lefthook git hooks, sets up commitlint commit message validation, and optionally configures Claude Code auto-sync
 type: workflow
 ---
 
@@ -381,6 +314,7 @@ Follow these steps to apply hw0k-workflow standards to a new project. After setu
 
 - `git` installed and repo initialized
 - `lefthook` installed (one-time per machine — see Step 1)
+- `node` and `npm` available (commitlint requires Node — see Step 2)
 - Plugin dir accessible: wherever `hw0k-workflow` is installed (e.g. `~/.claude/plugins/hw0k-workflow/`)
 
 ## Steps
@@ -402,7 +336,28 @@ go install github.com/evilmartians/lefthook@latest
 
 Verify: `lefthook --version`
 
-### Step 2 — Copy hook files to the project
+### Step 2 — Install commitlint
+
+commitlint validates commit messages against Conventional Commits 1.0.0. Install it in the project:
+
+```bash
+npm install --save-dev @commitlint/cli @commitlint/config-conventional
+```
+
+Then copy the hw0k-workflow commitlint config to the project root:
+
+```bash
+PLUGIN_DIR=~/.claude/plugins/hw0k-workflow   # adjust to your install path
+cp "$PLUGIN_DIR/skills/new-project-setup/.commitlintrc.yml" ./.commitlintrc.yml
+```
+
+Commit both files:
+```bash
+git add package.json package-lock.json .commitlintrc.yml
+git commit -m "chore: add commitlint for conventional commit enforcement"
+```
+
+### Step 3 — Copy hook files to the project
 
 Copy the `.githooks/` directory from the hw0k-workflow plugin to your project root:
 
@@ -412,11 +367,10 @@ cp -r "$PLUGIN_DIR/.githooks" ./.githooks
 ```
 
 This copies:
-- `lefthook.yml` — hook orchestration config
-- `check-commit-msg.sh` — Conventional Commits validator
+- `lefthook.yml` — hook orchestration config (inside `.githooks/`, used by lefthook)
 - `run-if-exists.sh` — project-aware lint/format/test delegator
 
-### Step 3 — Copy the lefthook template
+### Step 4 — Copy the lefthook template
 
 ```bash
 cp "$PLUGIN_DIR/skills/new-project-setup/lefthook.yml" ./lefthook.yml
@@ -424,7 +378,7 @@ cp "$PLUGIN_DIR/skills/new-project-setup/lefthook.yml" ./lefthook.yml
 
 If the project already has a `lefthook.yml`, merge only the sections marked `# hw0k-workflow` — do not overwrite the entire file.
 
-### Step 4 — Set the git hooks path and install
+### Step 5 — Set the git hooks path and install
 
 ```bash
 git config core.hooksPath .githooks
@@ -440,21 +394,23 @@ setup:
 	lefthook install
 ```
 
-### Step 5 — Verify hooks are active
+### Step 6 — Verify hooks are active
 
 ```bash
 # Test a bad commit message — should be blocked
-echo "bad commit message" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
+echo "bad commit message" | npx --no -- commitlint
 # Expected: exit 1 with error message
 
 # Test a good commit message — should pass
-echo "feat: add initial setup" > /tmp/test-msg.txt
-bash .githooks/check-commit-msg.sh /tmp/test-msg.txt
+echo "feat: add initial setup" | npx --no -- commitlint
+# Expected: exit 0
+
+# Test that relaxed rules work (uppercase start, trailing period allowed)
+echo "feat: Add initial setup." | npx --no -- commitlint
 # Expected: exit 0
 ```
 
-### Step 6 — (Optional) Configure Claude Code auto-sync
+### Step 7 — (Optional) Configure Claude Code auto-sync
 
 Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude session.
 
@@ -557,28 +513,33 @@ LEFTHOOK=0 git commit -m "chore: emergency fix"
 This uses lefthook's standard bypass mechanism — no `--no-verify` needed.
 ```
 
-- [ ] **Step 3: Verify**
+- [ ] **Step 4: Verify**
 
 Check `SKILL.md` contains:
-- [ ] Prerequisites section
-- [ ] 6 numbered steps: install lefthook, copy hook files, copy template, git config + lefthook install, verify hooks active, optional auto-sync
+- [ ] Prerequisites section (git, lefthook, node/npm, plugin dir)
+- [ ] 7 numbered steps: install lefthook, install commitlint, copy hook files, copy lefthook template, git config + install, verify hooks active, optional auto-sync
 - [ ] `run-if-exists.sh` pattern section (explains 4-step detection, 3 task types)
 - [ ] Custom test scope section (example script with `git diff --cached`)
 - [ ] Auto-sync enable/disable guidance (team-wide vs personal, how to disable without deleting)
 - [ ] Global bypass (`LEFTHOOK=0`)
 
-Check `lefthook.yml` contains:
-- [ ] `commit_msg` section with `check-commit-msg.sh {1}`
+Check `lefthook.yml` template contains:
+- [ ] `commit_msg` section with `npx --no -- commitlint --edit {1}`
 - [ ] `pre_commit` section with `lint`, `format`, `test` all using `run-if-exists.sh`
 - [ ] `skip: [merge, rebase]` on all pre-commit commands
 - [ ] `parallel: true` on pre_commit
 - [ ] Comments distinguishing `# hw0k-workflow` from `# project-specific` sections
 
-- [ ] **Step 4: Commit**
+Check `.commitlintrc.yml` template contains:
+- [ ] `extends: ['@commitlint/config-conventional']`
+- [ ] `subject-case: [0]`
+- [ ] `subject-full-stop: [0]`
+
+- [ ] **Step 5: Commit**
 
 ```bash
 git add skills/new-project-setup/
-git commit -m "feat: add new-project-setup skill with lefthook onboarding guide"
+git commit -m "feat: add new-project-setup skill with lefthook and commitlint onboarding guide"
 ```
 
 ---
@@ -590,21 +551,23 @@ git commit -m "feat: add new-project-setup skill with lefthook onboarding guide"
 | Spec requirement | Task |
 |-----------------|------|
 | `.githooks/lefthook.yml` — commit_msg + pre_commit (lint/format/test) | Task 1 |
-| `check-commit-msg.sh` — Conventional Commits validator, exemptions, error messages | Task 1 |
+| commitlint + `.commitlintrc.yml` — Conventional Commits validator, relaxed subject rules | Task 1 |
 | `run-if-exists.sh` — project-aware delegator (package.json/Makefile/escape hatch) | Task 2 |
 | `new-project-setup/SKILL.md` — onboarding steps, run-if-exists pattern, auto-sync guidance | Task 3 |
 | `new-project-setup/lefthook.yml` — annotated template for user projects | Task 3 |
-| WIP commits not exempt from format enforcement | Task 1 (`check-commit-msg.sh`) |
+| `new-project-setup/.commitlintrc.yml` — commitlintrc template for user projects | Task 3 |
+| commitlint installation as prerequisite (Don't Reinvent the Wheel principle) | Task 3 (`SKILL.md`) |
 | `LEFTHOOK=0` global bypass documented | Task 3 (`SKILL.md`) |
 | test hook runs scoped tests (custom hook pattern) | Task 3 (`SKILL.md`) |
 | `settings.local.json` for personal opt-in | Task 3 (`SKILL.md`) |
+| subject-case and subject-full-stop rules disabled | Tasks 1, 3 (`.commitlintrc.yml`) |
 
 All spec infrastructure requirements covered.
 
 ### Placeholder Scan
 
-No TBDs, TODOs, or incomplete sections. All shell script content is complete and testable. All SKILL.md sections contain actual guidance, not descriptions of guidance.
+No TBDs, TODOs, or incomplete sections. All shell script content is complete and testable. All SKILL.md sections contain actual guidance, not descriptions of guidance. All commitlint configs are complete with exact rule names and severity levels.
 
 ### Type Consistency
 
-Shell scripts use consistent variable naming (`TASK`, `PLUGIN_PREFIX`, `MSG_FILE`). The `run-if-exists.sh` task name `lint`/`format`/`test` aligns with the `lefthook.yml` command names. No inconsistencies.
+`run-if-exists.sh` task names (`lint`/`format`/`test`) align with `lefthook.yml` command names. commitlint invocation `npx --no -- commitlint --edit {1}` matches between `.githooks/lefthook.yml` and `skills/new-project-setup/lefthook.yml`. `.commitlintrc.yml` rule names (`subject-case`, `subject-full-stop`) are valid commitlint rule identifiers. No inconsistencies.

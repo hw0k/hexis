@@ -217,13 +217,15 @@ Evaluation is binary: PASS or FAIL. No partial credit.
 
 The following are checkable without judgment:
 
-- Description uses past tense (`added`, `fixed`, `updated`)
 - Type not from allowed list
-- Description starts with capital letter
-- Description ends with period
 - No blank line between subject and body (when body present)
 - Breaking change not flagged with `!` or `BREAKING CHANGE:` footer
 - Scope contains spaces or is not lowercase
+
+**Removed rules (English-specific, no longer enforced):**
+- Description starts with lowercase letter
+- Description uses imperative mood
+- Description ends with period
 
 ---
 
@@ -235,7 +237,7 @@ The following are checkable without judgment:
 commit_msg:
   commands:
     validate-conventional-commit:
-      run: .githooks/check-commit-msg.sh {1}
+      run: npx --no -- commitlint --edit {1}
 
 pre_commit:
   parallel: true
@@ -251,31 +253,35 @@ pre_commit:
       skip: [merge, rebase]
 ```
 
-### `check-commit-msg.sh` — Validation Logic
+### Commit Message Validation — commitlint
 
-**Exemptions (checked first, exit 0):**
-- `Merge ` prefix — git-generated merge commits
-- `Revert "` prefix — git-generated revert commits
-- `fixup! ` or `squash! ` prefix — git rebase --autosquash artifacts
+**Rationale (Don't Reinvent the Wheel):** commitlint is a widely-adopted, actively-maintained tool that enforces Conventional Commits out of the box. A custom shell script would duplicate this work and require ongoing maintenance. Use commitlint.
 
-WIP commits are **not** exempt. `chore: wip` is valid; bare `WIP` is not.
+commitlint is configured via `.commitlintrc.yml` in the project root. The base config (`@commitlint/config-conventional`) enforces type/scope structure. English-specific rules are disabled:
 
-**Core regex (POSIX ERE):**
-
+```yaml
+# .commitlintrc.yml (template — committed to the project)
+extends:
+  - '@commitlint/config-conventional'
+rules:
+  subject-case: [0]        # disabled — non-English subjects are valid
+  subject-full-stop: [0]   # disabled — trailing period is optional
+  # type-enum enforced (allowed types)
+  # type-case enforced (lowercase type)
+  # scope-case enforced (lowercase scope)
 ```
-^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9][a-z0-9._-]*\))?(!)?: [a-z].*[^.]$
-```
 
-| Segment | Rule enforced |
-|---------|--------------|
-| `^(feat\|fix\|...)` | Type from allowed list, lowercase |
-| `(\([a-z0-9]...\))?` | Optional scope: lowercase alphanumeric, dots, hyphens, underscores |
-| `(!)?` | Optional breaking change marker |
-| `: ` | Exactly colon + one space |
-| `[a-z]` | Description starts lowercase |
-| `[^.]$` | Description does not end with period |
+**Enforced rules:**
+- Type from allowed list (feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert)
+- Type is lowercase
+- Scope is lowercase, no spaces
+- Breaking change: `!` or `BREAKING CHANGE:` footer
+- Blank line between subject and body (when body present)
 
-**Error messages:** each violation prints a specific reason, the actual subject line, and the expected format before exiting 1.
+**Not enforced (removed as English-specific):**
+- Subject starts with lowercase
+- Imperative mood
+- No trailing period
 
 ### `run-if-exists.sh` — Project-Aware Hook Delegation
 
@@ -315,7 +321,8 @@ These files are committed to the project repo (not the plugin repo).
 2. Principle 1 — Environment Independence
 3. Principle 2 — Human Gate for Irreversible Operations
 4. Principle 3 — Static Verification Over Subjective Assessment
-5. Integration with principles-reviewer
+5. Principle 4 — Don't Reinvent the Wheel
+6. Integration with principles-reviewer
 ```
 
 ### Per-Principle Format
@@ -351,6 +358,19 @@ Compliant: "TypeScript compiler reports zero errors." "ESLint passes with the pr
 Non-compliant: "The logic seems correct." "This should work based on the pattern I see elsewhere."
 
 Trigger: any verification or correctness claim that does not cite a tool output.
+
+**Principle 4 — Don't Reinvent the Wheel**
+
+Rule: Before implementing a custom solution, verify that a well-maintained tool does not already solve the problem. Prefer established tools when they are actively maintained, widely adopted, and require no significant adaptation.
+
+Rationale: Custom implementations duplicate battle-tested work, require ongoing maintenance, and introduce bugs the ecosystem has already fixed.
+
+Compliant: using commitlint instead of a custom regex commit validator; using lefthook instead of a custom hook manager.
+Non-compliant: writing a shell script to validate commit messages when commitlint exists; re-implementing date parsing, UUID generation, or other solved problems.
+
+Exception: the existing tool requires significant adaptation overhead that exceeds the benefit, has a problematic license or security record, or cannot work in the target environment.
+
+Trigger: any new utility, script, or implementation that overlaps with a known, well-maintained open-source solution.
 
 ---
 

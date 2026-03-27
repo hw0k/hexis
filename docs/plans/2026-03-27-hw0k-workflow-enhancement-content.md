@@ -15,18 +15,16 @@
 | Path | Action | Task |
 |------|--------|------|
 | `tests/pressure/conventional-commit/README.md` | Create | 1 |
-| `tests/pressure/conventional-commit/scenarios/001-past-tense-temptation.md` | Create | 1 |
-| `tests/pressure/conventional-commit/scenarios/002-non-standard-type.md` | Create | 1 |
-| `tests/pressure/conventional-commit/scenarios/003-scope-with-spaces.md` | Create | 1 |
-| `tests/pressure/conventional-commit/scenarios/004-body-before-blank-line.md` | Create | 1 |
-| `tests/pressure/conventional-commit/scenarios/005-uppercase-description.md` | Create | 1 |
+| `tests/pressure/conventional-commit/scenarios/001-non-standard-type.md` | Create | 1 |
+| `tests/pressure/conventional-commit/scenarios/002-scope-with-spaces.md` | Create | 1 |
+| `tests/pressure/conventional-commit/scenarios/003-body-before-blank-line.md` | Create | 1 |
 | `tests/pressure/conventional-commit/evaluation-log.md` | Create | 1 |
 | `skills/conventional-commit/reference.md` | Create | 2 |
 | `skills/conventional-commit/SKILL.md` | Modify — add reference link | 2 |
 | `skills/http-api-principles/examples.md` | Create | 3 |
-| `skills/http-api-principles/SKILL.md` | Modify — add examples link, trim | 3 |
+| `skills/http-api-principles/SKILL.md` | Modify — add examples link | 3 |
 | `skills/general-naming-principles/examples.md` | Create | 4 |
-| `skills/general-naming-principles/SKILL.md` | Modify — add examples link, trim | 4 |
+| `skills/general-naming-principles/SKILL.md` | Modify — add examples link | 4 |
 | `skills/exception-principles/` | Delete | 5 |
 | `skills/exception-and-logging-principles/SKILL.md` | Create | 5 |
 | `skills/exception-and-logging-principles/examples.md` | Create | 5 |
@@ -40,12 +38,12 @@
 
 **Files:**
 - Create: `tests/pressure/conventional-commit/README.md`
-- Create: `tests/pressure/conventional-commit/scenarios/001-past-tense-temptation.md`
-- Create: `tests/pressure/conventional-commit/scenarios/002-non-standard-type.md`
-- Create: `tests/pressure/conventional-commit/scenarios/003-scope-with-spaces.md`
-- Create: `tests/pressure/conventional-commit/scenarios/004-body-before-blank-line.md`
-- Create: `tests/pressure/conventional-commit/scenarios/005-uppercase-description.md`
+- Create: `tests/pressure/conventional-commit/scenarios/001-non-standard-type.md`
+- Create: `tests/pressure/conventional-commit/scenarios/002-scope-with-spaces.md`
+- Create: `tests/pressure/conventional-commit/scenarios/003-body-before-blank-line.md`
 - Create: `tests/pressure/conventional-commit/evaluation-log.md`
+
+**Note on scope:** Scenarios test only rules that are still enforced. English-specific rules (lowercase start, imperative mood, no trailing period) are not enforced and therefore not tested.
 
 - [ ] **Step 1: Create `tests/pressure/conventional-commit/README.md`**
 
@@ -59,7 +57,7 @@ Skill pressure testing applies TDD to skill documentation. The goal is to verify
 - **RED:** Run the scenario in a fresh Claude Code session with NO `hw0k-workflow` skills loaded. The scenario **passes RED** if the agent violates the rule (confirming the test catches a real failure mode).
 - **GREEN:** Run the same scenario in a session with `hw0k-workflow:conventional-commit` loaded. The scenario **passes GREEN** if the agent complies with the rule.
 
-A scenario that **fails RED** (agent follows the rule without the skill) means the pressure is too weak — the rule is common knowledge. Strengthen the setup.
+A scenario that **fails RED** (agent follows the rule without the skill) means the pressure is too weak. Strengthen the setup.
 
 A scenario that **fails GREEN** (agent breaks the rule even with the skill) means the skill has a loophole. Enter **REFACTOR**: document the failure in a `## Loopholes Found` section in the scenario file, patch the skill wording, and re-run until GREEN passes.
 
@@ -68,14 +66,21 @@ A scenario that **fails GREEN** (agent breaks the rule even with the skill) mean
 1. Open the scenario file. Read **Setup** and **Pressure**.
 2. Start a **fresh Claude Code session** (clear context, no prior conversation).
 3. **RED phase:** Do not load any `hw0k-workflow` skills. Paste the **Pressure** prompt verbatim.
-4. **GREEN phase:** In a new fresh session, load `hw0k-workflow:conventional-commit` (via `/hw0k-workflow:conventional-commit` or by starting a session where the plugin is active). Paste the same prompt.
+4. **GREEN phase:** In a new fresh session, load `hw0k-workflow:conventional-commit`. Paste the same prompt.
 5. Evaluate against **PASS Criteria** in the scenario file.
 6. Record results in `evaluation-log.md`.
+
+## Enforced rules (what these tests cover)
+
+- Type must be from the allowed list: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+- Scope must be lowercase, no spaces
+- Blank line required between subject and body
+- Breaking change must use `!` or `BREAKING CHANGE:` footer
 
 ## How to add a new scenario
 
 1. Increment the scenario number. Copy the template below.
-2. The **Pressure** section must be a verbatim prompt that creates genuine temptation — a realistic situation where the correct behavior is inconvenient or unnatural.
+2. The **Pressure** section must be a verbatim prompt that creates genuine temptation.
 3. **PASS Criteria** must be binary and checkable without judgment.
 
 ```markdown
@@ -88,81 +93,27 @@ A scenario that **fails GREEN** (agent breaks the rule even with the skill) mean
 <Verbatim prompt to paste into the test session>
 
 ## Expected RED Behavior (skill NOT loaded)
-<Specific failure mode — quote the likely output, not just "it fails">
+<Specific failure mode>
 
 ## Expected GREEN Behavior (skill loaded)
-<Minimum acceptable output — precise enough to eliminate judgment>
+<Minimum acceptable output>
 
 ## PASS Criteria
 RED PASS if: <agent violates the rule>
-GREEN PASS if: <specific conditions — each checkable>
+GREEN PASS if: <specific, checkable conditions>
 ```
 ```
 
-- [ ] **Step 2: Create `tests/pressure/conventional-commit/scenarios/001-past-tense-temptation.md`**
+- [ ] **Step 2: Create `tests/pressure/conventional-commit/scenarios/001-non-standard-type.md`**
 
 ```markdown
-# Scenario 001: Past Tense Temptation
-
-## Setup
-
-The agent has just finished implementing a small feature: adding email validation
-to a user registration form. The work is done. The natural language pull toward
-past tense is strong because the task is complete — "added", "fixed", "updated"
-all feel natural. The agent is asked to write a commit message.
-
-## Pressure
-
-> I just finished adding email validation to the registration form. The validation
-> rejects empty emails and invalid formats. Please write a git commit message for
-> this change.
-
-## Expected RED Behavior (skill NOT loaded)
-
-Agent writes a commit message using past tense, such as:
-
-    Added email validation to registration form
-
-or:
-
-    Added email validation - rejects empty and invalid formats
-
-Agent does not flag the tense as incorrect and does not add a type prefix.
-
-## Expected GREEN Behavior (skill loaded)
-
-Agent writes a Conventional Commits message in imperative mood:
-
-    feat: add email validation to registration form
-
-or with scope:
-
-    feat(auth): add email validation to registration form
-
-Agent uses present tense imperative. Type is from the allowed list. Description
-starts lowercase. No trailing period.
-
-## PASS Criteria
-
-RED PASS if: commit message uses past tense OR omits a Conventional Commits type prefix, without self-correction.
-
-GREEN PASS if:
-- [ ] Type is one of: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
-- [ ] Description uses imperative mood (not "added", "adding")
-- [ ] Description starts with lowercase letter
-- [ ] Description does not end with a period
-```
-
-- [ ] **Step 3: Create `tests/pressure/conventional-commit/scenarios/002-non-standard-type.md`**
-
-```markdown
-# Scenario 002: Non-Standard Type Temptation
+# Scenario 001: Non-Standard Type Temptation
 
 ## Setup
 
 The agent is working on a project that has an informal convention of using
 "update" as a commit type. The agent has seen this pattern in the project's
-recent git log. The task is a small dependency version bump — exactly the kind
+recent git log. The task is a minor dependency version bump — exactly the kind
 of change that might be called "update" in common usage.
 
 ## Pressure
@@ -177,11 +128,11 @@ Agent follows the project's informal convention:
 
     update: bump axios from 1.6.0 to 1.7.2
 
-or rationalizes that "update" is a reasonable type given the project context.
+or rationalizes that "update" is reasonable given the project context.
 
 ## Expected GREEN Behavior (skill loaded)
 
-Agent uses a type from the allowed list. Dependency bumps are `build` or `chore`:
+Agent uses a type from the allowed list. Dependency bumps map to `build` or `chore`:
 
     build: bump axios from 1.6.0 to 1.7.2
 
@@ -189,28 +140,28 @@ or:
 
     chore: bump axios from 1.6.0 to 1.7.2
 
-Agent does not use "update" even though it appears in the project's history.
+Agent does not use "update" even though it appears in project history.
 
 ## PASS Criteria
 
-RED PASS if: agent uses "update" or any type not in the allowed list (feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert).
+RED PASS if: agent uses "update" or any type not in the allowed list.
 
 GREEN PASS if:
-- [ ] Type is exactly one of the 11 allowed types
+- [ ] Type is exactly one of: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
 - [ ] "update" does not appear as the type
 ```
 
-- [ ] **Step 4: Create `tests/pressure/conventional-commit/scenarios/003-scope-with-spaces.md`**
+- [ ] **Step 3: Create `tests/pressure/conventional-commit/scenarios/002-scope-with-spaces.md`**
 
 ```markdown
-# Scenario 003: Scope With Spaces
+# Scenario 002: Scope With Spaces
 
 ## Setup
 
 The agent is working in a monorepo with packages named with spaces in their
 human-readable names (e.g., "User Service", "Order API"). The agent is asked to
 write a commit message scoped to one of these packages and may use the
-human-readable name as the scope.
+human-readable name directly as the scope.
 
 ## Pressure
 
@@ -219,11 +170,11 @@ human-readable name as the scope.
 
 ## Expected RED Behavior (skill NOT loaded)
 
-Agent uses the human-readable package name as the scope with spaces:
+Agent uses the human-readable package name with spaces or mixed case:
 
     fix(User Service): prevent null crash when profile photo is missing
 
-or uses PascalCase or mixed case:
+or:
 
     fix(UserService): prevent null crash when profile photo is missing
 
@@ -233,24 +184,21 @@ Agent uses a lowercase, no-space scope:
 
     fix(user-service): prevent null crash when profile photo is missing
 
-or:
-
-    fix(user-service): prevent null pointer when profile photo is absent
-
 ## PASS Criteria
 
 RED PASS if: scope contains spaces, uppercase letters, or does not match `[a-z0-9][a-z0-9._-]*`.
 
 GREEN PASS if:
-- [ ] Scope is lowercase
+- [ ] Scope is all lowercase
 - [ ] Scope contains no spaces
-- [ ] Scope matches pattern: alphanumeric start, only lowercase letters/digits/dots/hyphens/underscores
+- [ ] Scope contains only: letters, digits, hyphens, underscores, dots
+- [ ] Scope starts with an alphanumeric character
 ```
 
-- [ ] **Step 5: Create `tests/pressure/conventional-commit/scenarios/004-body-before-blank-line.md`**
+- [ ] **Step 4: Create `tests/pressure/conventional-commit/scenarios/003-body-before-blank-line.md`**
 
 ```markdown
-# Scenario 004: Body Without Blank Line Separator
+# Scenario 003: Body Without Blank Line Separator
 
 ## Setup
 
@@ -284,62 +232,15 @@ Agent separates subject from body with exactly one blank line:
 
 ## PASS Criteria
 
-RED PASS if: body follows immediately after subject line with no blank line separator.
+RED PASS if: body follows immediately after subject line with no blank line.
 
 GREEN PASS if:
 - [ ] There is exactly one blank line between the subject line and the body
-- [ ] Subject line is a valid Conventional Commits format
+- [ ] Subject line is valid Conventional Commits format
 - [ ] Body starts on the third line (line 1: subject, line 2: blank, line 3+: body)
 ```
 
-- [ ] **Step 6: Create `tests/pressure/conventional-commit/scenarios/005-uppercase-description.md`**
-
-```markdown
-# Scenario 005: Uppercase Description Start
-
-## Setup
-
-The agent is asked to write a commit message for adding a new feature. The
-feature name is a proper noun or starts with a capitalized word (e.g., "OAuth",
-"Redis", "JWT"). The natural inclination is to capitalize the first word of the
-description.
-
-## Pressure
-
-> Write a commit message for implementing JWT-based authentication in the login
-> endpoint. Users can now log in and receive a signed JWT token.
-
-## Expected RED Behavior (skill NOT loaded)
-
-Agent capitalizes the description because JWT is an acronym and starts the sentence:
-
-    feat(auth): JWT authentication added to login endpoint
-
-or:
-
-    feat(auth): Add JWT authentication to login endpoint
-
-## Expected GREEN Behavior (skill loaded)
-
-Agent starts description with lowercase even when the first word is an acronym:
-
-    feat(auth): add JWT authentication to login endpoint
-
-The acronym "JWT" appears later in the description (not as the first character).
-If the description would naturally start with an acronym, the agent rephrases to
-start with a lowercase verb.
-
-## PASS Criteria
-
-RED PASS if: description starts with an uppercase letter (including acronyms as first character).
-
-GREEN PASS if:
-- [ ] First character of the description (after `: `) is a lowercase letter
-- [ ] Type is valid
-- [ ] No trailing period
-```
-
-- [ ] **Step 7: Create `tests/pressure/conventional-commit/evaluation-log.md`**
+- [ ] **Step 5: Create `tests/pressure/conventional-commit/evaluation-log.md`**
 
 ```markdown
 # Evaluation Log
@@ -348,24 +249,22 @@ Record RED/GREEN results here after running scenarios manually.
 
 | Scenario | RED Result | GREEN Result | Date | Notes |
 |----------|-----------|-------------|------|-------|
-| 001-past-tense-temptation | — | — | — | |
-| 002-non-standard-type | — | — | — | |
-| 003-scope-with-spaces | — | — | — | |
-| 004-body-before-blank-line | — | — | — | |
-| 005-uppercase-description | — | — | — | |
+| 001-non-standard-type | — | — | — | |
+| 002-scope-with-spaces | — | — | — | |
+| 003-body-before-blank-line | — | — | — | |
 
 **Result values:** PASS / FAIL / REFACTOR-NEEDED
 ```
 
-- [ ] **Step 8: Verify content**
+- [ ] **Step 6: Verify content**
 
 Check:
-- `README.md` contains: purpose paragraph, RED/GREEN definitions, run instructions (4 steps), REFACTOR instructions, scenario template
-- Each scenario file contains: Setup, Pressure, Expected RED, Expected GREEN, PASS Criteria sections
-- Each PASS Criteria has binary, checkable conditions (no judgment calls)
-- `evaluation-log.md` has a table with all 5 scenario names
+- `README.md` contains: RED/GREEN definitions, run instructions, enforced rules list (4 rules), REFACTOR instructions, scenario template
+- Each scenario file contains: Setup, Pressure, Expected RED, Expected GREEN, PASS Criteria
+- Each PASS Criteria has binary, checkable conditions
+- `evaluation-log.md` table has all 3 scenario names
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add tests/
@@ -402,11 +301,11 @@ WIP: auth flow
 wip: something
 ```
 
-Use `chore: wip` for general work-in-progress. Use the actual type if the change direction is already clear (`feat: wip`, `fix: wip`).
+Use `chore: wip` for general work-in-progress. Use the actual type if the direction is already clear.
 
 ## Scope Examples by Context
 
-Scopes should reflect a subsystem, package, or layer — not a file name.
+Scopes reflect a subsystem, package, or layer — not a file name.
 
 | Context | Good scope | Bad scope |
 |---------|-----------|-----------|
@@ -465,7 +364,7 @@ Footer keywords: `Closes`, `Fixes`, `Refs`, `Co-Authored-By`, `BREAKING CHANGE`.
 
 - [ ] **Step 2: Modify `skills/conventional-commit/SKILL.md` — add reference link**
 
-Read the current file first, then append the following line at the end:
+Read the current file, then append at the end:
 
 ```markdown
 
@@ -493,7 +392,7 @@ git commit -m "refactor: split conventional-commit skill into main and reference
 
 **Files:**
 - Create: `skills/http-api-principles/examples.md`
-- Modify: `skills/http-api-principles/SKILL.md` — add examples link, move verbose content
+- Modify: `skills/http-api-principles/SKILL.md` — add examples link
 
 - [ ] **Step 1: Create `skills/http-api-principles/examples.md`**
 
@@ -506,8 +405,8 @@ Extended examples for the `http-api-principles` skill.
 
 ```
 # Single resource
-GET  /users/{id}
-PUT  /users/{id}
+GET    /users/{id}
+PUT    /users/{id}
 DELETE /users/{id}
 
 # Collection
@@ -519,7 +418,7 @@ GET  /users/{id}/orders
 POST /users/{id}/orders
 GET  /users/{id}/orders/{orderId}
 
-# Action on resource (use POST + verb-noun path only when no REST method fits)
+# Action on resource (POST + noun path when no REST method fits)
 POST /users/{id}/password-reset
 POST /orders/{id}/cancellation
 ```
@@ -596,11 +495,6 @@ GET /orders?limit=20&cursor=eyJpZCI6MTIzfQ==
 }
 ```
 
-**First page (no cursor):**
-```
-GET /orders?limit=20
-```
-
 **Reject over-limit:**
 ```
 GET /orders?limit=500
@@ -616,7 +510,6 @@ GET /orders?limit=500
 
 ## Versioning and Deprecation Headers
 
-**Deprecated endpoint response headers:**
 ```
 HTTP/1.1 200 OK
 Deprecation: true
@@ -657,7 +550,7 @@ For full JSON error response examples, pagination request/response examples, URL
 - [ ] **Step 3: Verify**
 
 Check:
-- `examples.md` contains: URL structure block, 4 error response examples (400/404/401/500), pagination request + response + over-limit example, deprecation headers, status code table
+- `examples.md` contains: URL structure block, 4 error response examples, pagination examples, deprecation headers, status code table
 - `SKILL.md` ends with a link to `examples.md`
 
 - [ ] **Step 4: Commit**
@@ -687,7 +580,7 @@ Extended examples for the `general-naming-principles` skill.
 | Before | After | Why |
 |--------|-------|-----|
 | `const u = await getUser()` | `const user = await getUser()` | Single letter hides type |
-| `const flg = isActive()` | `const isActive = isActive()` → rename fn: `const active = checkActive()` | Abbreviation + no boolean prefix |
+| `const flg = isActive()` | `const active = checkIsActive()` | Abbreviation + no boolean prefix |
 | `const mgr = new SessionManager()` | `const sessionManager = new SessionManager()` | `mgr` is an unclear abbreviation |
 | `const d = new Date()` | `const createdAt = new Date()` | Context-free single letter |
 | `let cnt = 0` | `let retryCount = 0` | Abbreviation hides meaning |
@@ -698,9 +591,9 @@ Extended examples for the `general-naming-principles` skill.
 |--------|-------|-----|
 | `function processUser(u)` | `function activateUser(user)` | "process" is meaningless |
 | `async function asyncFetchOrders()` | `async function fetchOrders()` | `async` prefix is redundant |
-| `function check(email)` | `function isValidEmail(email)` | Too vague; boolean fn needs predicate form |
+| `function check(email)` | `function isValidEmail(email)` | Too vague; boolean needs predicate form |
 | `function doPayment(order)` | `function chargeOrder(order)` | "do" is meaningless |
-| `function handleError(e)` | `function logAndRethrow(error)` | Name should describe the action taken |
+| `function handleError(e)` | `function logAndRethrow(error)` | Name should describe the action |
 
 ## Class and Interface Naming
 
@@ -716,8 +609,8 @@ class CreateUserDto {}         // data transfer object
 // Bad
 interface IUserRepository {}   // no I prefix
 abstract class AbstractRepo {} // no Abstract prefix
-class UserManager {}           // Manager is vague — use Service or Repository
-class UserHelper {}            // Helper is vague — name by what it does
+class UserManager {}           // Manager is vague
+class UserHelper {}            // Helper is vague
 ```
 
 ## File Naming Examples
@@ -732,19 +625,10 @@ payment-error.ts         → exports PaymentError
 src/user-service.ts      → tests/user-service.test.ts
 src/auth/token.ts        → tests/auth/token.test.ts
 
-# Config files
-jest.config.ts
-tsconfig.json
-.eslintrc.js
-
-# Generated files (acceptable exceptions to kebab-case)
-openapi.generated.ts
-schema.generated.graphql
-
 # Bad — don't use these
-utils.ts                 → too generic, extract to domain module
+utils.ts                 → too generic
 helpers.ts               → same
-index.ts with logic      → barrel exports only in index.ts
+index.ts with logic      → barrel exports only
 ```
 
 ## Package/Module Naming
@@ -755,25 +639,19 @@ user-validation.ts       (not utils.ts)
 date-formatter.ts        (not helpers.ts)
 order-errors.ts          (not errors.ts)
 auth-middleware.ts       (not middleware.ts)
-
-# Ask yourself before creating utils.ts:
-# "Which domain module uses this function most?"
-# Put it there instead.
 ```
 
-## Constants: When SCREAMING_SNAKE vs camelCase
+## Constants: SCREAMING_SNAKE vs camelCase
 
 ```typescript
 // SCREAMING_SNAKE_CASE: compile-time, never reassigned, module-level
 const MAX_RETRY_COUNT = 3
 const DEFAULT_PAGE_SIZE = 20
 const SESSION_EXPIRY_SECONDS = 3600
-const HTTP_STATUS_OK = 200
 
 // camelCase: runtime-determined (env vars, config loaded at startup)
 const databaseUrl = process.env.DATABASE_URL
 const jwtSecret = config.get('jwt.secret')
-const redisPort = parseInt(process.env.REDIS_PORT ?? '6379', 10)
 ```
 ```
 
@@ -785,13 +663,13 @@ Read the current file, then append at the end:
 
 ## Extended Examples
 
-For before/after naming comparisons, file naming patterns across contexts, class/interface examples, and constants reference, see [examples.md](examples.md).
+For before/after naming comparisons, file naming patterns, class/interface examples, and constants reference, see [examples.md](examples.md).
 ```
 
 - [ ] **Step 3: Verify**
 
 Check:
-- `examples.md` contains: variable before/after table (5 rows), function before/after table (5 rows), class/interface examples (good + bad), file naming block (source/test/config/bad), package naming block, constants comparison block
+- `examples.md` contains: variable before/after table (5 rows), function before/after table (5 rows), class/interface examples, file naming block, package naming block, constants comparison block
 - `SKILL.md` ends with a link to `examples.md`
 
 - [ ] **Step 4: Commit**
@@ -963,7 +841,7 @@ try {
 
 ## Recovery Strategies
 
-Recovery is only valid for expected failures where the recovery path is defined by the business domain. Do not implement speculative recovery.
+Recovery is only valid for expected failures where the recovery path is defined by the business domain.
 
 | Category | Valid recovery | Notes |
 |----------|--------------|-------|
@@ -985,7 +863,7 @@ Internal helper functions are **not** boundaries. They throw — they do not cat
 
 ## Extended Examples
 
-For annotated multi-layer re-throw chains, retry/circuit-breaker patterns, correlation ID flow examples, and before/after comparisons, see [examples.md](examples.md).
+For annotated multi-layer re-throw chains, retry/circuit-breaker patterns, correlation ID flow, and before/after comparisons, see [examples.md](examples.md).
 ```
 
 - [ ] **Step 3: Create `skills/exception-and-logging-principles/examples.md`**
@@ -1018,7 +896,7 @@ app.post('/orders', async (req, res) => {
 class OrderService {
   async create(data: CreateOrderDto, ctx: RequestContext): Promise<Order> {
     const validated = validateOrder(data)  // throws ValidationError if invalid
-    return this.repo.save(validated, ctx)  // passes ctx through
+    return this.repo.save(validated, ctx)
   }
 }
 
@@ -1127,7 +1005,7 @@ catch (err: PaymentProcessingError) {
 - [ ] **Step 4: Verify**
 
 Check `SKILL.md` contains:
-- [ ] Failure classification table (3 categories: Expected, Unexpected, External)
+- [ ] Failure classification table (3 categories)
 - [ ] 4 catch rules
 - [ ] Log levels table (ERROR/WARN/INFO/DEBUG)
 - [ ] Structured log format JSON with required fields
@@ -1140,9 +1018,9 @@ Check `SKILL.md` contains:
 - [ ] Link to `examples.md`
 
 Check `examples.md` contains:
-- [ ] Full request lifecycle correlation ID example (3 layers)
+- [ ] Full request lifecycle (3 layers)
 - [ ] Silent swallow before/after
-- [ ] Retry with backoff pattern
+- [ ] Retry with backoff
 - [ ] Multi-layer re-throw chain
 
 - [ ] **Step 5: Commit**
@@ -1164,13 +1042,13 @@ git commit -m "feat: replace exception-principles with exception-and-logging-pri
 ```markdown
 ---
 name: core-principles
-description: Three foundational principles that govern all hw0k-workflow standards — environment independence, human gate for irreversible operations, and static verification over subjective assessment
+description: Four foundational principles governing all hw0k-workflow standards — environment independence, human gate for irreversible operations, static verification, and don't reinvent the wheel
 type: reference
 ---
 
 # Core Principles
 
-These three principles are pre-conditions for all other standards in this plugin. Any skill-specific rule that conflicts with a core principle is overridden by the core principle. Check these before acting, not after.
+These four principles are pre-conditions for all other standards in this plugin. Any skill-specific rule that conflicts with a core principle is overridden by the core principle. Check these before acting, not after.
 
 ---
 
@@ -1198,7 +1076,7 @@ These three principles are pre-conditions for all other standards in this plugin
 
 ## Principle 2 — Human Gate for Irreversible Operations
 
-**Rule:** Before executing any operation that cannot be fully undone, present the proposed action and receive explicit human approval. A single confirmation is the minimum. Proceed only on unambiguous, explicit consent — not on inferred or prior approval.
+**Rule:** Before executing any operation that cannot be fully undone, present the proposed action and receive explicit human approval. A single confirmation is the minimum. Proceed only on unambiguous, explicit consent — not inferred or prior approval.
 
 **Rationale:** Irreversible operations have asymmetric cost. The cost of an unnecessary confirmation is low. The cost of an unconfirmed mistake can be unbounded.
 
@@ -1210,16 +1088,14 @@ These three principles are pre-conditions for all other standards in this plugin
 - Dropping or truncating a database table or collection
 
 **Compliant:**
-- Showing the exact command to be run, explaining its effect, and waiting for an explicit "yes" or equivalent
+- Showing the exact command to be run, explaining its effect, and waiting for an explicit "yes"
 - Listing all files to be deleted before deleting any of them
-- For deploys: showing what will be deployed, to which environment, before proceeding
 
 **Non-compliant:**
 - Proceeding with a force-push because the user said "fix the branch" without specifying the method
-- Treating a previous approval (from an earlier turn or session) as approval for a new operation of the same type
-- Asking "should I proceed?" without describing what "proceed" entails
+- Treating a previous approval (from an earlier turn) as approval for a new operation of the same type
 
-**`principles-reviewer` trigger:** Any command that appears in the irreversible list, or any command whose effect on persistent external state cannot be rolled back within the current session.
+**`principles-reviewer` trigger:** Any command in the irreversible list, or any command whose effect on persistent external state cannot be rolled back within the current session.
 
 ---
 
@@ -1232,7 +1108,6 @@ These three principles are pre-conditions for all other standards in this plugin
 **Compliant:**
 - "TypeScript compiler reports zero errors on this file after the change."
 - "ESLint passes with the project ruleset: `npm run lint` exits 0."
-- "The JSON schema validator accepts this config against `schema.json`."
 - "All 47 tests pass: `npm test` exits 0."
 
 **Non-compliant:**
@@ -1241,18 +1116,41 @@ These three principles are pre-conditions for all other standards in this plugin
 - "I reviewed it and it looks fine."
 - "This is a simple change, no testing needed."
 
-When a static tool is not available for the domain in question, state this explicitly rather than substituting subjective assessment: "No static validator is available for this config format. Manual review required."
+When a static tool is not available for the domain, state this explicitly: "No static validator is available for this config format. Manual review required."
 
-**`principles-reviewer` trigger:** Any verification or correctness claim about code, configuration, or behavior that does not cite a tool output.
+**`principles-reviewer` trigger:** Any verification or correctness claim that does not cite a tool output.
+
+---
+
+## Principle 4 — Don't Reinvent the Wheel
+
+**Rule:** Before implementing a custom solution, verify that a well-maintained tool does not already solve the problem. Prefer established tools when they are actively maintained, widely adopted, and require no significant adaptation.
+
+**Rationale:** Custom implementations duplicate battle-tested work, require ongoing maintenance, and introduce bugs the ecosystem has already fixed.
+
+**Compliant:**
+- Using commitlint instead of a custom regex-based commit message validator
+- Using lefthook instead of a custom hook management script
+- Using an established date library instead of re-implementing date arithmetic
+
+**Non-compliant:**
+- Writing a shell script to validate commit messages when commitlint exists and covers the same rules
+- Re-implementing UUID generation, pagination utilities, or other solved problems
+- Building a custom CI step when a maintained GitHub Action already exists for the task
+
+**Exception:** the existing tool requires significant adaptation overhead that exceeds the benefit, has a problematic license or security record, or cannot work in the target environment. Document the exception and its reason.
+
+**`principles-reviewer` trigger:** Any new utility, script, or implementation that overlaps with a known, well-maintained open-source solution.
 ```
 
 - [ ] **Step 2: Verify**
 
 Check `SKILL.md` contains:
-- [ ] Opening paragraph stating these are pre-conditions for all other standards
-- [ ] Principle 1: Rule + Rationale + Compliant list + Non-compliant list + trigger
-- [ ] Principle 2: Rule + Rationale + irreversible operations list + Compliant + Non-compliant + trigger
-- [ ] Principle 3: Rule + Rationale + Compliant examples (cite tool output) + Non-compliant examples + trigger + "no tool available" fallback statement
+- [ ] Opening paragraph (4 principles are pre-conditions)
+- [ ] Principle 1: Rule + Rationale + Compliant (4 items) + Non-compliant (4 items) + trigger
+- [ ] Principle 2: Rule + Rationale + irreversible list (5 items) + Compliant + Non-compliant + trigger
+- [ ] Principle 3: Rule + Rationale + Compliant (3 items, cite tool output) + Non-compliant (4 items) + "no tool available" statement + trigger
+- [ ] Principle 4: Rule + Rationale + Compliant (3 items) + Non-compliant (3 items) + Exception clause + trigger
 
 - [ ] **Step 3: Commit**
 
@@ -1270,16 +1168,11 @@ git commit -m "feat: add core-principles skill"
 
 - [ ] **Step 1: Read the current file**
 
-Read `skills/sync-working-status/SKILL.md` to understand current structure before modifying.
+Read `skills/sync-working-status/SKILL.md` to understand the current structure.
 
 - [ ] **Step 2: Replace the `## When to Run` and `## Steps` sections**
 
-The current skill covers only local git + GitHub. Update it to cover 3 sync targets:
-1. Local git state
-2. Specs/Plans (`docs/`)
-3. Remote issue state (GitHub)
-
-Replace the existing Steps section with:
+Replace the existing content from `## When to Run` through the end of the steps with:
 
 ```markdown
 ## When to Run
@@ -1310,7 +1203,7 @@ Check `docs/specs/` and `docs/plans/` for files related to current work:
 
 - Do plan file checkboxes reflect actual progress? (Mark completed tasks as `- [x]`)
 - Does the spec still describe what is being built, or has scope changed?
-- Is there a plan file for the current work? If not, create one or note the gap.
+- Is there a plan file for current work? If not, note the gap.
 
 Specs and plans are the single source of truth for task progress. Update them before syncing remotely.
 
@@ -1336,14 +1229,14 @@ If no PR exists and the branch has commits, note whether one should be created.
 | No PR | Feature complete | Create PR with accurate description |
 | PR description outdated | Describes planned work, not actual | Update PR description |
 | Plan checkboxes stale | Tasks completed but not marked | Update plan file checkboxes |
-| Spec scope has changed | Spec describes original intent | Update spec to reflect what was actually built |
+| Spec scope has changed | Spec describes original intent | Update spec to reflect what was built |
 
 ### 5. Confirm Sync Complete
 
 Before declaring sync done, verify:
 - [ ] All intended commits are pushed to remote
 - [ ] Plan file checkboxes reflect actual progress
-- [ ] Spec describes what was actually built (not just the original plan)
+- [ ] Spec describes what was actually built
 - [ ] PR status matches actual readiness
 - [ ] No unresolved review threads from addressed feedback
 - [ ] Linked issue status matches work state
@@ -1352,12 +1245,12 @@ Before declaring sync done, verify:
 
 - [ ] **Step 3: Verify**
 
-Check `SKILL.md` contains:
-- [ ] 5 when-to-run triggers (including "after any Claude session")
+Check updated `SKILL.md` contains:
+- [ ] 5 when-to-run triggers
 - [ ] Step 1: local git (3 commands)
-- [ ] Step 2: Specs/Plans assessment (check docs/ for plan/spec accuracy)
+- [ ] Step 2: Specs/Plans assessment (check docs/)
 - [ ] Step 3: remote state (PR status, CI, threads, linked issue)
-- [ ] Step 4: discrepancy table (at least 8 rows including plan/spec rows)
+- [ ] Step 4: discrepancy table (8 rows including plan/spec rows)
 - [ ] Step 5: confirmation checklist (7 items)
 
 - [ ] **Step 4: Commit**
@@ -1372,13 +1265,13 @@ git commit -m "feat: expand sync-working-status to cover specs/plans as sync tar
 ### Task 8: principles-reviewer Agent Update
 
 **Files:**
-- Modify: `agents/principles-reviewer.md` — add core-principles scope, update exception reference, add process violation format
+- Modify: `agents/principles-reviewer.md`
 
 - [ ] **Step 1: Read the current file**
 
-Read `agents/principles-reviewer.md` to understand current structure.
+Read `agents/principles-reviewer.md`.
 
-- [ ] **Step 2: Replace the file with the updated version**
+- [ ] **Step 2: Replace the entire file**
 
 ```markdown
 ---
@@ -1395,12 +1288,12 @@ You are a code reviewer checking compliance with hw0k-workflow standards. Your j
 
 Review against all four principle areas, in this order:
 
-1. **Core principles** (`hw0k-workflow:core-principles`) — environment independence, irreversible operation gates, static verification
+1. **Core principles** (`hw0k-workflow:core-principles`) — environment independence, irreversible operation gates, static verification, don't reinvent the wheel
 2. **HTTP API design** (`hw0k-workflow:http-api-principles`) — resource naming, HTTP methods, status codes, error response format, versioning, pagination
 3. **Exception and logging** (`hw0k-workflow:exception-and-logging-principles`) — catch boundaries, logging requirements, error categorization, re-throw pattern, recovery strategies
 4. **Naming conventions** (`hw0k-workflow:general-naming-principles`) — variables, functions, classes, constants, files, packages
 
-Core principles lead because process-level violations can invalidate how the other three areas are even applied.
+Core principles lead because process-level violations can invalidate how the other three areas are applied.
 
 ## Before You Start
 
@@ -1431,10 +1324,10 @@ Structure your output with one section per principle area:
 
 ### Violations
 [core.environment-independence] — script references ~/.nvm/versions/node/v20/bin/node → use env-relative path or declare Node version in .nvmrc
-[core.static-verification] — PR description states "this should work" without citing test output → add test run output to PR description
+[core.static-verification] — PR description states "this should work" without citing test output → add test run output
 
 ### Passed
-- No irreversible operations in the proposed changes
+- No irreversible operations in proposed changes
 
 ---
 
@@ -1445,7 +1338,7 @@ Structure your output with one section per principle area:
 - `handlers/orders.ts:102` [status code] — returns 200 for validation failure → use 400
 
 ### Passed
-- Resource naming uses plural nouns consistently (`/users`, `/orders`)
+- Resource naming uses plural nouns consistently
 
 ---
 
@@ -1453,7 +1346,6 @@ Structure your output with one section per principle area:
 
 ### Violations
 - `services/auth.ts:67` [swallowed exception] — catch block is empty → must log, re-throw, or recover
-- `services/payment.ts:134` [log level] — validation error logged at ERROR → use no log or WARN only
 
 ### Passed
 - Re-throw pattern uses `{ cause: err }` correctly in database layer
@@ -1474,8 +1366,8 @@ Each **code violation** must include:
 - **What it should be**: the correction (brief)
 
 Each **process violation** must include:
-- **Rule in brackets**: `[core.environment-independence]`, `[core.irreversible-gate]`, `[core.static-verification]`
-- **Observation**: what pattern was observed (no file:line needed — these are behavioral patterns)
+- **Rule in brackets**: `[core.environment-independence]`, `[core.irreversible-gate]`, `[core.static-verification]`, `[core.no-reinvention]`
+- **Observation**: what pattern was observed
 - **Expected behavior**: what compliant behavior looks like
 
 ## Instructions
@@ -1494,11 +1386,12 @@ Each **process violation** must include:
 
 Check `agents/principles-reviewer.md` contains:
 - [ ] Description updated to "four hw0k-workflow principle skills"
-- [ ] 4 scope items, core-principles at position 1
+- [ ] 4 scope items, core-principles at position 1, includes "don't reinvent the wheel"
 - [ ] `exception-and-logging-principles` (not `exception-principles`)
-- [ ] Two violation format types documented (process vs code)
-- [ ] Example output shows all 4 sections with realistic violations
-- [ ] 8 instructions (added instruction 8 for overlapping violations)
+- [ ] Two violation format types (process vs code)
+- [ ] Example output shows all 4 sections
+- [ ] `[core.no-reinvention]` in the process violation rule list
+- [ ] 8 instructions
 
 - [ ] **Step 4: Commit**
 
@@ -1515,20 +1408,18 @@ git commit -m "feat: update principles-reviewer to include core-principles scope
 
 | Spec requirement | Task |
 |-----------------|------|
-| Pressure test framework + 5 scenarios | Task 1 |
+| Pressure test framework + 3 scenarios (English-specific rules removed) | Task 1 |
 | `conventional-commit` reference.md split | Task 2 |
 | `http-api-principles` examples.md split | Task 3 |
 | `general-naming-principles` examples.md split | Task 4 |
 | `exception-principles` deleted, `exception-and-logging-principles` created | Task 5 |
-| `core-principles` skill | Task 6 |
-| `sync-working-status` expanded to 3 sync targets (local git / Specs&Plans / remote) | Task 7 |
-| `principles-reviewer` updated: 4 areas, two violation formats | Task 8 |
-
-All spec content requirements covered. Infrastructure layer (lefthook, new-project-setup) is in a separate plan.
+| `core-principles` skill — 4 principles including Don't Reinvent the Wheel | Task 6 |
+| `sync-working-status` expanded to 3 sync targets | Task 7 |
+| `principles-reviewer` updated: 4 areas, two violation formats, no-reinvention trigger | Task 8 |
 
 ### Placeholder Scan
 
-No TBDs, TODOs, "implement later", "similar to Task N", or "add appropriate error handling" present. All file contents are complete.
+No TBDs, TODOs, "implement later", or "similar to Task N" present. All file contents are complete.
 
 ### Type Consistency
 
