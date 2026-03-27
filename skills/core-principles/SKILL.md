@@ -1,12 +1,12 @@
 ---
 name: core-principles
-description: Four foundational principles governing all hw0k-workflow standards — environment independence, human gate for irreversible operations, static verification, and don't reinvent the wheel
+description: Five foundational principles governing all hw0k-workflow standards — environment independence, human gate for irreversible operations, static verification, don't reinvent the wheel, and prefer official methods
 type: reference
 ---
 
 # Core Principles
 
-These four principles are pre-conditions for all other standards in this plugin. Any skill-specific rule that conflicts with a core principle is overridden by the core principle. Check these before acting, not after.
+These five principles are pre-conditions for all other standards in this plugin. Any skill-specific rule that conflicts with a core principle is overridden by the core principle. Check these before acting, not after.
 
 ---
 
@@ -44,6 +44,8 @@ These four principles are pre-conditions for all other standards in this plugin.
 - Any write to a remote system: deploy, publish, database mutation
 - Sending an external notification: email, webhook, Slack message
 - Dropping or truncating a database table or collection
+- **AWS resources:** EC2 instance termination/deletion, S3 bucket or object deletion, RDS instance deletion, IAM policy modification, VPC or Security Group modification
+- **Linux machine operations:** `rm -rf`, `dd`, partition formatting, stopping a running systemd service, deleting crontab entries, overwriting files in `/etc`
 
 **Compliant:**
 - Showing the exact command to be run, explaining its effect, and waiting for an explicit "yes"
@@ -99,3 +101,24 @@ When a static tool is not available for the domain, state this explicitly: "No s
 **Exception:** the existing tool requires significant adaptation overhead that exceeds the benefit, has a problematic license or security record, or cannot work in the target environment. Document the exception and its reason.
 
 **`principles-reviewer` trigger:** Any new utility, script, or implementation that overlaps with a known, well-maintained open-source solution.
+
+---
+
+## Principle 5 — Prefer Official Methods
+
+**Rule:** When an official document, official API, or official convention exists for a domain, follow it. When no official source exists, follow the de facto industry standard. Apply custom interpretations or methods only where official or standard coverage does not exist.
+
+**Rationale:** Official specifications and standards encode consensus from domain experts. Deviating from them introduces maintenance overhead, integration friction, and unverifiable correctness.
+
+**Compliant:**
+- Using MDN-documented Web API patterns
+- Using the AWS official SDK for resource management
+- Following RFC specifications for HTTP header handling
+- Using a well-audited JWT library rather than writing a custom parser
+
+**Non-compliant:**
+- Redefining HTTP status codes beyond their specified semantics
+- Implementing a custom JWT parser when a well-audited library exists and covers the requirement
+- Creating AWS resources via raw API calls instead of the official CLI or SDK when the SDK is available
+
+**`principles-reviewer` trigger:** Any custom implementation in a domain where an official specification, SDK, or standard library exists and covers the requirement.
