@@ -1,6 +1,8 @@
 # hw0k-workflow Enhancement — Content Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use hw0k-workflow:implement (recommended) or hw0k-workflow:implement to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Historical document.** This plan reflects the initial implementation state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
+
+> **For agentic workers:** Use `hw0k-workflow:implement` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Implement the content layer of the hw0k-workflow enhancement — pressure tests, skill refactoring, new skills, and agent updates — as defined in `docs/specs/2026-03-27-hw0k-workflow-enhancement-design.md`.
 
@@ -1276,7 +1278,7 @@ Read `agents/principles-reviewer.md`.
 ```markdown
 ---
 name: principles-reviewer
-description: Reviews code and process against all four hw0k-workflow principle skills — core principles, HTTP API design, exception and logging, and naming conventions. Enforces opinionated standards across all principle areas.
+description: Reviews code and process against all four hw0k-workflow principle skills — core principles, HTTP API design, exception and logging, and naming conventions.
 type: agent
 ---
 

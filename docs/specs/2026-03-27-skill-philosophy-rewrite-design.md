@@ -1,5 +1,7 @@
 # Skill Philosophy Rewrite Design
 
+> **Historical document.** This spec reflects the design state at the time of writing. `new-project-setup` has since been renamed to `setup-new-project`.
+
 **Date:** 2026-03-27
 **Scope:** Rewrite 4 existing skills to reflect hw0k's philosophy. 3 skills remain unchanged (exception-and-logging-principles, new-project-setup, sync-working-status).
 

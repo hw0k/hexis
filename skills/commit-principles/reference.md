@@ -1,6 +1,6 @@
-# conventional-commit — Reference
+# commit-principles — Reference
 
-Extended edge cases and examples for the `conventional-commit` skill.
+Extended edge cases and examples for the `commit-principles` skill.
 
 ## Author Language
 

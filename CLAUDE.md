@@ -1,6 +1,6 @@
 # hw0k-workflow
 
-Heavily opinionated Claude Code plugin covering the full development workflow. Enforces consistent development standards regardless of device, agent, or tool.
+Heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge. Enforces consistent development standards regardless of device, agent, or tool.
 
 ## Plugin Structure
 

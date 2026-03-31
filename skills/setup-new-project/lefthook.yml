@@ -6,13 +6,13 @@
 # Project-specific sections are marked # project-specific — customize these
 
 # hw0k-workflow: validates commit message format (Conventional Commits 1.0.0)
-# Requires: .commitlintrc.yml in project root (see new-project-setup SKILL.md Step 2)
-commit_msg:
+# Requires: .commitlintrc.yml in project root (see setup-new-project SKILL.md Step 2)
+commit-msg:
   commands:
     validate-conventional-commit:  # hw0k-workflow
       run: bunx commitlint --edit {1}
 
-pre_commit:
+pre-commit:
   parallel: true
   commands:
     lint:  # hw0k-workflow — detects your toolchain automatically

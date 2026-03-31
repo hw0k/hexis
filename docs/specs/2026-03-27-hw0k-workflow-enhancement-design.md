@@ -1,5 +1,7 @@
 # hw0k-workflow Enhancement Design
 
+> **Historical document.** This spec reflects the initial design state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
+
 **Date:** 2026-03-27
 **Status:** Approved
 
@@ -49,7 +51,7 @@ After this, **every git commit on any tool** passes through lefthook hooks.
 
 ### 3. Pre-Work — Status Sync
 
-`/hw0k-workflow:sync` (manual) or `Stop` hook (auto). Three sync targets are reconciled before work begins:
+`/hw0k-workflow:sync-working-status` (manual) or `Stop` hook (auto). Three sync targets are reconciled before work begins:
 
 1. **Local git state** — uncommitted changes, branch tracking, ahead/behind remote
 2. **Specs/Plans** — plan checkboxes and spec files in `docs/` are the single source of truth for task progress; sync ensures they reflect actual state, not stale intent
@@ -70,7 +72,7 @@ Tool-agnostic: VS Code, JetBrains, terminal, any agent.
 
 ### 6. Post-Work — Status Sync
 
-`/hw0k-workflow:sync` (manual) or auto via `Stop` hook. Same four targets as pre-work sync:
+`/hw0k-workflow:sync-working-status` (manual) or auto via `Stop` hook. Same four targets as pre-work sync:
 local git → Specs/Plans → remote issue state.
 
 ---
@@ -530,7 +532,7 @@ Add to `.claude/settings.json` (team-wide) or `.claude/settings.local.json` (per
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "/hw0k-workflow:sync" }
+      { "type": "command", "command": "/hw0k-workflow:sync-working-status" }
     ]
   }
 }
@@ -583,7 +585,7 @@ Commit this file to the project repo. `run-if-exists.sh` will detect and use it 
 
 **Disable** (comment out, do not delete):
 ```json
-{ "type": "command", "command": "# /hw0k-workflow:sync" }
+{ "type": "command", "command": "# /hw0k-workflow:sync-working-status" }
 ```
 Keeping the commented entry makes re-enabling straightforward.
 

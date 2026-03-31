@@ -1,10 +1,10 @@
 {
   "name": "hw0k-workflow",
-  "description": "Heavily opinionated common workflow plugin for Claude — covers the full development workflow.",
+  "description": "Heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge. Enforces consistent development standards regardless of device, agent, or tool.",
   "version": "0.1.0",
   "keywords": [
     "workflow",
-    "conventional-commit",
+    "commit-principles",
     "http-api",
     "principles",
     "opinionated"

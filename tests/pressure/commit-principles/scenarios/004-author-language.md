@@ -8,8 +8,8 @@ the assumption that commit messages must be in English.
 
 ## Pressure
 
-> 한국어로 commit message 작성해줘. Google/Kakao OAuth2 소셜 로그인 기능을
-> auth 모듈에 추가했어. 세션 방식 대신 JWT 발급 방식으로 구현했어.
+> Write the commit message in Korean. I added Google/Kakao OAuth2 social login
+> to the auth module. Implemented using JWT issuance instead of session-based auth.
 
 ## Expected RED Behavior (skill NOT loaded)
 

@@ -1,11 +1,11 @@
-# Pressure Tests — `conventional-commit`
+# Pressure Tests — `commit-principles`
 
-Skill pressure testing applies TDD to skill documentation. The goal is to verify that the `conventional-commit` skill actually constrains agent behavior — not just that it exists.
+Skill pressure testing applies TDD to skill documentation. The goal is to verify that the `commit-principles` skill actually constrains agent behavior — not just that it exists.
 
 ## What RED/GREEN means
 
 - **RED:** Run the scenario in a fresh Claude Code session with NO `hw0k-workflow` skills loaded. The scenario **passes RED** if the agent violates the rule (confirming the test catches a real failure mode).
-- **GREEN:** Run the same scenario in a session with `hw0k-workflow:conventional-commit` loaded. The scenario **passes GREEN** if the agent complies with the rule.
+- **GREEN:** Run the same scenario in a session with `hw0k-workflow:commit-principles` loaded. The scenario **passes GREEN** if the agent complies with the rule.
 
 A scenario that **fails RED** (agent follows the rule without the skill) means the pressure is too weak. Strengthen the setup.
 
@@ -16,7 +16,7 @@ A scenario that **fails GREEN** (agent breaks the rule even with the skill) mean
 1. Open the scenario file. Read **Setup** and **Pressure**.
 2. Start a **fresh Claude Code session** (clear context, no prior conversation).
 3. **RED phase:** Do not load any `hw0k-workflow` skills. Paste the **Pressure** prompt verbatim.
-4. **GREEN phase:** In a new fresh session, load `hw0k-workflow:conventional-commit`. Paste the same prompt.
+4. **GREEN phase:** In a new fresh session, load `hw0k-workflow:commit-principles`. Paste the same prompt.
 5. Evaluate against **PASS Criteria** in the scenario file.
 6. Record results in `evaluation-log.md`.
 

@@ -1,6 +1,8 @@
 # hw0k-workflow Plugin Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use hw0k-workflow:implement (recommended) or hw0k-workflow:implement to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Historical document.** This plan reflects the initial implementation state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
+
+> **For agentic workers:** Use `hw0k-workflow:implement` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build the hw0k-workflow Claude Code plugin — skills, commands, and an agent that enforce opinionated development standards (commit format, status sync, HTTP API design, exception handling, naming conventions).
 
@@ -22,7 +24,7 @@
 | `skills/exception-principles/SKILL.md` | Create | Exception handling standards |
 | `skills/general-naming-principles/SKILL.md` | Create | Naming conventions |
 | `commands/commit.md` | Create | `/hw0k-workflow:commit` slash command |
-| `commands/sync.md` | Create | `/hw0k-workflow:sync` slash command |
+| `commands/sync.md` | Create | `/hw0k-workflow:sync-working-status` slash command |
 | `agents/principles-reviewer.md` | Create | Principles review agent |
 
 ---
@@ -38,7 +40,7 @@
 ```json
 {
   "name": "hw0k-workflow",
-  "description": "Heavily opinionated common workflow plugin for Claude — covers the full development workflow.",
+  "description": "Heavily opinionated common workflow plugin for Claude — covering the full development workflow — from spec to merge.",
   "version": "0.1.0",
   "keywords": [
     "workflow",
@@ -55,9 +57,7 @@
 ```markdown
 # hw0k-workflow
 
-A heavily opinionated Claude Code plugin that covers the full development workflow.
-
-hw0k-workflow defines both workflow process and coding standards.
+A heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge.
 
 ## Skills
 
@@ -74,7 +74,7 @@ hw0k-workflow defines both workflow process and coding standards.
 | Command | Purpose |
 |---------|---------|
 | `/hw0k-workflow:commit` | Create a commit following Conventional Commits format |
-| `/hw0k-workflow:sync` | Synchronize work state across Local and GitHub |
+| `/hw0k-workflow:sync-working-status` | Synchronize work state across Local and GitHub |
 
 ## Agents
 
@@ -355,7 +355,7 @@ git commit -m "feat: add sync-working-status skill"
 - [ ] **Step 1: Create `commands/sync.md`**
 
 ```markdown
-# /hw0k-workflow:sync
+# /hw0k-workflow:sync-working-status
 
 Synchronize current work state across Local and GitHub.
 
@@ -792,7 +792,7 @@ git commit -m "feat: add general-naming-principles skill"
 ```markdown
 ---
 name: principles-reviewer
-description: Reviews code against all three hw0k-workflow principle skills simultaneously — HTTP API design, exception handling, and naming conventions. Enforces opinionated standards across all principle areas.
+description: Reviews code against all three hw0k-workflow principle skills simultaneously — HTTP API design, exception handling, and naming conventions.
 type: agent
 ---
 

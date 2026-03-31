@@ -1,6 +1,8 @@
 # Skill Philosophy Rewrite Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use hw0k-workflow:implement (recommended) or hw0k-workflow:implement to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Historical document.** This plan reflects the initial implementation state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
+
+> **For agentic workers:** Use `hw0k-workflow:implement` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Rewrite 4 existing hw0k-workflow skills to reflect the author's philosophy — language-official conventions as default, Korean-friendly commits, Richardson Level 2 APIs, and Prefer Official Methods as a core principle.
 
@@ -108,7 +110,7 @@ cat skills/core-principles/SKILL.md
 
 ```bash
 git add skills/core-principles/SKILL.md
-git commit -m "feat(core-principles): AWS/Linux 비가역 작업 추가 및 Principle 5 신설"
+git commit -m "feat(core-principles): add AWS/Linux irreversible operations and Principle 5"
 ```
 
 ---
@@ -435,7 +437,7 @@ cat skills/general-naming-principles/examples.md
 
 ```bash
 git add skills/general-naming-principles/SKILL.md skills/general-naming-principles/examples.md
-git commit -m "feat(general-naming): 언어 공식 컨벤션 우선, 일관성/예약어 규칙 추가"
+git commit -m "feat(general-naming): language-official conventions first, add consistency and reserved-word rules"
 ```
 
 ---
@@ -833,7 +835,7 @@ Check every item in Step 2.
 
 ```bash
 git add skills/http-api-principles/SKILL.md skills/http-api-principles/examples.md
-git commit -m "feat(http-api): Richardson L2 포지셔닝, URL 시그니처, RFC 9457, 리소스 중심 설계 반영"
+git commit -m "feat(http-api): Richardson L2 positioning, URL signature, RFC 9457, resource-centric design"
 ```
 
 ---
@@ -1029,5 +1031,5 @@ Check every item in Step 2.
 
 ```bash
 git add skills/conventional-commit/SKILL.md skills/conventional-commit/reference.md
-git commit -m "feat(conventional-commit): 작성자 언어 허용 및 issue prefix 규칙 추가"
+git commit -m "feat(conventional-commit): allow author language and add issue prefix rule"
 ```

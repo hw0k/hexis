@@ -129,7 +129,7 @@ echo "feat: Add initial setup." | bunx commitlint
 
 ### Step 7 — (Optional) Configure Claude Code auto-sync
 
-Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude session.
+Add the `Stop` hook to run `/hw0k-workflow:sync-working-status` automatically after each Claude session.
 
 **Team-wide** (commit to repo):
 ```json
@@ -137,7 +137,7 @@ Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "/hw0k-workflow:sync" }
+      { "type": "command", "command": "/hw0k-workflow:sync-working-status" }
     ]
   }
 }
@@ -149,7 +149,7 @@ Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "/hw0k-workflow:sync" }
+      { "type": "command", "command": "/hw0k-workflow:sync-working-status" }
     ]
   }
 }
@@ -214,7 +214,7 @@ The `Stop` hook runs after **every** Claude response. This is useful for continu
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "# /hw0k-workflow:sync" }
+      { "type": "command", "command": "# /hw0k-workflow:sync-working-status" }
     ]
   }
 }

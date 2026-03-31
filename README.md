@@ -68,6 +68,26 @@ Any task that matches a hw0k-workflow skill MUST use it. Check before responding
 | Branch done | `hw0k-workflow:finish` |
 ```
 
+### Language Setting
+
+Add a language instruction so Claude always responds in your preferred language:
+
+```markdown
+## Language
+
+Respond to the user in **[your language]**. Use English for technical terms, code, file names, and identifiers.
+```
+
+Example for Korean:
+
+```markdown
+## Language
+
+사용자에게 하는 모든 응답은 '한국어' 사용, 전문적인 용어, 코드, 파일 등은 영어 사용.
+```
+
+This works because Claude Code loads `CLAUDE.md` as a system-level instruction. A natural-language directive here applies globally across all sessions that inherit this file. Place it in `~/.claude/CLAUDE.md` to apply to every project, or in a project-level `CLAUDE.md` to scope it to one repo.
+
 For git hooks and commitlint setup, run `hw0k-workflow:setup-new-project`.
 
 ## Design

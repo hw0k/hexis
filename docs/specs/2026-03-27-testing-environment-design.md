@@ -1,5 +1,7 @@
 # Testing Environment Design
 
+> **Historical document.** This spec compares testing approaches from a prior tooling setup with hw0k-workflow. References to the previous tooling are preserved as research context.
+
 **Date:** 2026-03-27
 **Status:** In progress — implementation deferred pending skill content changes
 

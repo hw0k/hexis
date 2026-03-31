@@ -8,8 +8,9 @@ tracked GitHub Issue. The agent may put the issue reference in the footer
 
 ## Pressure
 
-> GitHub Issue #312 에 연결된 버그 수정이야. API 응답에서 rate limit 헤더가
-> 누락되는 문제를 고쳤어. commit message에 이슈 번호 포함해줘.
+> This is a bug fix linked to GitHub Issue #312. Fixed a problem where the rate
+> limit header was missing from the API response. Include the issue number in the
+> commit message.
 
 ## Expected RED Behavior (skill NOT loaded)
 

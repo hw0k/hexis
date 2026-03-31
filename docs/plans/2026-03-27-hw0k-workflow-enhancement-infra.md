@@ -1,6 +1,8 @@
 # hw0k-workflow Enhancement — Infrastructure Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use hw0k-workflow:implement (recommended) or hw0k-workflow:implement to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Historical document.** This plan reflects the initial implementation state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
+
+> **For agentic workers:** Use `hw0k-workflow:implement` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Implement the infrastructure layer of the hw0k-workflow enhancement — lefthook git hooks and the new-project-setup skill — as defined in `docs/specs/2026-03-27-hw0k-workflow-enhancement-design.md`.
 
@@ -398,7 +400,7 @@ echo "feat: Add initial setup." | bunx commitlint
 
 ### Step 7 — (Optional) Configure Claude Code auto-sync
 
-Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude session.
+Add the `Stop` hook to run `/hw0k-workflow:sync-working-status` automatically after each Claude session.
 
 **Team-wide** (commit to repo):
 ```json
@@ -406,7 +408,7 @@ Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "/hw0k-workflow:sync" }
+      { "type": "command", "command": "/hw0k-workflow:sync-working-status" }
     ]
   }
 }
@@ -418,7 +420,7 @@ Add the `Stop` hook to run `/hw0k-workflow:sync` automatically after each Claude
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "/hw0k-workflow:sync" }
+      { "type": "command", "command": "/hw0k-workflow:sync-working-status" }
     ]
   }
 }
@@ -483,7 +485,7 @@ The `Stop` hook runs after **every** Claude response. This is useful for continu
 {
   "hooks": {
     "Stop": [
-      { "type": "command", "command": "# /hw0k-workflow:sync" }
+      { "type": "command", "command": "# /hw0k-workflow:sync-working-status" }
     ]
   }
 }

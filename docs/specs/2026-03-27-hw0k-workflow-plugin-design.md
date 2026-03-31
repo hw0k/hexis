@@ -1,17 +1,19 @@
 # hw0k-workflow Plugin Design
 
+> **Historical document.** This spec reflects the initial design state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
+
 **Date:** 2026-03-27
 **Status:** Approved
 
 ## Summary
 
-`hw0k-workflow` is a heavily opinionated Claude Code plugin that covers the full development workflow. hw0k-workflow defines both workflow process and coding standards.
+`hw0k-workflow` is a heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge. It defines *what standards to apply* (content/principles) across the entire development lifecycle.
 
 ---
 
 ## Problem
 
-The existing workflow covers the full development lifecycle process but does not enforce:
+Without a dedicated plugin, the following are left unenforced:
 - Commit message format at commit time
 - Status synchronization across multiple providers (Local, GitHub, etc.)
 - Opinionated HTTP API design standards
@@ -24,17 +26,17 @@ These gaps cause inconsistency across projects and require repeated manual corre
 
 ## Scope
 
-| Component | existing workflow | hw0k-workflow |
-|-----------|-------------|---------------|
-| Brainstorm → Plan → Implement | ✅ | — |
-| How to integrate work (merge, PR, cleanup) | ✅ `finishing-a-development-branch` | — |
-| **Commit message format enforcement** | ❌ | ✅ |
-| **Multi-provider status sync** | ❌ | ✅ |
-| **HTTP API design principles** | ❌ | ✅ |
-| **Exception handling principles** | ❌ | ✅ |
-| **Naming conventions** | ❌ | ✅ |
-| Code review against plan | ✅ `code-reviewer` agent | — |
-| **Code review against principles** | ❌ | ✅ |
+| Component | hw0k-workflow |
+|-----------|---------------|
+| Brainstorm → Plan → Implement | ✅ |
+| How to integrate work (merge, PR, cleanup) | ✅ |
+| **Commit message format enforcement** | ✅ |
+| **Multi-provider status sync** | ✅ |
+| **HTTP API design principles** | ✅ |
+| **Exception handling principles** | ✅ |
+| **Naming conventions** | ✅ |
+| Code review against plan | ✅ |
+| **Code review against principles** | ✅ |
 
 ---
 
@@ -57,7 +59,7 @@ hw0k-workflow/
 │       └── SKILL.md             # Naming conventions
 ├── commands/
 │   ├── commit.md                # /hw0k-workflow:commit
-│   └── sync.md                  # /hw0k-workflow:sync
+│   └── sync.md                  # /hw0k-workflow:sync-working-status
 ├── agents/
 │   └── principles-reviewer.md  # Consolidates all principle checks
 └── README.md
@@ -88,7 +90,7 @@ Commands are slash commands that the user invokes explicitly at specific points 
 | Command | Invocation | Delegates to |
 |---------|-----------|-------------|
 | `commit.md` | `/hw0k-workflow:commit` | `conventional-commit` skill |
-| `sync.md` | `/hw0k-workflow:sync` | `sync-working-status` skill |
+| `sync.md` | `/hw0k-workflow:sync-working-status` | `sync-working-status` skill |
 
 Workflow skills (`conventional-commit`, `sync-working-status`) are exposed as commands because they are user-initiated actions tied to specific development cycle events, not passive reference guides.
 
@@ -100,7 +102,7 @@ Principle skills (`http-api-principles`, `exception-principles`, `general-naming
 |-------|-----------|---------|
 | `principles-reviewer` | Via `Agent` tool | Consolidates review against all three principles |
 
-The `principles-reviewer` agent reviews code against the three principle skills simultaneously. This is complementary to `hw0k-workflow:review` (plan alignment + general quality) — it provides the specific opinionated standards.
+The `principles-reviewer` agent reviews code against the three principle skills simultaneously, providing the specific opinionated standards.
 
 ---
 
@@ -109,7 +111,7 @@ The `principles-reviewer` agent reviews code against the three principle skills 
 ```json
 {
   "name": "hw0k-workflow",
-  "description": "Heavily opinionated common workflow plugin for Claude — covers the full development workflow.",
+  "description": "Heavily opinionated common workflow plugin for Claude — covering the full development workflow — from spec to merge.",
   "version": "0.1.0",
   "keywords": [
     "workflow",
