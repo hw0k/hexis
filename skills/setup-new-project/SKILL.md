@@ -1,5 +1,5 @@
 ---
-name: new-project-setup
+name: setup-new-project
 description: Guides onboarding of a new project to hw0k-workflow standards — installs lefthook git hooks, sets up commitlint commit message validation, and optionally configures Claude Code auto-sync
 type: workflow
 ---
@@ -40,7 +40,7 @@ commitlint validates commit messages against Conventional Commits 1.0.0. It runs
 
 ```bash
 PLUGIN_DIR=~/.claude/plugins/hw0k-workflow   # adjust to your install path
-cp "$PLUGIN_DIR/skills/new-project-setup/.commitlintrc.yml" ./.commitlintrc.yml
+cp "$PLUGIN_DIR/skills/setup-new-project/.commitlintrc.yml" ./.commitlintrc.yml
 ```
 
 Commit the config:
@@ -68,7 +68,7 @@ This copies:
 ### Step 4 — Copy the lefthook template
 
 ```bash
-cp "$PLUGIN_DIR/skills/new-project-setup/lefthook.yml" ./lefthook.yml
+cp "$PLUGIN_DIR/skills/setup-new-project/lefthook.yml" ./lefthook.yml
 ```
 
 If the project already has a `lefthook.yml`, merge only the sections marked `# hw0k-workflow` — do not overwrite the entire file.

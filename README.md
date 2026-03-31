@@ -33,7 +33,7 @@ A heavily opinionated Claude Code plugin covering the full development workflow 
 
 | Skill | Purpose |
 |-------|---------|
-| `hw0k-workflow:new-project-setup` | Onboard a project — lefthook, commitlint, git hooks |
+| `hw0k-workflow:setup-new-project` | Onboard a project — lefthook, commitlint, git hooks |
 
 ## Agents
 
@@ -68,7 +68,7 @@ Any task that matches a hw0k-workflow skill MUST use it. Check before responding
 | Branch done | `hw0k-workflow:finish` |
 ```
 
-For git hooks and commitlint setup, run `hw0k-workflow:new-project-setup`.
+For git hooks and commitlint setup, run `hw0k-workflow:setup-new-project`.
 
 ## Design
 
