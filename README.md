@@ -1,31 +1,45 @@
 # hw0k-workflow
 
-A heavily opinionated Claude Code plugin that covers the full development workflow.
-
-hw0k-workflow defines both workflow process and coding standards.
+A heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge.
 
 ## Skills
 
-| Skill | Namespace | Purpose |
-|-------|-----------|---------|
-| Conventional Commit | `hw0k-workflow:conventional-commit` | Enforce Conventional Commits 1.0.0 format |
-| Sync Working Status | `hw0k-workflow:sync-working-status` | Sync work state across Local/GitHub |
-| HTTP API Principles | `hw0k-workflow:http-api-principles` | HTTP API design standards |
-| Exception Principles | `hw0k-workflow:exception-principles` | Exception handling standards |
-| General Naming Principles | `hw0k-workflow:general-naming-principles` | Naming conventions |
+### Workflow Skills
 
-## Commands
+| Skill | Purpose |
+|-------|---------|
+| `hw0k-workflow:specify` | Turn blurry inputs into precise, actionable specs |
+| `hw0k-workflow:plan` | Write detailed implementation plans from specs |
+| `hw0k-workflow:implement` | Execute implementation plans (subagent-first) |
+| `hw0k-workflow:use-worktree` | Set up isolated git worktree for feature work |
+| `hw0k-workflow:write-test` | TDD — write failing tests before implementation |
+| `hw0k-workflow:debug` | Systematic root cause investigation before fixing |
+| `hw0k-workflow:verify` | Evidence-based completion verification |
+| `hw0k-workflow:review` | Principles review gate before merge |
+| `hw0k-workflow:receive-review` | Technical evaluation of review feedback |
+| `hw0k-workflow:finish` | Branch completion — commit, PR, or merge |
 
-| Command | Purpose |
-|---------|---------|
-| `/hw0k-workflow:commit` | Create a commit following Conventional Commits format |
-| `/hw0k-workflow:sync` | Synchronize work state across Local and GitHub |
+### Principle Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `hw0k-workflow:core-principles` | Five foundational principles (P1–P5) |
+| `hw0k-workflow:conventional-commit` | Conventional Commits 1.0.0 enforcement |
+| `hw0k-workflow:http-api-principles` | HTTP API design standards |
+| `hw0k-workflow:exception-and-logging-principles` | Exception handling and logging standards |
+| `hw0k-workflow:general-naming-principles` | Naming conventions |
+
+### Setup Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `hw0k-workflow:new-project-setup` | Onboard a project — lefthook, commitlint, git hooks |
 
 ## Agents
 
 | Agent | Purpose |
 |-------|---------|
-| `principles-reviewer` | Review code against all three principle skills simultaneously |
+| `hw0k-workflow:principles-reviewer` | Review code against all five principle skills |
 
 ## Install
 
@@ -33,6 +47,29 @@ hw0k-workflow defines both workflow process and coding standards.
 /plugin install hw0k-workflow --plugin-dir github:hw0k/hw0k-workflow
 ```
 
+## Project CLAUDE.md Setup
+
+For hw0k-workflow skills to activate automatically, add this directive to your project or global `CLAUDE.md`:
+
+```markdown
+## hw0k-workflow
+
+Any task that matches a hw0k-workflow skill MUST use it. Check before responding.
+
+| Situation | Skill |
+|---|---|
+| Requirement or task is vague | `hw0k-workflow:specify` |
+| Need an implementation plan | `hw0k-workflow:plan` |
+| Writing code | `hw0k-workflow:write-test` |
+| Debugging | `hw0k-workflow:debug` |
+| Claiming completion | `hw0k-workflow:verify` |
+| Before merge | `hw0k-workflow:review` |
+| Receiving review feedback | `hw0k-workflow:receive-review` |
+| Branch done | `hw0k-workflow:finish` |
+```
+
+For git hooks and commitlint setup, run `hw0k-workflow:new-project-setup`.
+
 ## Design
 
-Principle skills (`http-api-principles`, `exception-principles`, `general-naming-principles`) are referenced automatically by Claude when developing. Workflow skills (`conventional-commit`, `sync-working-status`) are also exposed as commands because they are user-initiated actions tied to specific development cycle events.
+Skills activate via the Claude Code `Skill` tool. Principle skills are referenced by `principles-reviewer` automatically. Workflow skills are invoked explicitly or triggered by CLAUDE.md directives.
