@@ -24,7 +24,7 @@ A heavily opinionated Claude Code plugin covering the full development workflow 
 | Skill | Purpose |
 |-------|---------|
 | `hw0k-workflow:core-principles` | Five foundational principles (P1–P5) |
-| `hw0k-workflow:conventional-commit` | Conventional Commits 1.0.0 enforcement |
+| `hw0k-workflow:commit-principles` | Conventional Commits 1.0.0 enforcement |
 | `hw0k-workflow:http-api-principles` | HTTP API design standards |
 | `hw0k-workflow:exception-and-logging-principles` | Exception handling and logging standards |
 | `hw0k-workflow:general-naming-principles` | Naming conventions |

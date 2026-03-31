@@ -27,7 +27,7 @@ type: workflow | reference | agent
 ```
 
 Large skills split into a main `SKILL.md` (rules only) and a companion file:
-- `reference.md` — edge cases, exemptions (e.g. `conventional-commit/reference.md`)
+- `reference.md` — edge cases, exemptions (e.g. `commit-principles/reference.md`)
 - `examples.md` — code examples, before/after comparisons (e.g. `http-api-principles/examples.md`)
 
 Flat directory only — nested skill directories are not supported by Claude Code.

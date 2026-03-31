@@ -24,7 +24,7 @@ Run `hw0k-workflow:verify`. Do not proceed to Step 2 if it fails.
 
 ### Step 2: Handle uncommitted changes
 
-If uncommitted changes exist, commit them following `hw0k-workflow:conventional-commit` rules.
+If uncommitted changes exist, commit them following `hw0k-workflow:commit-principles` rules.
 
 ### Step 3: Present options
 
@@ -67,7 +67,7 @@ EOF
 )"
 ```
 
-PR title and body follow `hw0k-workflow:conventional-commit` type rules.
+PR title and body follow `hw0k-workflow:commit-principles` type rules.
 
 #### Option 3: Keep
 

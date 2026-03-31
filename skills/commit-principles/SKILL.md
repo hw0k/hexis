@@ -1,5 +1,5 @@
 ---
-name: conventional-commit
+name: commit-principles
 description: Enforces Conventional Commits 1.0.0 format — type, scope, description rules, issue prefix, author language support, breaking change syntax, and examples
 type: workflow
 ---
