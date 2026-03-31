@@ -53,6 +53,10 @@ When using `claude --worktree`, the generated hook scripts are automatically cop
 
 Run a scenario: open it, start a fresh Claude Code session, paste the Pressure prompt verbatim.
 
+## Documentation Language
+
+All documents in this repository (specs, plans, skill files, comments) must be written in **English**. This includes `docs/specs/`, `docs/plans/`, `skills/`, `agents/`, and `tests/`.
+
 ## Adding a New Skill
 
 1. Create `skills/<name>/SKILL.md` with frontmatter
