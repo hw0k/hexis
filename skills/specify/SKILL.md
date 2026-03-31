@@ -66,13 +66,19 @@ Draft the spec in the plan file (`~/.claude/plans/`). A good spec answers:
 
 Call `ExitPlanMode`. User approves the draft.
 
+> The plan file (`~/.claude/plans/`) is a **temporary approval draft only** — it is NOT the spec artifact. The real output is `docs/specs/YYYY-MM-DD-<topic>-design.md`, written in Step 4.
+
 ### Step 4: Write and Commit
 
-After approval, write to `docs/specs/YYYY-MM-DD-<topic>-design.md`.
+**MANDATORY — do this immediately after approval, before anything else.**
 
-Commit: `docs: add <topic> spec`
+Write to `docs/specs/YYYY-MM-DD-<topic>-design.md`. Commit: `docs: add <topic> spec`
+
+Do NOT proceed to Step 5 until the spec file exists and is committed.
 
 ### Step 5: Hand Off
+
+**HARD-GATE:** Before invoking `hw0k-workflow:plan`, verify the spec file exists. Run `ls docs/specs/` and confirm the file is present and committed. If it is not, return to Step 4.
 
 Invoke `hw0k-workflow:plan`.
 
@@ -82,3 +88,5 @@ Invoke `hw0k-workflow:plan`.
 - ultrathink before writing the spec — never skip
 - If something is still blurry after 3 questions: write both interpretations and ask the user to pick one
 - No plan until the spec is unambiguous
+- If ExitPlanMode is rejected: return to Step 3 and re-draft. Do NOT skip to implementation.
+- If the user requests to skip writing the spec file: use `AskUserQuestion` to confirm. Only proceed without a spec file with explicit user confirmation, and note the skip explicitly.
