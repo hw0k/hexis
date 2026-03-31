@@ -1,6 +1,6 @@
 ---
 name: principles-reviewer
-description: Reviews code and process against all five hw0k-workflow principle skills — core principles, HTTP API design, exception and logging, naming conventions, and official methods compliance. Enforces opinionated standards across all principle areas.
+description: Reviews code and process against all five hw0k-workflow principle skills — core principles, HTTP API design, exception and logging, naming conventions, and official methods compliance.
 type: agent
 ---
 
