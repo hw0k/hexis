@@ -16,6 +16,16 @@ A claim without evidence is a lie.
 
 If `$ARGUMENTS` describes the verification scope, use it. Otherwise infer from current context.
 
+## Complexity Check
+
+Before starting, assess scope complexity against these criteria (any one is sufficient):
+- Verification spans multiple subsystems
+- Success criteria are ambiguous
+- Multiple verification strategies are applicable
+
+**Complex scope** → call `EnterPlanMode`. Define verification commands and expected outputs, get user approval via `ExitPlanMode` before running anything.
+**Simple scope** → proceed directly.
+
 ## The Iron Law
 
 ```
@@ -67,8 +77,9 @@ Before claiming completion:
 3. READ: full output, exit code, failure count
 4. VERIFY: does the output confirm the claim?
    - NO: state actual status with evidence
-   - YES: make the claim with evidence
-5. ONLY THEN: claim
+   - YES: proceed to step 5
+5. SYNC: invoke hw0k-workflow:sync-working-status
+6. ONLY THEN: claim
 ```
 
 ## On Failure
