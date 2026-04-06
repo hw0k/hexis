@@ -16,6 +16,16 @@ Execute an implementation plan. Default: dispatch subagents per task. Inline exe
 
 If `$ARGUMENTS` is a plan file path, load that file. Otherwise use `AskUserQuestion` to ask for the path.
 
+## Complexity Check
+
+Before starting, assess task complexity against these criteria (any one is sufficient):
+- Plan spans multiple files with cross-task dependencies
+- Execution approach is unclear (inline vs. subagent decision is non-obvious)
+- Architectural or structural decisions required
+
+**Complex task** → call `EnterPlanMode`. Review the plan, clarify execution strategy, get user approval via `ExitPlanMode` before writing any code.
+**Simple task** → proceed directly.
+
 ## Process
 
 ### Step 1: Load and Review
@@ -48,7 +58,7 @@ For each task:
 4. TaskUpdate: mark completed
 5. Stop if blocked — report and wait
 
-After all tasks done, invoke `hw0k-workflow:finish`.
+After all tasks done, invoke `hw0k-workflow:sync-working-status`. Then invoke `hw0k-workflow:finish`.
 
 ## When to Stop
 
