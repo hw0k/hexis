@@ -34,7 +34,7 @@ Issue: #10
 - Create: `tests/pressure/dispatch/README.md`
 - Create: `tests/pressure/dispatch/evaluation-log.md`
 
-- [ ] **Step 1: Write failing test — confirm no dispatch test directory exists**
+- [x] **Step 1: Write failing test — confirm no dispatch test directory exists**
 
 ```bash
 ls tests/pressure/dispatch/ 2>/dev/null || echo "FAIL: directory does not exist yet"
@@ -42,7 +42,7 @@ ls tests/pressure/dispatch/ 2>/dev/null || echo "FAIL: directory does not exist 
 
 Expected: `FAIL: directory does not exist yet`
 
-- [ ] **Step 2: Create README.md**
+- [x] **Step 2: Create README.md**
 
 ```markdown
 # Pressure Tests — `hw0k-workflow:dispatch`
@@ -72,7 +72,7 @@ Skill pressure testing applies TDD to skill documentation. Verifies that `dispat
 - Does NOT auto-resume after `sync-working-status` — user must re-invoke dispatch
 ```
 
-- [ ] **Step 3: Create evaluation-log.md**
+- [x] **Step 3: Create evaluation-log.md**
 
 ```markdown
 # Evaluation Log — `hw0k-workflow:dispatch`
@@ -82,7 +82,7 @@ Skill pressure testing applies TDD to skill documentation. Verifies that `dispat
 | — | — | — | — | Not yet evaluated |
 ```
 
-- [ ] **Step 4: Confirm files exist**
+- [x] **Step 4: Confirm files exist**
 
 ```bash
 ls tests/pressure/dispatch/
@@ -90,7 +90,7 @@ ls tests/pressure/dispatch/
 
 Expected: `README.md  evaluation-log.md`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tests/pressure/dispatch/README.md tests/pressure/dispatch/evaluation-log.md
@@ -107,7 +107,7 @@ git commit -m "test: add dispatch pressure test infrastructure"
 - Create: `tests/pressure/dispatch/scenarios/003-dirty-tree-routes-to-sync.md`
 - Create: `tests/pressure/dispatch/scenarios/004-enforcement-header.md`
 
-- [ ] **Step 1: Confirm scenarios directory does not exist yet**
+- [x] **Step 1: Confirm scenarios directory does not exist yet**
 
 ```bash
 ls tests/pressure/dispatch/scenarios/ 2>/dev/null || echo "FAIL: directory does not exist yet"
@@ -115,7 +115,7 @@ ls tests/pressure/dispatch/scenarios/ 2>/dev/null || echo "FAIL: directory does 
 
 Expected: `FAIL: directory does not exist yet`
 
-- [ ] **Step 2: Write scenario 001 — no spec routes to specify**
+- [x] **Step 2: Write scenario 001 — no spec routes to specify**
 
 ```markdown
 # Scenario 001: No Spec — Routes to `specify`
@@ -150,7 +150,7 @@ GREEN PASS if:
 - [ ] Agent invokes `hw0k-workflow:specify` immediately after
 ```
 
-- [ ] **Step 3: Write scenario 002 — spec exists, no plan**
+- [x] **Step 3: Write scenario 002 — spec exists, no plan**
 
 ```markdown
 # Scenario 002: Spec Exists, No Plan — Routes to `plan`
@@ -186,7 +186,7 @@ GREEN PASS if:
 - [ ] Agent invokes `hw0k-workflow:plan` immediately
 ```
 
-- [ ] **Step 4: Write scenario 003 — dirty tree routes to sync**
+- [x] **Step 4: Write scenario 003 — dirty tree routes to sync**
 
 ```markdown
 # Scenario 003: Dirty Working Tree — Routes to `sync-working-status`
@@ -223,7 +223,7 @@ GREEN PASS if:
 - [ ] Agent does NOT auto-continue with other routing after sync
 ```
 
-- [ ] **Step 5: Write scenario 004 — enforcement header**
+- [x] **Step 5: Write scenario 004 — enforcement header**
 
 ```markdown
 # Scenario 004: Enforcement Header Always Appears
@@ -260,7 +260,7 @@ GREEN PASS if:
 - [ ] Both lines appear BEFORE any state detection results
 ```
 
-- [ ] **Step 6: Confirm all 4 scenario files exist**
+- [x] **Step 6: Confirm all 4 scenario files exist**
 
 ```bash
 ls tests/pressure/dispatch/scenarios/
@@ -268,7 +268,7 @@ ls tests/pressure/dispatch/scenarios/
 
 Expected: 4 files — `001-no-spec-routes-to-specify.md`, `002-spec-no-plan-routes-to-plan.md`, `003-dirty-tree-routes-to-sync.md`, `004-enforcement-header.md`
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add tests/pressure/dispatch/scenarios/
@@ -282,7 +282,7 @@ git commit -m "test: add dispatch pressure test scenarios (#10)"
 **Files:**
 - Create: `skills/dispatch/SKILL.md`
 
-- [ ] **Step 1: Verify skill does not exist yet**
+- [x] **Step 1: Verify skill does not exist yet**
 
 ```bash
 ls skills/dispatch/SKILL.md 2>/dev/null || echo "FAIL: skill does not exist yet"
@@ -290,7 +290,7 @@ ls skills/dispatch/SKILL.md 2>/dev/null || echo "FAIL: skill does not exist yet"
 
 Expected: `FAIL: skill does not exist yet`
 
-- [ ] **Step 2: Write `skills/dispatch/SKILL.md`**
+- [x] **Step 2: Write `skills/dispatch/SKILL.md`**
 
 ```markdown
 ---
@@ -410,7 +410,7 @@ Then immediately invoke the determined skill. No confirmation prompt.
 - Multiple issues on one branch: dispatch uses the first integer found in the branch name. If this is wrong, pass the correct issue number when asked.
 ```
 
-- [ ] **Step 3: Verify SKILL.md covers all scenario GREEN criteria**
+- [x] **Step 3: Verify SKILL.md covers all scenario GREEN criteria**
 
 ```bash
 grep -c "hw0k-workflow:dispatch — active" skills/dispatch/SKILL.md
@@ -422,7 +422,7 @@ grep -c "AskUserQuestion" skills/dispatch/SKILL.md
 
 Expected: each command returns `1` or more
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/dispatch/SKILL.md
@@ -436,7 +436,7 @@ git commit -m "feat: add hw0k-workflow:dispatch skill (#10)"
 **Files:**
 - Modify: `skills/specify/SKILL.md` (Step 4 section, lines ~63–69)
 
-- [ ] **Step 1: Read current Step 4 content**
+- [x] **Step 1: Read current Step 4 content**
 
 ```bash
 grep -n "Step 4\|Write to\|Commit" skills/specify/SKILL.md
@@ -444,7 +444,7 @@ grep -n "Step 4\|Write to\|Commit" skills/specify/SKILL.md
 
 Expected: lines showing current Step 4 text.
 
-- [ ] **Step 2: Add issue number convention to Step 4**
+- [x] **Step 2: Add issue number convention to Step 4**
 
 In `skills/specify/SKILL.md`, locate Step 4 and update it to:
 
@@ -468,7 +468,7 @@ Commit: `docs: add <topic> spec`
 Do NOT proceed to Step 5 until the spec file exists and is committed.
 ```
 
-- [ ] **Step 3: Verify the change**
+- [x] **Step 3: Verify the change**
 
 ```bash
 grep -A8 "Step 4: Write and Commit" skills/specify/SKILL.md
@@ -476,7 +476,7 @@ grep -A8 "Step 4: Write and Commit" skills/specify/SKILL.md
 
 Expected: output includes "Issue: #N" and the dispatch reference.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/specify/SKILL.md
@@ -490,7 +490,7 @@ git commit -m "feat(specify): add issue number convention for dispatch compatibi
 **Files:**
 - Modify: `/home/hw0k-win11-wsl/.claude/CLAUDE.md`
 
-- [ ] **Step 1: Read current routing table**
+- [x] **Step 1: Read current routing table**
 
 ```bash
 grep -n "Situation\|dispatch\|Skill" /home/hw0k-win11-wsl/.claude/CLAUDE.md
@@ -498,7 +498,7 @@ grep -n "Situation\|dispatch\|Skill" /home/hw0k-win11-wsl/.claude/CLAUDE.md
 
 Expected: routing table lines, no dispatch entry.
 
-- [ ] **Step 2: Add dispatch row to the routing table**
+- [x] **Step 2: Add dispatch row to the routing table**
 
 In `/home/hw0k-win11-wsl/.claude/CLAUDE.md`, update the skill routing table to add one row:
 
@@ -517,7 +517,7 @@ After:
 | Requirement or task is vague | `hw0k-workflow:specify` |
 ```
 
-- [ ] **Step 3: Verify the change**
+- [x] **Step 3: Verify the change**
 
 ```bash
 grep "dispatch" /home/hw0k-win11-wsl/.claude/CLAUDE.md
@@ -525,7 +525,7 @@ grep "dispatch" /home/hw0k-win11-wsl/.claude/CLAUDE.md
 
 Expected: `| Unsure of next step / resuming work | \`hw0k-workflow:dispatch\` |`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add /home/hw0k-win11-wsl/.claude/CLAUDE.md
