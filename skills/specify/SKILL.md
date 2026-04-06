@@ -37,7 +37,14 @@ Before asking questions, read the input and list what is unclear:
 - What does success look like?
 - What should NOT be in scope?
 
-If the input covers multiple independent subsystems: decompose first. Each subsystem gets its own specify cycle.
+If the input covers multiple independent subsystems, or the spec grows too large to be independently implementable as a single unit: decompose.
+
+**On decomposition:**
+1. Propose the N units to the user via `AskUserQuestion`. Do not proceed until confirmed.
+2. Write N Spec files: `docs/specs/YYYY-MM-DD-<unit-name>-design.md`
+3. Create N GitHub Issues: `gh issue create --title "<unit name>" --body "<scope>\n\nDecomposed from: #<original>"`
+4. If an original issue exists, close it: `gh issue close <number> --comment "Decomposed into: #X, #Y, ..."`
+5. Each unit then enters its own Plan cycle independently.
 
 ### Step 2: Ask Clarifying Questions
 
