@@ -16,8 +16,6 @@ Write a detailed implementation plan from a spec. Real code, exact file paths, n
 
 If `$ARGUMENTS` is a file path, read that spec and start. Otherwise use `AskUserQuestion` to ask for the spec path.
 
-Call `EnterPlanMode` immediately after loading the spec.
-
 ## Scope Check
 
 If the spec covers multiple independent subsystems, split into separate plans. Each plan must produce independently working, testable software.
@@ -45,8 +43,6 @@ Every plan must start with this header:
 Before defining tasks, list files to be created or modified. One responsibility per file.
 
 **ultrathink** before decomposing tasks — never skip this.
-
-Draft the full plan in the plan file (`~/.claude/plans/`). Call `ExitPlanMode` for user approval before writing to `docs/plans/`.
 
 ## Task Size
 
