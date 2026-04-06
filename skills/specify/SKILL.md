@@ -21,7 +21,7 @@ If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use
 ## Checklist
 
 - [ ] Identify what is blurry — list specific ambiguities
-- [ ] Ask clarifying questions (AskUserQuestion, one at a time)
+- [ ] Ask clarifying questions (AskUserQuestion)
 - [ ] ultrathink before writing the spec
 - [ ] Write spec to docs/specs/
 - [ ] Commit
@@ -41,7 +41,7 @@ If the input covers multiple independent subsystems: decompose first. Each subsy
 
 ### Step 2: Ask Clarifying Questions
 
-Use `AskUserQuestion`. Target the most critical ambiguity first.
+Use `AskUserQuestion`. Group related ambiguities into a single call when possible — the tool supports multiple questions at once.
 
 Questions clarify; they do not explore alternatives: "What do you mean by X?" not "Which approach would you prefer?"
 
