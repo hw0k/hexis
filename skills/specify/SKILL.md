@@ -41,7 +41,7 @@ If the input covers multiple independent subsystems: decompose first. Each subsy
 
 ### Step 2: Ask Clarifying Questions
 
-Use `AskUserQuestion`. One question per message. Target the most critical ambiguity first.
+Use `AskUserQuestion`. Target the most critical ambiguity first.
 
 Questions clarify; they do not explore alternatives: "What do you mean by X?" not "Which approach would you prefer?"
 
@@ -64,7 +64,17 @@ A good spec answers:
 
 **MANDATORY — do this immediately after approval, before anything else.**
 
-Write to `docs/specs/YYYY-MM-DD-<topic>-design.md`. Commit: `docs: add <topic> spec`
+Write to `docs/specs/YYYY-MM-DD-<topic>-design.md`. The file must begin with:
+
+```markdown
+# <Title>
+
+Issue: #N
+```
+
+Where `N` is the GitHub issue number this spec addresses. If there is no associated issue, omit the `Issue:` line. This line is required for `hw0k-workflow:dispatch` to locate the spec by issue number.
+
+Commit: `docs: add <topic> spec`
 
 Do NOT proceed to Step 5 until the spec file exists and is committed.
 
