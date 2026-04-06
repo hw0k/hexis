@@ -16,6 +16,16 @@ Test first. Confirm failure. Pass with minimal code.
 
 If `$ARGUMENTS` describes a feature or function, use it as the starting context. Otherwise use `AskUserQuestion` to identify the target behavior.
 
+## Complexity Check
+
+Before starting, assess task complexity against these criteria (any one is sufficient):
+- Changes span multiple files
+- Approach is unclear (multiple valid approaches exist)
+- Test design is non-obvious or requires architectural decisions
+
+**Complex task** → call `EnterPlanMode`. Design the test approach and get user approval via `ExitPlanMode` before writing any code.
+**Simple task** → proceed directly.
+
 ## The Iron Law
 
 ```
@@ -84,6 +94,12 @@ Only after GREEN is confirmed. Improve code without adding behavior.
 - [ ] Output is clean (no errors, no warnings)
 
 Cannot check all items = process not followed. Start over.
+
+## Completion
+
+After all checklist items pass:
+
+Invoke `hw0k-workflow:sync-working-status`.
 
 ## When Stuck
 
