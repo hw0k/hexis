@@ -18,13 +18,30 @@ If `$ARGUMENTS` is a file path, read that spec and start. Otherwise use `AskUser
 
 ## Scope Check
 
-If the spec covers multiple independent subsystems, split into separate plans. Each plan must produce independently working, testable software.
+After loading the spec, check whether the work can be split:
+- Can each unit be developed with no shared in-progress state (no cross-unit file conflicts)?
+- Can each unit be reviewed and merged independently?
+
+If **both** conditions hold for N ≥ 2 units: propose decomposition to the user via `AskUserQuestion`. Do not proceed until confirmed.
+
+**On confirmed decomposition:**
+1. Split the original Spec into N Spec files: `docs/specs/YYYY-MM-DD-<unit-name>-design.md`
+2. Write N Plan files, each with `linked_spec` pointing to its new Spec
+3. Create N GitHub Issues: `gh issue create --title "<unit name>" --body "<scope>\n\nDecomposed from: #<original>"`
+4. Close original issue: `gh issue close <number> --comment "Decomposed into: #X, #Y, ..."`
+5. Add superseded notice to original Spec: prepend `> **Superseded.** Decomposed into: [unit-a](path), [unit-b](path)`
+
+If no decomposition: single plan (continue below), with `linked_spec` pointing to the parent Spec.
 
 ## Plan Header (required)
 
 Every plan must start with this header:
 
 ```markdown
+---
+linked_spec: docs/specs/YYYY-MM-DD-<topic>-design.md
+---
+
 # [Feature Name] Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `hw0k-workflow:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.
