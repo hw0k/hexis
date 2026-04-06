@@ -18,15 +18,11 @@ Turn blurry inputs into clear, precise specs. The goal is not to generate ideas 
 
 If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use `AskUserQuestion` to ask what needs to be specified.
 
-Call `EnterPlanMode` immediately after reading $ARGUMENTS.
-
 ## Checklist
 
-- [ ] EnterPlanMode
 - [ ] Identify what is blurry — list specific ambiguities
 - [ ] Ask clarifying questions (AskUserQuestion, one at a time)
 - [ ] ultrathink before writing the spec
-- [ ] ExitPlanMode (draft spec in plan file → user approves)
 - [ ] Write spec to docs/specs/
 - [ ] Commit
 - [ ] Hand off to hw0k-workflow:plan
@@ -49,24 +45,20 @@ Use `AskUserQuestion`. One question per message. Target the most critical ambigu
 
 Questions clarify; they do not explore alternatives: "What do you mean by X?" not "Which approach would you prefer?"
 
-### Step 3: Draft and Approve
+### Step 3: Draft
 
 **ultrathink** before writing — identify any remaining ambiguities and surface them as questions first.
 
-Draft the spec in the plan file (`~/.claude/plans/`). A good spec answers:
+A good spec answers:
 - What exactly does this do? (behavior)
 - What are the inputs and outputs?
 - What is explicitly out of scope?
 - What does "done" look like?
 
-**Self-review before ExitPlanMode:**
+**Self-review before writing:**
 1. **Ambiguity scan:** Any phrase open to two interpretations? Pick one and make it explicit.
 2. **Scope check:** Anything still undefined?
 3. **Placeholder scan:** TBD, TODO → fix.
-
-Call `ExitPlanMode`. User approves the draft.
-
-> The plan file (`~/.claude/plans/`) is a **temporary approval draft only** — it is NOT the spec artifact. The real output is `docs/specs/YYYY-MM-DD-<topic>-design.md`, written in Step 4.
 
 ### Step 4: Write and Commit
 
@@ -88,5 +80,4 @@ Invoke `hw0k-workflow:plan`.
 - ultrathink before writing the spec — never skip
 - If something is still blurry after 3 questions: write both interpretations and ask the user to pick one
 - No plan until the spec is unambiguous
-- If ExitPlanMode is rejected: return to Step 3 and re-draft. Do NOT skip to implementation.
 - If the user requests to skip writing the spec file: use `AskUserQuestion` to confirm. Only proceed without a spec file with explicit user confirmation, and note the skip explicitly.
