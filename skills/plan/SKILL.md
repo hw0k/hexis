@@ -27,7 +27,7 @@ If **both** conditions hold for N ≥ 2 units: propose decomposition to the user
 **On confirmed decomposition:**
 1. Split the original Spec into N Spec files: `docs/specs/YYYY-MM-DD-<unit-name>-design.md`
 2. Write N Plan files, each with `linked_spec` pointing to its new Spec
-3. Create N GitHub Issues: `gh issue create --title "<unit name>" --body "<scope>\n\nDecomposed from: #<original>"`
+3. Create N GitHub Issues: `gh issue create --title "<unit name>" --body $'<scope>\n\nDecomposed from: #<original>'`
 4. Close original issue: `gh issue close <number> --comment "Decomposed into: #X, #Y, ..."`
 5. Add superseded notice to original Spec: prepend `> **Superseded.** Decomposed into: [unit-a](path), [unit-b](path)`
 
