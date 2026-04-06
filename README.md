@@ -8,6 +8,7 @@ A heavily opinionated Claude Code plugin covering the full development workflow 
 
 | Skill | Purpose |
 |-------|---------|
+| `hw0k-workflow:dispatch` | State-aware router — detects workflow position and invokes the correct next skill |
 | `hw0k-workflow:specify` | Turn blurry inputs into precise, actionable specs |
 | `hw0k-workflow:plan` | Write detailed implementation plans from specs |
 | `hw0k-workflow:implement` | Execute implementation plans (subagent-first) |
@@ -47,48 +48,9 @@ A heavily opinionated Claude Code plugin covering the full development workflow 
 /plugin install hw0k-workflow --plugin-dir github:hw0k/hw0k-workflow
 ```
 
-## Project CLAUDE.md Setup
+## Setup
 
-For hw0k-workflow skills to activate automatically, add this directive to your project or global `CLAUDE.md`:
-
-```markdown
-## hw0k-workflow
-
-Any task that matches a hw0k-workflow skill MUST use it. Check before responding.
-
-| Situation | Skill |
-|---|---|
-| Requirement or task is vague | `hw0k-workflow:specify` |
-| Need an implementation plan | `hw0k-workflow:plan` |
-| Writing code | `hw0k-workflow:write-test` |
-| Debugging | `hw0k-workflow:debug` |
-| Claiming completion | `hw0k-workflow:verify` |
-| Before merge | `hw0k-workflow:review` |
-| Receiving review feedback | `hw0k-workflow:receive-review` |
-| Branch done | `hw0k-workflow:finish` |
-```
-
-### Language Setting
-
-Add a language instruction so Claude always responds in your preferred language:
-
-```markdown
-## Language
-
-Respond to the user in **[your language]**. Use English for technical terms, code, file names, and identifiers.
-```
-
-Example for Korean:
-
-```markdown
-## Language
-
-사용자에게 하는 모든 응답은 '한국어' 사용, 전문적인 용어, 코드, 파일 등은 영어 사용.
-```
-
-This works because Claude Code loads `CLAUDE.md` as a system-level instruction. A natural-language directive here applies globally across all sessions that inherit this file. Place it in `~/.claude/CLAUDE.md` to apply to every project, or in a project-level `CLAUDE.md` to scope it to one repo.
-
-For git hooks and commitlint setup, run `hw0k-workflow:setup-new-project`.
+Run `hw0k-workflow:setup-new-project` after installing. It configures git hooks, commitlint, and CLAUDE.md directives for the current project.
 
 ## Design
 
