@@ -56,10 +56,8 @@ Triggered when, after loading a spec, the plan skill determines the work can be 
 **Action:**
 1. Propose the N units to the user via `AskUserQuestion`. Do not proceed until confirmed.
 2. Split the original Spec into N Spec files: `docs/specs/YYYY-MM-DD-<unit-name>-design.md`
-3. Write N Plan files: `docs/plans/YYYY-MM-DD-<unit-name>.md`, each with `linked_spec` pointing to its new Spec
-4. Create N GitHub Issues
-5. Close the original issue with a comment listing the N new issue numbers
-6. Archive the original Spec by adding a superseded notice at the top
+3. Add superseded notice to original Spec: prepend `> **Superseded.** Decomposed into: [unit-a](path), [unit-b](path)`
+4. Write N Plan files: `docs/plans/YYYY-MM-DD-<unit-name>.md`, each with `linked_spec` pointing to its new Spec
 
 ### New Issue Format (for both cases)
 
