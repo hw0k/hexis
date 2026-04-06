@@ -11,7 +11,7 @@ commands/        # Slash commands
 tests/pressure/  # Pressure test scenarios (RED/GREEN framework)
 docs/specs/      # Design specs
 docs/plans/      # Implementation plans
-.githooks/       # Version-controlled git hooks (lefthook + commitlint)
+.githooks/       # Version-controlled git hooks (pre-commit + commitlint)
 ```
 
 ## Skill Format
@@ -37,15 +37,15 @@ Flat directory only — nested skill directories are not supported by Claude Cod
 This repo self-dogfoods its own hooks:
 
 ```bash
-git config core.hooksPath .githooks
-lefthook install --force
+uvx pre-commit install
+uvx pre-commit install --hook-type commit-msg
 ```
 
-`lefthook install --force` generates `.githooks/commit-msg` and `.githooks/pre-commit` — these are gitignored artifacts, not tracked files. Run this command once after cloning.
+Run these once after cloning. Hooks install to `.git/hooks/` — no `core.hooksPath` configuration needed.
 
 Commit messages are validated by `bunx commitlint` against `.commitlintrc.yml`. Conventional Commits 1.0.0 with relaxed subject rules (no lowercase-start enforcement, no trailing-period enforcement).
 
-When using `claude --worktree`, the generated hook scripts are automatically copied to the new worktree via `.worktreeinclude`. For manual `git worktree add`, run `lefthook install --force` inside the worktree.
+When creating a git worktree, run `uvx pre-commit install && uvx pre-commit install --hook-type commit-msg` inside the worktree.
 
 ## Pressure Tests
 

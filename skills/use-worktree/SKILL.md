@@ -75,6 +75,13 @@ Auto-detect and run project setup:
 [ -f go.mod ] && go mod download
 ```
 
+## Install git hooks
+
+```bash
+uvx pre-commit install
+uvx pre-commit install --hook-type commit-msg
+```
+
 ## Baseline Verification
 
 ```bash
