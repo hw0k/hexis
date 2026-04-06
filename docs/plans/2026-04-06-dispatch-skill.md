@@ -1,3 +1,7 @@
+---
+linked_spec: docs/specs/2026-04-06-dispatch-skill-design.md
+---
+
 # hw0k-workflow:dispatch Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `hw0k-workflow:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.

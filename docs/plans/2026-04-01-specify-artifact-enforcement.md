@@ -1,3 +1,7 @@
+---
+linked_spec: docs/specs/2026-04-01-specify-artifact-enforcement-design.md
+---
+
 # Specify Artifact Enforcement Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `hw0k-workflow:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.

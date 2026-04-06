@@ -1,3 +1,7 @@
+---
+linked_spec: docs/specs/2026-03-27-skill-philosophy-rewrite-design.md
+---
+
 # Skill Philosophy Rewrite Implementation Plan
 
 > **Historical document.** This plan reflects the initial implementation state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
