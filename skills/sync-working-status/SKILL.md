@@ -42,6 +42,21 @@ Check `docs/specs/` and `docs/plans/` for files related to current work:
 
 Specs and plans are the single source of truth for task progress. Update them before syncing remotely.
 
+Also verify the **1 Spec = 1 Issue** invariant:
+
+```bash
+# List open issues
+gh issue list --state open --json number,title
+
+# List spec files
+ls docs/specs/
+```
+
+- For each open issue: is there a corresponding Spec file (matching issue number in frontmatter)?
+- For each Spec file: is there a corresponding open or closed issue?
+
+Surface any mismatches — do **not** auto-create missing artifacts. Note them in the sync report for human decision.
+
 ### 3. Assess Remote State
 
 For the current branch, check the associated PR (if any):
@@ -65,6 +80,7 @@ If no PR exists and the branch has commits, note whether one should be created.
 | PR description outdated | Describes planned work, not actual | Update PR description |
 | Plan checkboxes stale | Tasks completed but not marked | Update plan file checkboxes |
 | Spec scope has changed | Spec describes original intent | Update spec to reflect what was built |
+| Spec exists, no linked Issue / Issue exists, no linked Spec | — | Surface for human decision — do not auto-create |
 
 ### 5. Confirm Sync Complete
 
