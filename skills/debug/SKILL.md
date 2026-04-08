@@ -16,6 +16,27 @@ Random fixes waste time and create new bugs.
 
 If `$ARGUMENTS` contains an error message, stack trace, or symptom description, use it as Phase 1 input. Otherwise use `AskUserQuestion` to collect it.
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `debug:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state, continue from the last open phase) or **Start fresh** (call `TaskStop` on all open Tasks)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+| Phase | On Start | On Done |
+|---|---|---|
+| Phase 1: Root Cause Investigation | `TaskCreate("debug: root cause investigation")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Phase 2: Pattern Analysis | `TaskCreate("debug: pattern analysis")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Phase 3: Hypotheses and Verification | `TaskCreate("debug: hypotheses and verification")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Phase 4: Implementation | `TaskCreate("debug: fix implementation")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task.
+
 ## The Iron Law
 
 ```
