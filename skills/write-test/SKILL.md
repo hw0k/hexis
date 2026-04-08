@@ -26,6 +26,28 @@ Before starting, assess task complexity against these criteria (any one is suffi
 **Complex task** → call `EnterPlanMode`. Design the test approach and get user approval via `ExitPlanMode` before writing any code.
 **Simple task** → proceed directly.
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `write-test:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state, continue from the last open phase) or **Start fresh** (call `TaskStop` on all open Tasks)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+| Phase | On Start | On Done |
+|---|---|---|
+| RED: Write failing test | `TaskCreate("write-test: red phase")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| GREEN: Minimal implementation | `TaskCreate("write-test: green phase")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| REFACTOR: Clean up | `TaskCreate("write-test: refactor phase")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+Verify RED and Verify GREEN are part of their respective phase Tasks — no separate Task for each verify step.
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task.
+
 ## The Iron Law
 
 ```
