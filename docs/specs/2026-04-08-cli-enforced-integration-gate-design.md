@@ -2,6 +2,8 @@
 
 Issue: #21
 
+> **Superseded.** Decomposed into: [hw0k CLI Tool](2026-04-08-hw0k-cli-tool-design.md) (#22), [Skill Integration Gate](2026-04-08-skill-integration-gate-design.md) (#23)
+
 ## Problem
 
 hw0k-workflow skills rely on LLM judgment to determine workflow state: whether a spec exists, whether a plan is complete, whether verify has passed. This creates inconsistency — different sessions, models, or context windows may reach different conclusions about the current workflow stage.
@@ -12,83 +14,48 @@ A custom CLI tool that reads spec and plan files as the authoritative Source of 
 
 ## Custom CLI
 
-A new command-line tool (language TBD — Python/uv is the leading candidate) with the following command surface:
+A new command-line tool (Python/uv) with the following command surface:
 
 | Command | Purpose |
 |---|---|
-| `hw0k status init <issue>` | Initialize tracking for issue N — locate spec/plan files, register AC items |
-| `hw0k status check <issue>` | Parse spec/plan files, report current state and blockers |
-| `hw0k status merge <issue>` | Mark issue as complete (post-merge state update) |
+| `hw0k status read <issue>` | Parse spec/plan files; report state label and indexed Done When AC items |
+| `hw0k status update <issue> --checked <indices> --unchecked <indices>` | Bulk-set all Done When AC items in one write (last-write-wins) |
 
-The CLI is **stateless** — it recomputes state by parsing files on each invocation. No persistent state file.
+The CLI is **stateless** — it recomputes state by parsing files on every invocation. No persistent state, no marker files.
+
+All commands accept `--json` for machine-readable output.
+
+### State Labels
+
+`NEEDS_SPEC` → `NEEDS_PLAN` → `IN_PROGRESS` → `NEEDS_VERIFY` → `DONE`
+
+`DONE` is reached when all plan tasks and all Done When AC items are checked. No explicit "done" marker command — state is always derived from file content.
 
 ### Output Format
 
-Structured output (exact schema TBD — JSON or human+machine-readable plaintext). Each command outputs:
+Plain text: first line is always `STATE: <LABEL>`. JSON: `{ "state": "...", "issue": N, ... }`.
 
-- **Current state label** — one of: `NEEDS_SPEC`, `NEEDS_PLAN`, `IN_PROGRESS`, `NEEDS_VERIFY`, `READY_TO_MERGE`, `DONE`
-- **Blocking items** — list of what is missing or incomplete
-- **Satisfied items** — list of what is already fulfilled
-
-Exit code: `0` = state is valid and unblocked, non-zero = blocked or error.
-
-### State Determination Logic
-
-The CLI derives state from two file types, both scanned in `docs/specs/` and `docs/plans/`:
-
-**Spec file** — any `docs/specs/*.md` containing `Issue: #N` in the first 10 lines:
-- Presence: spec exists for this issue
-- `## Done When` section: AC checklist items (`- [ ]` = open, `- [x]` = satisfied)
-
-**Plan file** — any `docs/plans/*.md` containing `Issue: #N` in the first 10 lines or in `linked_spec` frontmatter (resolved to match spec's issue):
-- Presence: plan exists for this issue
-- Task checklists (`- [ ]` / `- [x]`) anywhere in the file body
-
-State transition table:
-
-| Condition | State |
-|---|---|
-| No spec file found | `NEEDS_SPEC` |
-| Spec found, no plan file found | `NEEDS_PLAN` |
-| Plan found, any plan task unchecked | `IN_PROGRESS` |
-| All plan tasks checked, `## Done When` AC not all satisfied | `NEEDS_VERIFY` |
-| All plan tasks checked, all AC satisfied | `READY_TO_MERGE` |
-| `status merge` has been called | `DONE` |
-
-Note: "all AC satisfied" means all `- [ ]` items under `## Done When` in the spec have been converted to `- [x]`. This is the human/LLM responsibility to update; the CLI only reads it.
+Done When AC items are output with zero-based indices so `status update` can reference them by position.
 
 ## CLI Integration Gates
 
-Each skill adds a **`## CLI Integration Gate`** section specifying which command(s) to run and what state is required to proceed:
+Each skill adds a `## CLI Integration Gate` section. The LLM runs `hw0k status read <issue>` at entry and acts on the `STATE` output:
 
-| Skill | Gate Command | Required State to Proceed |
+| Skill | Required Entry State | Exit Action |
 |---|---|---|
-| `dispatch` | `status check <issue>` | Any — output determines which skill to invoke |
-| `plan` | `status check <issue>` | `NEEDS_PLAN` (spec with Done When must exist) |
-| `write-test` / `implement` | `status check <issue>` | `IN_PROGRESS` or `NEEDS_VERIFY` (plan must exist) |
-| `verify` | `status check <issue>` | `NEEDS_VERIFY` (all plan tasks complete) |
-| `finish` | `status check <issue>` | `READY_TO_MERGE` |
-| `specify` | `status init <issue>` | N/A — creates the spec, then outputs `NEEDS_PLAN` |
-
-**LLM behavior at each gate:**
-1. Run the CLI command with the target issue number
-2. Read stdout
-3. If required state matches: proceed with the skill
-4. If required state does not match: surface CLI output verbatim to the user; do not proceed
+| `dispatch` | Any — routes based on state label | — |
+| `specify` | `NEEDS_SPEC` (warns if spec exists) | — |
+| `plan` | `NEEDS_PLAN` | — |
+| `write-test` / `implement` | `IN_PROGRESS` | — |
+| `verify` | `NEEDS_VERIFY` | `hw0k status update` with complete AC state |
+| `finish` | `DONE` | — |
 
 ## Out of Scope
 
-- GitHub API calls from the CLI (local file parsing only — no `gh` calls)
-- LLM interpretation of workflow state (CLI is authoritative)
-- Test execution, code compilation, or any process execution
-- Network calls of any kind from the CLI
-- Persistent state files (CLI recomputes on every call)
+- GitHub API calls from the CLI
+- LLM interpretation of workflow state
+- Persistent state files
 
 ## Done When
 
-- [ ] Custom CLI tool is designed with final command surface and output schema
-- [ ] State determination logic is fully specified for all stages
-- [ ] `status init`, `status check`, and `status merge` are implemented and tested
-- [ ] CLI is installable without global system dependencies (e.g., via `uv tool install`)
-- [ ] CLI Integration Gate instructions are added to all affected skills
-- [ ] `dispatch` uses `status check` output as the primary routing signal
+> See decomposed specs: [#22](2026-04-08-hw0k-cli-tool-design.md), [#23](2026-04-08-skill-integration-gate-design.md)
