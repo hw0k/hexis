@@ -36,7 +36,7 @@ Issue: #15
 **Files:**
 - Modify: `skills/specify/SKILL.md` (insert `## Task Tracking` after `## Checklist`, before `## Process`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/specify/SKILL.md
@@ -44,7 +44,7 @@ grep -c "Task Tracking" skills/specify/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/specify/SKILL.md`, insert the following block between `## Checklist` and `## Process`:
 
@@ -72,7 +72,7 @@ Call `TaskList` filtered by prefix `specify:`. If open Tasks exist from a prior 
 Call `TaskStop` on the current open Task. Do not leave any Task in an unresolved state.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/specify/SKILL.md
@@ -86,7 +86,7 @@ grep -c "specify: identify ambiguities" skills/specify/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/specify/SKILL.md
@@ -100,7 +100,7 @@ git commit -m "feat(specify): add Task tool integration (#15)"
 **Files:**
 - Modify: `skills/plan/SKILL.md` (insert `## Task Tracking` after `## $ARGUMENTS`, before `## Scope Check`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/plan/SKILL.md
@@ -108,7 +108,7 @@ grep -c "Task Tracking" skills/plan/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/plan/SKILL.md`, insert the following block between the `## $ARGUMENTS` section and `## Scope Check`:
 
@@ -136,7 +136,7 @@ Call `TaskList` filtered by prefix `plan:`. If open Tasks exist from a prior ses
 Call `TaskStop` on the current open Task.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/plan/SKILL.md
@@ -150,7 +150,7 @@ grep -c "plan: scope check" skills/plan/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/plan/SKILL.md
@@ -164,7 +164,7 @@ git commit -m "feat(plan): add Task tool integration (#15)"
 **Files:**
 - Modify: `skills/implement/SKILL.md` (two changes: insert `## Task Tracking` after `## Complexity Check`, before `## Process`; update Step 4 inline path to use `TaskCreate`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/implement/SKILL.md
@@ -172,7 +172,7 @@ grep -c "Task Tracking" skills/implement/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/implement/SKILL.md`, insert the following block between `## Complexity Check` and `## Process`:
 
@@ -205,7 +205,7 @@ Before dispatching each subagent:
 `TaskStop` on the current open task. `TaskStop` on the parent Task.
 ```
 
-- [ ] **Step 3: Update Step 4 inline path to use `TaskCreate`**
+- [x] **Step 3: Update Step 4 inline path to use `TaskCreate`**
 
 In `skills/implement/SKILL.md`, locate `### Step 4: Inline Path (exception only)` and update the numbered list from:
 
@@ -229,7 +229,7 @@ For each task:
 5. Stop if blocked — report and wait
 ```
 
-- [ ] **Step 4: Confirm both changes exist**
+- [x] **Step 4: Confirm both changes exist**
 
 ```bash
 grep -c "Task Tracking" skills/implement/SKILL.md
@@ -249,7 +249,7 @@ grep -c "TaskCreate" skills/implement/SKILL.md
 
 Expected: `2` or more
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add skills/implement/SKILL.md
@@ -263,7 +263,7 @@ git commit -m "feat(implement): add Task tool integration with parent-child hier
 **Files:**
 - Modify: `skills/write-test/SKILL.md` (insert `## Task Tracking` after `## Complexity Check`, before `## The Iron Law`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/write-test/SKILL.md
@@ -271,7 +271,7 @@ grep -c "Task Tracking" skills/write-test/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/write-test/SKILL.md`, insert the following block between `## Complexity Check` and `## The Iron Law`:
 
@@ -299,7 +299,7 @@ Verify RED and Verify GREEN are part of their respective phase Tasks — no sepa
 Call `TaskStop` on the current open Task.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/write-test/SKILL.md
@@ -313,7 +313,7 @@ grep -c "write-test: red phase" skills/write-test/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/write-test/SKILL.md
@@ -327,7 +327,7 @@ git commit -m "feat(write-test): add Task tool integration (#15)"
 **Files:**
 - Modify: `skills/debug/SKILL.md` (insert `## Task Tracking` after `## $ARGUMENTS`, before `## The Iron Law`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/debug/SKILL.md
@@ -335,7 +335,7 @@ grep -c "Task Tracking" skills/debug/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/debug/SKILL.md`, insert the following block between `## $ARGUMENTS` and `## The Iron Law`:
 
@@ -362,7 +362,7 @@ Call `TaskList` filtered by prefix `debug:`. If open Tasks exist from a prior se
 Call `TaskStop` on the current open Task.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/debug/SKILL.md
@@ -376,7 +376,7 @@ grep -c "debug: root cause investigation" skills/debug/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/debug/SKILL.md
@@ -390,7 +390,7 @@ git commit -m "feat(debug): add Task tool integration (#15)"
 **Files:**
 - Modify: `skills/verify/SKILL.md` (insert `## Task Tracking` after `## Complexity Check`, before `## The Iron Law`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/verify/SKILL.md
@@ -398,7 +398,7 @@ grep -c "Task Tracking" skills/verify/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/verify/SKILL.md`, insert the following block between `## Complexity Check` and `## The Iron Law`:
 
@@ -428,7 +428,7 @@ When `verify` is invoked as a sub-step by another skill (`review`, `finish`), it
 Call `TaskStop` on the current open Task.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/verify/SKILL.md
@@ -442,7 +442,7 @@ grep -c "verify: type check" skills/verify/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/verify/SKILL.md
@@ -456,7 +456,7 @@ git commit -m "feat(verify): add Task tool integration (#15)"
 **Files:**
 - Modify: `skills/review/SKILL.md` (insert `## Task Tracking` after `## $ARGUMENTS`, before `## When to Review`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/review/SKILL.md
@@ -464,7 +464,7 @@ grep -c "Task Tracking" skills/review/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/review/SKILL.md`, insert the following block between `## $ARGUMENTS` and `## When to Review`:
 
@@ -492,7 +492,7 @@ Step 1 delegates to `hw0k-workflow:verify`, which manages its own Tasks. Steps 2
 Call `TaskStop` on the current open Task.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/review/SKILL.md
@@ -506,7 +506,7 @@ grep -c "review: collect git SHAs" skills/review/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/review/SKILL.md
@@ -520,7 +520,7 @@ git commit -m "feat(review): add Task tool integration (#15)"
 **Files:**
 - Modify: `skills/finish/SKILL.md` (insert `## Task Tracking` after `## $ARGUMENTS`, before `## Process`)
 
-- [ ] **Step 1: Confirm section does not yet exist**
+- [x] **Step 1: Confirm section does not yet exist**
 
 ```bash
 grep -c "Task Tracking" skills/finish/SKILL.md
@@ -528,7 +528,7 @@ grep -c "Task Tracking" skills/finish/SKILL.md
 
 Expected: `0`
 
-- [ ] **Step 2: Insert `## Task Tracking` section**
+- [x] **Step 2: Insert `## Task Tracking` section**
 
 In `skills/finish/SKILL.md`, insert the following block between `## $ARGUMENTS` and `## Process`:
 
@@ -556,7 +556,7 @@ Step 1 delegates to `hw0k-workflow:verify`, which manages its own Tasks. Steps 2
 Call `TaskStop` on the current open Task.
 ```
 
-- [ ] **Step 3: Confirm section exists**
+- [x] **Step 3: Confirm section exists**
 
 ```bash
 grep -c "Task Tracking" skills/finish/SKILL.md
@@ -570,7 +570,7 @@ grep -c "finish: handle uncommitted changes" skills/finish/SKILL.md
 
 Expected: `1`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/finish/SKILL.md
