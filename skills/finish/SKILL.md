@@ -16,6 +16,28 @@ Verify → commit → choose integration method → execute → clean up.
 
 If `$ARGUMENTS` contains a branch or feature description, use it as context.
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `finish:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state) or **Start fresh** (call `TaskStop` on all open Tasks)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+Step 1 delegates to `hw0k-workflow:verify`, which manages its own Tasks. Steps 2–5:
+
+| Step | On Start | On Done |
+|---|---|---|
+| Step 2: Handle uncommitted changes | `TaskCreate("finish: handle uncommitted changes")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Steps 3–4: Integration | `TaskCreate("finish: integration")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 5: Clean up worktree | `TaskCreate("finish: clean up worktree")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task.
+
 ## Process
 
 ### Step 1: Run verify
