@@ -27,6 +27,28 @@ If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use
 - [ ] Commit
 - [ ] Hand off to hw0k-workflow:plan
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `specify:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state, continue from the last open Task) or **Start fresh** (call `TaskStop` on all open Tasks, then proceed from Step 1)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+| Step | On Start | On Done |
+|---|---|---|
+| Step 1: Identify Ambiguities | `TaskCreate("specify: identify ambiguities")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 2: Ask Clarifying Questions | `TaskCreate("specify: ask clarifying questions")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 3: Draft | `TaskCreate("specify: draft spec")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 4: Write and Commit | `TaskCreate("specify: write and commit spec")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 5: Hand Off | `TaskCreate("specify: hand off to plan")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task. Do not leave any Task in an unresolved state.
+
 ## Process
 
 ### Step 1: Identify Ambiguities
