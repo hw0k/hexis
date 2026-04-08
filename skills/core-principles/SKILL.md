@@ -90,7 +90,7 @@ When a static tool is not available for the domain, state this explicitly: "No s
 
 **Compliant:**
 - Using commitlint instead of a custom regex-based commit message validator
-- Using lefthook instead of a custom hook management script
+- Using pre-commit instead of a custom hook management script
 - Using an established date library instead of re-implementing date arithmetic
 
 **Non-compliant:**
