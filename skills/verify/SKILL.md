@@ -26,6 +26,30 @@ Before starting, assess scope complexity against these criteria (any one is suff
 **Complex scope** → call `EnterPlanMode`. Define verification commands and expected outputs, get user approval via `ExitPlanMode` before running anything.
 **Simple scope** → proceed directly.
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `verify:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state) or **Start fresh** (call `TaskStop` on all open Tasks)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+| Check | On Start | On Done |
+|---|---|---|
+| Type check | `TaskCreate("verify: type check")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Lint | `TaskCreate("verify: lint")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Tests | `TaskCreate("verify: tests")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+Only create a Task for checks that are applicable. Skip a Task entirely if the check is declared inapplicable.
+
+When `verify` is invoked as a sub-step by another skill (`review`, `finish`), it manages its own Tasks independently — no coordination with the calling skill needed.
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task.
+
 ## The Iron Law
 
 ```
