@@ -16,6 +16,28 @@ Catch principle violations and quality issues before merge.
 
 If `$ARGUMENTS` contains a PR number or scope description, use it. Otherwise infer from current branch/changes.
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `review:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state) or **Start fresh** (call `TaskStop` on all open Tasks)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+Step 1 delegates to `hw0k-workflow:verify`, which manages its own Tasks. Steps 2–4:
+
+| Step | On Start | On Done |
+|---|---|---|
+| Step 2: Collect git SHAs | `TaskCreate("review: collect git SHAs")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 3: Principles review | `TaskCreate("review: principles review")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 4: Handle results | `TaskCreate("review: handle results")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task.
+
 ## When to Review
 
 **Required:**
