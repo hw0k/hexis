@@ -26,6 +26,33 @@ Before starting, assess task complexity against these criteria (any one is suffi
 **Complex task** → call `EnterPlanMode`. Review the plan, clarify execution strategy, get user approval via `ExitPlanMode` before writing any code.
 **Simple task** → proceed directly.
 
+## Task Tracking
+
+### On Start
+
+1. Call `TaskList` filtered by prefix `implement:`. If open Tasks exist from a prior session:
+   - Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state) or **Start fresh** (call `TaskStop` on all open Tasks)
+2. `TaskCreate("implement: execute plan <plan-filename>")` → `TaskUpdate(in_progress)` (parent Task — created regardless of subagent or inline path)
+
+### Subagent Path
+
+Before dispatching each subagent:
+- Call `TaskList` filtered by prefix `implement/task-`. Confirm the prior task (if any) shows `completed` before dispatching the next.
+- Instruct each dispatched subagent to: `TaskCreate("implement/task-N: <task-name>")` → `TaskUpdate(in_progress)` at start; `TaskUpdate(completed)` on success; `TaskStop` on failure. Use `N` and task name from the plan.
+- After reviewing each subagent's output: `TaskUpdate(in_progress)` on the parent Task with a progress note.
+
+### Inline Path
+
+`TaskCreate` is added before the existing `TaskUpdate` in Step 4 (see below).
+
+### On All Tasks Complete
+
+`TaskUpdate(completed)` on the parent Task.
+
+### On Failure or Abort
+
+`TaskStop` on the current open task. `TaskStop` on the parent Task.
+
 ## Process
 
 ### Step 1: Load and Review
@@ -52,10 +79,10 @@ Dispatch a subagent for each task. Review between tasks before dispatching the n
 ### Step 4: Inline Path (exception only)
 
 For each task:
-1. TaskUpdate: mark in_progress
+1. TaskCreate("implement/task-N: <task-name>") → TaskUpdate(in_progress)
 2. Follow each step exactly as written
 3. Run verifications as specified
-4. TaskUpdate: mark completed
+4. TaskUpdate(completed)
 5. Stop if blocked — report and wait
 
 After all tasks done, invoke `hw0k-workflow:sync-working-status`. Then invoke `hw0k-workflow:finish`.
