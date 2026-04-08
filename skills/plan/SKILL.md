@@ -16,6 +16,28 @@ Write a detailed implementation plan from a spec. Real code, exact file paths, n
 
 If `$ARGUMENTS` is a file path, read that spec and start. Otherwise use `AskUserQuestion` to ask for the spec path.
 
+## Task Tracking
+
+### On Start
+
+Call `TaskList` filtered by prefix `plan:`. If open Tasks exist from a prior session:
+- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state, continue from the last open Task) or **Start fresh** (call `TaskStop` on all open Tasks, then proceed from Scope Check)
+- If no open Tasks: proceed directly
+
+### Step Schedule
+
+| Step | On Start | On Done |
+|---|---|---|
+| Scope Check | `TaskCreate("plan: scope check")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| File Structure | `TaskCreate("plan: define file structure")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Task Writing | `TaskCreate("plan: write tasks")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Self-Review | `TaskCreate("plan: self-review")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Save and Commit | `TaskCreate("plan: save and commit")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+
+### On Failure or Abort
+
+Call `TaskStop` on the current open Task.
+
 ## Scope Check
 
 After loading the spec, check whether the work can be split:
