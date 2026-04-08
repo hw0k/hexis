@@ -164,4 +164,4 @@ Internal helper functions are **not** boundaries. They throw — they do not cat
 
 ## Extended Examples
 
-For annotated multi-layer re-throw chains, retry/circuit-breaker patterns, correlation ID flow, and before/after comparisons, see [examples.md](examples.md).
+For annotated multi-layer re-throw chains, retry/circuit-breaker patterns, correlation ID flow, and before/after comparisons, see [examples.md](references/examples.md).

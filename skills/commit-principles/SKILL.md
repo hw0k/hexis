@@ -88,4 +88,4 @@ Before committing, verify:
 
 ## Extended Reference
 
-For WIP commits, author language guidance, scope examples by project type, breaking change patterns, and revert commit guidance, see [reference.md](reference.md).
+For WIP commits, author language guidance, scope examples by project type, breaking change patterns, and revert commit guidance, see [reference.md](references/reference.md).

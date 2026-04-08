@@ -153,4 +153,4 @@ Test files mirror the source path and name, using the language convention for te
 
 ## Extended Examples
 
-For before/after naming comparisons by language and class/interface examples, see [examples.md](examples.md).
+For before/after naming comparisons by language and class/interface examples, see [examples.md](references/examples.md).

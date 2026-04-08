@@ -37,7 +37,7 @@ commitlint validates commit messages against Conventional Commits 1.0.0. It runs
 
 ```bash
 PLUGIN_DIR=~/.claude/plugins/hw0k-workflow   # adjust to your install path
-cp "$PLUGIN_DIR/skills/setup-new-project/.commitlintrc.yml" ./.commitlintrc.yml
+cp "$PLUGIN_DIR/skills/setup-new-project/assets/.commitlintrc.yml" ./.commitlintrc.yml
 ```
 
 Commit the config:

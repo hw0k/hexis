@@ -169,4 +169,4 @@ Use cursor-based pagination for all list endpoints:
 
 ## Extended Examples
 
-For URL structure examples, error response variations, enum and query parameter examples, pagination examples, and status code decision guide, see [examples.md](examples.md).
+For URL structure examples, error response variations, enum and query parameter examples, pagination examples, and status code decision guide, see [examples.md](references/examples.md).
