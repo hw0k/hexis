@@ -4,7 +4,7 @@ Issue: #16
 
 ## What
 
-Evolve all hexis skills so a single `SKILL.md` serves Claude Code, Codex, OpenClaw, and future AI coding platforms. No per-platform file splits — the single-file constraint is hard (Claude Code's skill loader is file-based). Platform-specific behavior is expressed inline via two patterns.
+Evolve all hexis skills so a single `SKILL.md` serves Claude Code, Codex, and Opencode. No per-platform file splits — the single-file constraint is hard (Claude Code's skill loader is file-based). Platform-specific behavior is expressed inline via two patterns.
 
 Skills describe what they need using capability names — not platform-specific tool names. The `platform-capabilities` reference skill is the single place where capability names map to concrete tools per platform.
 
@@ -18,7 +18,7 @@ Create `skills/platform-capabilities/SKILL.md` (`type: reference`) — the canon
 
 ### Capability Map
 
-| Capability | Claude Code | Codex | OpenClaw | Generic fallback |
+| Capability | Claude Code | Codex | Opencode | Generic fallback |
 |---|---|---|---|---|
 | **ask-user** — pose a question and wait for input | TBD | TBD | TBD | Inline question in response text; wait for next message |
 | **track-tasks** — record and update step progress | TBD | TBD | TBD | Inline markdown checklist in current response |
