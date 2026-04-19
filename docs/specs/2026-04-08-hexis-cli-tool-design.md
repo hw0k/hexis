@@ -1,4 +1,4 @@
-# hw0k CLI Tool
+# hexis CLI Tool
 
 Issue: #22
 
@@ -6,14 +6,14 @@ Decomposed from: #21
 
 ## What
 
-A stateless Python CLI tool (`hw0k`) that reads `docs/specs/` and `docs/plans/` files to determine and report workflow state for a given issue number. State is always derived from current file content — no caching, no marker files, no persistent state. All judgment about workflow state is made by the CLI — not the LLM.
+A stateless Python CLI tool (`hexis`) that reads `docs/specs/` and `docs/plans/` files to determine and report workflow state for a given issue number. State is always derived from current file content — no caching, no marker files, no persistent state. All judgment about workflow state is made by the CLI — not the LLM.
 
 ## Commands
 
 | Command | Behavior |
 |---|---|
-| `hw0k status read <issue>` | Parse spec/plan files; report state label, plan task progress, and indexed AC items |
-| `hw0k status update <issue> --checked <indices> --unchecked <indices>` | Bulk-set all Done When AC items in one write — last-write-wins, all indices must be covered |
+| `hexis status read <issue>` | Parse spec/plan files; report state label, plan task progress, and indexed AC items |
+| `hexis status update <issue> --checked <indices> --unchecked <indices>` | Bulk-set all Done When AC items in one write — last-write-wins, all indices must be covered |
 
 All commands accept `--json` for machine-readable output and `--root <path>` to specify the project root (defaults to current working directory).
 
@@ -105,7 +105,7 @@ A bulk, last-write-wins command. Accepts `--checked <indices>` and `--unchecked 
 
 ```bash
 # 4 AC items: set #0 and #3 as done, #1 and #2 as not done
-hw0k status update 21 --checked 0,3 --unchecked 1,2
+hexis status update 21 --checked 0,3 --unchecked 1,2
 ```
 
 The entire Done When section is rewritten atomically from this single call. One call replaces all AC item states — no sequential per-index calls required.
@@ -120,7 +120,7 @@ Outputs the new state after writing (same format as `status read`).
 cli/
   pyproject.toml
   src/
-    hw0k/
+    hexis/
       __init__.py
       cli.py          # Typer app, command definitions
       parser.py       # find_spec_file, find_plan_file, parse_done_when, parse_plan_tasks
@@ -131,7 +131,7 @@ cli/
     test_cli.py
 ```
 
-Lives in the `cli/` subdirectory of the hw0k-workflow repository.
+Lives in the `cli/` subdirectory of the hexis repository.
 
 ## Technology
 
@@ -151,9 +151,9 @@ Lives in the `cli/` subdirectory of the hw0k-workflow repository.
 
 ## Done When
 
-- [ ] `hw0k status read <issue>` outputs correct STATE label for all 5 states
-- [ ] `hw0k status read <issue> --json` outputs valid JSON with correct `state` key and `done_when` array with indices
-- [ ] `hw0k status update <issue> --checked <indices> --unchecked <indices>` rewrites all Done When items atomically
+- [ ] `hexis status read <issue>` outputs correct STATE label for all 5 states
+- [ ] `hexis status read <issue> --json` outputs valid JSON with correct `state` key and `done_when` array with indices
+- [ ] `hexis status update <issue> --checked <indices> --unchecked <indices>` rewrites all Done When items atomically
 - [ ] Incomplete or overlapping index coverage exits 1 with an error message
 - [ ] All state transitions are covered by pytest unit tests
 - [ ] `uv tool install ./cli` succeeds in a clean environment
