@@ -76,7 +76,9 @@ If any condition is unmet, use subagents. State the reason if choosing inline.
 
 ### Step 3: Subagent Path
 
-Use the **spawn-subagent** capability for each task (see `hexis:platform-capabilities`). Review between tasks before dispatching the next. If **spawn-subagent** is unavailable, use the Inline Path instead.
+Use the **spawn-subagent** capability for each task (see `hexis:platform-capabilities`). If **spawn-subagent** is unavailable, use the Inline Path instead.
+
+**Parallel dispatch rule:** Tasks with no dependencies on each other MUST be dispatched in a single message — all spawn-subagent calls in one response. Dispatching task A, waiting for the result, then dispatching task B is sequential regardless of what the surrounding text says. To dispatch N tasks in parallel: compose all N prompts first, then emit all N spawn-subagent calls in one message. Only dispatch the next task after a prior task completes when a data dependency exists (e.g., task B needs output from task A).
 
 ### Step 4: Inline Path (exception only)
 
