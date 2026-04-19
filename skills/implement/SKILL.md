@@ -10,7 +10,7 @@ type: workflow
 
 Execute an implementation plan. Default: dispatch subagents per task. Inline execution only when there is a clear reason not to.
 
-**Announce at start:** "I'm using the hw0k-workflow:implement skill to execute this plan."
+**Announce at start:** "I'm using the hexis:implement skill to execute this plan."
 
 ## $ARGUMENTS
 
@@ -85,7 +85,7 @@ For each task:
 4. TaskUpdate(completed)
 5. Stop if blocked — report and wait
 
-After all tasks done, invoke `hw0k-workflow:sync-working-status`. Then invoke `hw0k-workflow:finish`.
+After all tasks done, invoke `hexis:sync-working-status`. Then invoke `hexis:finish`.
 
 ## When to Stop
 

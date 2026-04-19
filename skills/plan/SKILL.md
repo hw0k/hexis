@@ -10,7 +10,7 @@ type: workflow
 
 Write a detailed implementation plan from a spec. Real code, exact file paths, no placeholders.
 
-**Announce at start:** "I'm using the hw0k-workflow:plan skill to create the implementation plan."
+**Announce at start:** "I'm using the hexis:plan skill to create the implementation plan."
 
 ## $ARGUMENTS
 
@@ -64,7 +64,7 @@ linked_spec: docs/specs/YYYY-MM-DD-<topic>-design.md
 
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `hw0k-workflow:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence]
 
@@ -146,4 +146,4 @@ After writing: spec coverage, placeholder scan, type/method name consistency.
 ## Execution Handoff
 
 After saving:
-> "Plan saved to `docs/plans/<filename>`. Run `hw0k-workflow:implement` to execute."
+> "Plan saved to `docs/plans/<filename>`. Run `hexis:implement` to execute."

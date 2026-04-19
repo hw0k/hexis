@@ -14,17 +14,17 @@ Agent gives an ad-hoc response: asks what the feature is, jumps to implementatio
 
 ## Expected GREEN Behavior (skill loaded)
 
-1. Outputs enforcement header: "hw0k-workflow:dispatch — active / Routing rules: CLAUDE.md skill table enforced for this session."
+1. Outputs enforcement header: "hexis:dispatch — active / Routing rules: CLAUDE.md skill table enforced for this session."
 2. Runs `git branch --show-current`, `git status --short`, searches `docs/specs/` for `#10`
-3. Finds no spec file, outputs: "State: no spec found for #10. Dispatching → hw0k-workflow:specify"
-4. Immediately invokes `hw0k-workflow:specify`
+3. Finds no spec file, outputs: "State: no spec found for #10. Dispatching → hexis:specify"
+4. Immediately invokes `hexis:specify`
 
 ## PASS Criteria
 
-RED PASS if: agent does not detect `#10`, does not search `docs/specs/`, and does not invoke `hw0k-workflow:specify`.
+RED PASS if: agent does not detect `#10`, does not search `docs/specs/`, and does not invoke `hexis:specify`.
 
 GREEN PASS if:
 - [ ] Enforcement header appears at start of output
 - [ ] Agent searches for `#10` in `docs/specs/`
-- [ ] Agent outputs "Dispatching → hw0k-workflow:specify" (or equivalent)
-- [ ] Agent invokes `hw0k-workflow:specify` immediately after
+- [ ] Agent outputs "Dispatching → hexis:specify" (or equivalent)
+- [ ] Agent invokes `hexis:specify` immediately after

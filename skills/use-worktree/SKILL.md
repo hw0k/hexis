@@ -10,7 +10,7 @@ type: workflow
 
 Set up an isolated git worktree for feature work.
 
-**Announce at start:** "I'm using the hw0k-workflow:use-worktree skill to set up an isolated workspace."
+**Announce at start:** "I'm using the hexis:use-worktree skill to set up an isolated workspace."
 
 **Core principle:** Systematic directory selection + safety verification = reliable isolation.
 

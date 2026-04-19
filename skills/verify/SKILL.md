@@ -102,7 +102,7 @@ Before claiming completion:
 4. VERIFY: does the output confirm the claim?
    - NO: state actual status with evidence
    - YES: proceed to step 5
-5. SYNC: invoke hw0k-workflow:sync-working-status
+5. SYNC: invoke hexis:sync-working-status
 6. ONLY THEN: claim
 ```
 

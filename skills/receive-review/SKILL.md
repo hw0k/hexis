@@ -23,7 +23,7 @@ If `$ARGUMENTS` contains review feedback text, use it.
 3. **Validate** — check against codebase reality
 4. **Evaluate** — is this technically sound for this codebase?
 5. **Implement** — one item at a time, test each
-6. **Re-verify** — run `hw0k-workflow:verify` and satisfy P3 requirement
+6. **Re-verify** — run `hexis:verify` and satisfy P3 requirement
 
 ## Handling Unclear Feedback
 
@@ -54,4 +54,4 @@ If wrong: push back with technical justification. If architectural: escalate to 
 
 ## After Implementation
 
-Run `hw0k-workflow:verify`. P3 requirement: cite output.
+Run `hexis:verify`. P3 requirement: cite output.

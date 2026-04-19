@@ -1,6 +1,6 @@
 ---
 name: core-principles
-description: Five foundational principles governing all hw0k-workflow standards — environment independence, human gate for irreversible operations, static verification, don't reinvent the wheel, and prefer official methods
+description: Five foundational principles governing all hexis standards — environment independence, human gate for irreversible operations, static verification, don't reinvent the wheel, and prefer official methods
 type: reference
 ---
 

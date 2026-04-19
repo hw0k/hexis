@@ -12,7 +12,7 @@ Turn blurry inputs into clear, precise specs. The goal is not to generate ideas 
 
 **Core principle:** Nothing should be implemented until it is fully specified. Vague specs produce wrong implementations.
 
-**HARD-GATE:** Do NOT hand off to `hw0k-workflow:plan` until the spec is unambiguous.
+**HARD-GATE:** Do NOT hand off to `hexis:plan` until the spec is unambiguous.
 
 ## $ARGUMENTS
 
@@ -25,7 +25,7 @@ If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use
 - [ ] ultrathink before writing the spec
 - [ ] Write spec to docs/specs/
 - [ ] Commit
-- [ ] Hand off to hw0k-workflow:plan
+- [ ] Hand off to hexis:plan
 
 ## Task Tracking
 
@@ -101,7 +101,7 @@ Write to `docs/specs/YYYY-MM-DD-<topic>-design.md`. The file must begin with:
 Issue: #N
 ```
 
-Where `N` is the GitHub issue number this spec addresses. If there is no associated issue, omit the `Issue:` line. This line is required for `hw0k-workflow:dispatch` to locate the spec by issue number.
+Where `N` is the GitHub issue number this spec addresses. If there is no associated issue, omit the `Issue:` line. This line is required for `hexis:dispatch` to locate the spec by issue number.
 
 Commit: `docs: add <topic> spec`
 
@@ -109,9 +109,9 @@ Do NOT proceed to Step 5 until the spec file exists and is committed.
 
 ### Step 5: Hand Off
 
-**HARD-GATE:** Before invoking `hw0k-workflow:plan`, verify the spec file exists. Run `ls docs/specs/` and confirm the file is present and committed. If it is not, return to Step 4.
+**HARD-GATE:** Before invoking `hexis:plan`, verify the spec file exists. Run `ls docs/specs/` and confirm the file is present and committed. If it is not, return to Step 4.
 
-Invoke `hw0k-workflow:plan`.
+Invoke `hexis:plan`.
 
 ## Rules
 

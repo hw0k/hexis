@@ -26,7 +26,7 @@ Call `TaskList` filtered by prefix `review:`. If open Tasks exist from a prior s
 
 ### Step Schedule
 
-Step 1 delegates to `hw0k-workflow:verify`, which manages its own Tasks. Steps 2–4:
+Step 1 delegates to `hexis:verify`, which manages its own Tasks. Steps 2–4:
 
 | Step | On Start | On Done |
 |---|---|---|
@@ -52,7 +52,7 @@ Call `TaskStop` on the current open Task.
 
 ### Step 1: Verify first
 
-Run `hw0k-workflow:verify`. Do not proceed if it fails.
+Run `hexis:verify`. Do not proceed if it fails.
 
 ### Step 2: Collect git SHAs
 
@@ -63,7 +63,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 ### Step 3: Run principles-reviewer
 
-Run the `hw0k-workflow:principles-reviewer` agent:
+Run the `hexis:principles-reviewer` agent:
 - Changed files: `git diff --name-only $BASE_SHA $HEAD_SHA`
 - Scope: the implementation delivered
 

@@ -1,4 +1,4 @@
-# Evaluation Log — `hw0k-workflow:dispatch`
+# Evaluation Log — `hexis:dispatch`
 
 | Date | Scenario | RED result | GREEN result | Notes |
 |------|----------|-----------|-------------|-------|

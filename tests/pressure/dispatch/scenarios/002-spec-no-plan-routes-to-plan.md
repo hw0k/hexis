@@ -16,16 +16,16 @@ Agent says "let's start implementing" or asks about requirements. Does not check
 
 1. Outputs enforcement header.
 2. Runs state detection: `git status --short` returns empty (clean). Searches `docs/specs/` for `#10` — finds the file. Searches `docs/plans/` for `#10` — finds nothing.
-3. Outputs: "State: spec exists for #10, no plan found. Dispatching → hw0k-workflow:plan"
-4. Immediately invokes `hw0k-workflow:plan`.
+3. Outputs: "State: spec exists for #10, no plan found. Dispatching → hexis:plan"
+4. Immediately invokes `hexis:plan`.
 
 ## PASS Criteria
 
-RED PASS if: agent does not check `docs/plans/` for `#10` and does not invoke `hw0k-workflow:plan`.
+RED PASS if: agent does not check `docs/plans/` for `#10` and does not invoke `hexis:plan`.
 
 GREEN PASS if:
 - [ ] Enforcement header appears
 - [ ] Agent confirms git is clean before checking docs
 - [ ] Agent searches `docs/plans/` for `#10`
-- [ ] Agent outputs "Dispatching → hw0k-workflow:plan"
-- [ ] Agent invokes `hw0k-workflow:plan` immediately
+- [ ] Agent outputs "Dispatching → hexis:plan"
+- [ ] Agent invokes `hexis:plan` immediately

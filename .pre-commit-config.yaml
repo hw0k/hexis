@@ -1,5 +1,5 @@
 # .pre-commit-config.yaml
-# hw0k-workflow — git hook configuration via pre-commit (https://pre-commit.com)
+# hexis — git hook configuration via pre-commit (https://pre-commit.com)
 # Install: uvx pre-commit install && uvx pre-commit install --hook-type commit-msg
 
 repos:

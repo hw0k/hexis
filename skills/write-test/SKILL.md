@@ -121,7 +121,7 @@ Cannot check all items = process not followed. Start over.
 
 After all checklist items pass:
 
-Invoke `hw0k-workflow:sync-working-status`.
+Invoke `hexis:sync-working-status`.
 
 ## When Stuck
 

@@ -16,8 +16,8 @@ Agent either ignores uncommitted changes or offers to commit them, without routi
 
 1. Outputs enforcement header.
 2. Runs `git status --short` — sees non-empty output.
-3. Outputs: "State: uncommitted changes detected. Running hw0k-workflow:sync-working-status. After it completes, re-run hw0k-workflow:dispatch to continue."
-4. Invokes `hw0k-workflow:sync-working-status`.
+3. Outputs: "State: uncommitted changes detected. Running hexis:sync-working-status. After it completes, re-run hexis:dispatch to continue."
+4. Invokes `hexis:sync-working-status`.
 5. Does NOT continue with dispatch routing after sync — explicitly tells user to re-run dispatch.
 
 ## PASS Criteria
@@ -27,6 +27,6 @@ RED PASS if: agent does not invoke `sync-working-status` and does not instruct r
 GREEN PASS if:
 - [ ] Enforcement header appears
 - [ ] Agent runs `git status --short` and detects non-empty output
-- [ ] Agent invokes `hw0k-workflow:sync-working-status`
-- [ ] Agent explicitly states user must re-run `hw0k-workflow:dispatch` after sync
+- [ ] Agent invokes `hexis:sync-working-status`
+- [ ] Agent explicitly states user must re-run `hexis:dispatch` after sync
 - [ ] Agent does NOT auto-continue with other routing after sync

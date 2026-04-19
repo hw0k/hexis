@@ -1,6 +1,6 @@
 ---
 name: dispatch
-description: State-aware workflow router — detects current position in the hw0k-workflow and directly invokes the correct next skill
+description: State-aware workflow router — detects current position in the hexis and directly invokes the correct next skill
 type: workflow
 ---
 
@@ -8,7 +8,7 @@ type: workflow
 
 ## Overview
 
-`dispatch` is a state-aware workflow enforcer. It detects where you are in the hw0k-workflow and immediately invokes the correct next skill — no manual routing required.
+`dispatch` is a state-aware workflow enforcer. It detects where you are in the hexis and immediately invokes the correct next skill — no manual routing required.
 
 Invoke at any point: session start, after returning from a break, when unsure of next step.
 
@@ -19,7 +19,7 @@ Invoke at any point: session start, after returning from a break, when unsure of
 Output this header before anything else:
 
 ```
-hw0k-workflow:dispatch — active
+hexis:dispatch — active
 Routing rules: CLAUDE.md skill table enforced for this session.
 ```
 
@@ -47,7 +47,7 @@ Take the branch name substring after the last `/`, then extract the first contig
 Use `AskUserQuestion` to ask: "What issue number are you working on? Enter the number, or 'none' if starting new work."
 
 - Number provided → use as `N`, proceed to Step 1b
-- "none" → invoke `hw0k-workflow:specify`
+- "none" → invoke `hexis:specify`
 
 **Step 1b — with issue number `N`:**
 
@@ -83,11 +83,11 @@ Apply the **first matching rule** in this order:
 
 Output:
 ```
-State: uncommitted changes detected. Running hw0k-workflow:sync-working-status.
-After it completes, re-run hw0k-workflow:dispatch to continue.
+State: uncommitted changes detected. Running hexis:sync-working-status.
+After it completes, re-run hexis:dispatch to continue.
 ```
 
-Invoke `hw0k-workflow:sync-working-status`. Do NOT continue routing after sync — stop dispatch here. The user re-invokes dispatch manually.
+Invoke `hexis:sync-working-status`. Do NOT continue routing after sync — stop dispatch here. The user re-invokes dispatch manually.
 
 **Rule 8 — PR merged:**
 
@@ -104,7 +104,7 @@ For all rules except Rule 1 and Rule 8, output before invoking:
 
 ```
 State: <one-line summary of detected state>
-Dispatching → hw0k-workflow:<skill>
+Dispatching → hexis:<skill>
 ```
 
 Then immediately invoke the determined skill. No confirmation prompt.

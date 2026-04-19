@@ -10,7 +10,7 @@ type: workflow
 
 Verify → commit → choose integration method → execute → clean up.
 
-**Announce at start:** "I'm using the hw0k-workflow:finish skill to complete this work."
+**Announce at start:** "I'm using the hexis:finish skill to complete this work."
 
 ## $ARGUMENTS
 
@@ -26,7 +26,7 @@ Call `TaskList` filtered by prefix `finish:`. If open Tasks exist from a prior s
 
 ### Step Schedule
 
-Step 1 delegates to `hw0k-workflow:verify`, which manages its own Tasks. Steps 2–5:
+Step 1 delegates to `hexis:verify`, which manages its own Tasks. Steps 2–5:
 
 | Step | On Start | On Done |
 |---|---|---|
@@ -42,11 +42,11 @@ Call `TaskStop` on the current open Task.
 
 ### Step 1: Run verify
 
-Run `hw0k-workflow:verify`. Do not proceed to Step 2 if it fails.
+Run `hexis:verify`. Do not proceed to Step 2 if it fails.
 
 ### Step 2: Handle uncommitted changes
 
-If uncommitted changes exist, commit them following `hw0k-workflow:commit-principles` rules.
+If uncommitted changes exist, commit them following `hexis:commit-principles` rules.
 
 ### Step 3: Present options
 
@@ -89,7 +89,7 @@ EOF
 )"
 ```
 
-PR title and body follow `hw0k-workflow:commit-principles` type rules.
+PR title and body follow `hexis:commit-principles` type rules.
 
 #### Option 3: Keep
 

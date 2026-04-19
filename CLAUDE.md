@@ -1,12 +1,12 @@
-# hw0k-workflow
+# hexis
 
 Heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge. Enforces consistent development standards regardless of device, agent, or tool.
 
 ## Plugin Structure
 
 ```
-skills/          # User-invocable skills (hw0k-workflow:<name>)
-agents/          # Agent definitions (hw0k-workflow:<name>)
+skills/          # User-invocable skills (hexis:<name>)
+agents/          # Agent definitions (hexis:<name>)
 commands/        # Slash commands
 tests/pressure/  # Pressure test scenarios (RED/GREEN framework)
 docs/specs/      # Design specs
