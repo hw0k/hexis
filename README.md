@@ -1,21 +1,44 @@
 # hexis
 
-A heavily opinionated Claude Code plugin covering the full development workflow — from spec to merge.
+A heavily opinionated plugin covering the full development workflow — from spec to merge. Works on Claude Code, Codex, and OpenCode.
+
+## Install
+
+### Claude Code
+
+```
+/plugin marketplace add hw0k/hexis
+/plugin install hexis@hexis-marketplace
+```
+
+### Codex
+
+```bash
+codex plugin marketplace add hw0k/hexis
+codex plugin install hexis
+```
+
+### OpenCode
+
+Tell OpenCode:
+
+> Fetch and follow https://raw.githubusercontent.com/hw0k/hexis/refs/heads/main/.opencode/INSTALL.md
 
 ## Quick Start
 
-```bash
-# 1. Install the plugin
-/plugin install hexis --plugin-dir github:hw0k/hexis
+After installing, onboard your project once:
 
-# 2. Onboard your project (run once per repo)
-/setup-new-project
-
-# 3. Start working — let dispatch route you
-/dispatch
+```
+hexis:setup-new-project
 ```
 
-> **Tip:** When in doubt, run `dispatch`. It reads your current state and invokes the right skill automatically.
+Then start working — let dispatch route you:
+
+```
+hexis:dispatch
+```
+
+> **Tip:** When in doubt, run `hexis:dispatch`. It reads your current state and invokes the right skill automatically.
 
 ## Workflow
 
@@ -81,20 +104,6 @@ Reference standards enforced across the workflow.
 | Agent | Purpose |
 |-------|---------|
 | `hexis:principles-reviewer` | Reviews code against all five principle skills — invoked automatically by `hexis:review` |
-
-## Install
-
-```bash
-/plugin install hexis --plugin-dir github:hw0k/hexis
-```
-
-Then run the setup skill once per project:
-
-```bash
-/hexis:setup-new-project
-```
-
-This installs git hooks (pre-commit + commitlint) and adds CLAUDE.md directives so the workflow triggers automatically.
 
 ## Design
 
