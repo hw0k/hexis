@@ -64,7 +64,7 @@ linked_spec: docs/specs/YYYY-MM-DD-<topic>-design.md
 
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. For TDD tasks, follow `hexis:testing-principles`. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence]
 
@@ -81,9 +81,27 @@ Before defining tasks, list files to be created or modified. One responsibility 
 
 **ultrathink** before decomposing tasks — never skip this.
 
+## TDD Applicability
+
+For each task, determine whether TDD applies before writing steps.
+
+**TDD applies when the task involves:**
+- New functions, classes, or modules
+- Changes to existing logic (bug fixes, behavior changes)
+- New or modified API endpoints
+
+**TDD does not apply when the task involves only:**
+- Configuration files (env, package.json, tsconfig, etc.)
+- Documentation, skill files, or markdown
+- Database migration files (verified by running the migration)
+- Type-only refactoring (no behavior change)
+- UI layout/styling with no associated business logic
+
+Label each task `[TDD]` or `[No TDD — <reason>]` in the task name.
+
 ## Task Size
 
-Each task: one action, 2–5 minutes. Steps: write failing test → confirm failure → minimal implementation → confirm pass → commit.
+Each task: one action, 2–5 minutes. Use the TDD or non-TDD step structure below based on the task label.
 
 ## Step Structure
 
@@ -126,6 +144,33 @@ Expected: PASS
 ```bash
 git add <files>
 git commit -m "feat: add specific feature"
+```
+````
+
+### Non-TDD Step Structure
+
+For tasks labeled `[No TDD — <reason>]`:
+
+````markdown
+### Task N: [Name] [No TDD — <reason>]
+
+**Files:**
+- Create/Modify/Delete: `exact/path/to/file`
+
+- [ ] **Step 1: Implement**
+
+[exact changes — no placeholders]
+
+- [ ] **Step 2: Verify**
+
+Run: `<exact command>`
+Expected: `<exact expected output>`
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add <files>
+git commit -m "type: description (#issue)"
 ```
 ````
 
