@@ -10,8 +10,6 @@ type: workflow
 
 Execute an implementation plan. Default: dispatch subagents per task. Inline execution only when there is a clear reason not to.
 
-**Announce at start:** "I'm using the hexis:implement skill to execute this plan."
-
 ## $ARGUMENTS
 
 If `$ARGUMENTS` is a plan file path, load that file. Otherwise use the **ask-user** capability to ask for the path (see `hexis:platform-capabilities`).
