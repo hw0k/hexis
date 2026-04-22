@@ -10,8 +10,6 @@ type: workflow
 
 Verify → commit → choose integration method → execute → clean up.
 
-**Announce at start:** "I'm using the hexis:finish skill to complete this work."
-
 ## $ARGUMENTS
 
 If `$ARGUMENTS` contains a branch or feature description, use it as context.

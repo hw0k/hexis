@@ -10,8 +10,6 @@ type: workflow
 
 Set up an isolated git worktree for feature work.
 
-**Announce at start:** "I'm using the hexis:use-worktree skill to set up an isolated workspace."
-
 **Core principle:** Systematic directory selection + safety verification = reliable isolation.
 
 ## Directory Selection

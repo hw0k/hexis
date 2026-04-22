@@ -10,8 +10,6 @@ type: workflow
 
 Write a detailed implementation plan from a spec. Real code, exact file paths, no placeholders.
 
-**Announce at start:** "I'm using the hexis:plan skill to create the implementation plan."
-
 ## $ARGUMENTS
 
 If `$ARGUMENTS` is a file path, read that spec and start. Otherwise use the **ask-user** capability to ask for the spec path (see `hexis:platform-capabilities`).
