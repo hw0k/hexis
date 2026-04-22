@@ -1,0 +1,14 @@
+{
+  "name": "hexis",
+  "version": "0.1.0",
+  "displayName": "hexis",
+  "shortDescription": "Opinionated full-workflow plugin — spec to merge.",
+  "longDescription": "hexis is a heavily opinionated plugin covering the full development workflow from spec to merge. Enforces consistent development standards regardless of device, agent, or tool. Skills follow a linear flow: specify → plan → use-worktree → write-test → implement → verify → review → finish.",
+  "description": "Heavily opinionated plugin covering the full development workflow — from spec to merge.",
+  "author": "hw0k",
+  "homepage": "https://github.com/hw0k/hexis",
+  "repository": "https://github.com/hw0k/hexis",
+  "license": "MIT",
+  "keywords": ["workflow", "development", "spec", "plan", "review", "commit"],
+  "skills": "./skills/"
+}

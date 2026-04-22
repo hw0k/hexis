@@ -1,0 +1,21 @@
+{
+  "name": "hexis-marketplace",
+  "interface": {
+    "displayName": "hexis"
+  },
+  "plugins": [
+    {
+      "name": "hexis",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/hw0k/hexis.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
