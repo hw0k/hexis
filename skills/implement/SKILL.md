@@ -55,6 +55,10 @@ Use **track-tasks** to stop the current open task and the parent task.
 
 ## Process
 
+### Step 0: Branch Check
+
+Check the current branch. If it is `main` or `master`, use the **ask-user** capability to ask the user whether to proceed on this branch or switch to a feature branch. Do not proceed until the user explicitly confirms. This check is mandatory even if the user invoked the skill directly.
+
 ### Step 1: Load and Review
 
 1. Read the plan file
@@ -100,5 +104,5 @@ Don't guess. Stop and ask.
 
 ## Notes
 
-- Never start implementation on main/master without explicit user consent
+- Never start implementation on main/master without explicit user confirmation — enforced by Step 0
 - For tasks marked `[TDD]`, follow the Red-Green-Refactor cycle from `hexis:testing-principles`. The failing test must be seen to fail before writing implementation code.
