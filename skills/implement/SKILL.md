@@ -101,3 +101,4 @@ Don't guess. Stop and ask.
 ## Notes
 
 - Never start implementation on main/master without explicit user consent
+- For tasks marked `[TDD]`, follow the Red-Green-Refactor cycle from `hexis:testing-principles`. The failing test must be seen to fail before writing implementation code.
