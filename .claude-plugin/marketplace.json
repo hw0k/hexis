@@ -1,0 +1,14 @@
+{
+  "name": "hexis-marketplace",
+  "owner": {
+    "name": "Hyunwook Nam",
+    "email": "hw0knam@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "hexis",
+      "source": "../",
+      "description": "Heavily opinionated plugin covering the full development workflow — from spec to merge."
+    }
+  ]
+}
