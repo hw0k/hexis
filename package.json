@@ -1,0 +1,10 @@
+{
+  "name": "hexis",
+  "version": "0.1.0",
+  "type": "module",
+  "main": ".opencode/plugins/hexis.js",
+  "description": "Heavily opinionated plugin covering the full development workflow — from spec to merge.",
+  "author": "hw0k",
+  "license": "MIT",
+  "keywords": ["opencode", "workflow", "development", "hexis"]
+}

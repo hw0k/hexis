@@ -4,7 +4,7 @@ linked_spec: docs/specs/2026-04-19-universal-skill-support-design.md
 
 # Universal Skill Support Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Make all hexis workflow skills platform-agnostic by replacing platform-specific tool references with capability names, backed by a new `platform-capabilities` reference skill.
 
@@ -47,7 +47,7 @@ linked_spec: docs/specs/2026-04-19-universal-skill-support-design.md
 **Files:**
 - Create: `skills/platform-capabilities/SKILL.md`
 
-- [ ] **Step 1: Create the file**
+- [x] **Step 1: Create the file**
 
 ```markdown
 ---
@@ -80,7 +80,7 @@ TBD entries in named platform columns are filled as concrete equivalents are con
 When a hexis skill references a capability name in bold (e.g., **ask-user**), find that row and use the tool or method for your current platform. If your platform is not listed or the capability is TBD, use the generic fallback.
 ```
 
-- [ ] **Step 2: Verify with pre-commit**
+- [x] **Step 2: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/platform-capabilities/SKILL.md
@@ -88,7 +88,7 @@ uvx pre-commit run --files skills/platform-capabilities/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/platform-capabilities/SKILL.md
@@ -102,7 +102,7 @@ git commit -m "feat(skills): add platform-capabilities reference skill"
 **Files:**
 - Read: `skills/core-principles/SKILL.md`, `skills/http-api-principles/SKILL.md`, `skills/exception-and-logging-principles/SKILL.md`, `skills/general-naming-principles/SKILL.md`, `skills/commit-principles/SKILL.md`
 
-- [ ] **Step 1: Grep for platform-specific tool names**
+- [x] **Step 1: Grep for platform-specific tool names**
 
 ```bash
 grep -n "AskUserQuestion\|TaskCreate\|TaskUpdate\|TaskList\|TaskStop\|TaskGet\|EnterPlanMode\|ExitPlanMode\|Agent tool" \
@@ -115,7 +115,7 @@ grep -n "AskUserQuestion\|TaskCreate\|TaskUpdate\|TaskList\|TaskStop\|TaskGet\|E
 
 Expected: no matches (all 5 skills are pure reference text with no tool calls)
 
-- [ ] **Step 2: If any matches found, update and commit; if none, note as confirmed**
+- [x] **Step 2: If any matches found, update and commit; if none, note as confirmed**
 
 Expected outcome: No changes needed. All 5 principles skills confirmed platform-agnostic.
 
@@ -126,7 +126,7 @@ Expected outcome: No changes needed. All 5 principles skills confirmed platform-
 **Files:**
 - Modify: `skills/specify/SKILL.md`
 
-- [ ] **Step 1: Replace `$ARGUMENTS` line's AskUserQuestion reference**
+- [x] **Step 1: Replace `$ARGUMENTS` line's AskUserQuestion reference**
 
 In the `## $ARGUMENTS` section, replace:
 
@@ -140,7 +140,7 @@ with:
 use the **ask-user** capability to ask what needs to be specified (see `hexis:platform-capabilities`).
 ```
 
-- [ ] **Step 2: Replace Task Tracking section**
+- [x] **Step 2: Replace Task Tracking section**
 
 Replace the entire `## Task Tracking` section with:
 
@@ -170,7 +170,7 @@ Use the **track-tasks** capability filtered by prefix `specify:`. If open tasks 
 Use **track-tasks** to stop the current open task. Do not leave any task in an unresolved state.
 ```
 
-- [ ] **Step 3: Replace AskUserQuestion references in Process section**
+- [x] **Step 3: Replace AskUserQuestion references in Process section**
 
 In `### Step 1: Identify Ambiguities` → `**On decomposition:**` block:
 - Replace `` `AskUserQuestion` `` with `the **ask-user** capability`
@@ -191,7 +191,7 @@ Use the **ask-user** capability. Group related ambiguities into a single request
 In `## Rules`:
 - Replace `` `AskUserQuestion` `` with `the **ask-user** capability`
 
-- [ ] **Step 4: Verify with pre-commit**
+- [x] **Step 4: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/specify/SKILL.md
@@ -199,7 +199,7 @@ uvx pre-commit run --files skills/specify/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add skills/specify/SKILL.md
@@ -213,7 +213,7 @@ git commit -m "refactor(skills): make specify skill platform-agnostic"
 **Files:**
 - Modify: `skills/plan/SKILL.md`
 
-- [ ] **Step 1: Replace `$ARGUMENTS` line's AskUserQuestion reference**
+- [x] **Step 1: Replace `$ARGUMENTS` line's AskUserQuestion reference**
 
 In the `## $ARGUMENTS` section, replace:
 
@@ -227,7 +227,7 @@ with:
 use the **ask-user** capability to ask for the spec path (see `hexis:platform-capabilities`).
 ```
 
-- [ ] **Step 2: Replace Task Tracking section**
+- [x] **Step 2: Replace Task Tracking section**
 
 Replace the entire `## Task Tracking` section with:
 
@@ -257,7 +257,7 @@ Use the **track-tasks** capability filtered by prefix `plan:`. If open tasks exi
 Use **track-tasks** to stop the current open task.
 ```
 
-- [ ] **Step 3: Replace AskUserQuestion reference in Scope Check section**
+- [x] **Step 3: Replace AskUserQuestion reference in Scope Check section**
 
 In `## Scope Check`, replace:
 
@@ -271,7 +271,7 @@ with:
 propose decomposition to the user using the **ask-user** capability
 ```
 
-- [ ] **Step 4: Verify with pre-commit**
+- [x] **Step 4: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/plan/SKILL.md
@@ -279,7 +279,7 @@ uvx pre-commit run --files skills/plan/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add skills/plan/SKILL.md
@@ -293,7 +293,7 @@ git commit -m "refactor(skills): make plan skill platform-agnostic"
 **Files:**
 - Modify: `skills/verify/SKILL.md`
 
-- [ ] **Step 1: Replace EnterPlanMode/ExitPlanMode with plan-mode capability**
+- [x] **Step 1: Replace EnterPlanMode/ExitPlanMode with plan-mode capability**
 
 In `## Complexity Check`, replace:
 
@@ -307,7 +307,7 @@ with:
 **Complex scope** → use the **plan-mode** capability. Define verification commands and expected outputs, get approval before running anything (see `hexis:platform-capabilities`).
 ```
 
-- [ ] **Step 2: Replace Task Tracking section**
+- [x] **Step 2: Replace Task Tracking section**
 
 Replace the entire `## Task Tracking` section with:
 
@@ -339,7 +339,7 @@ When `verify` is invoked as a sub-step by another skill (`review`, `finish`), it
 Use **track-tasks** to stop the current open task.
 ```
 
-- [ ] **Step 3: Verify with pre-commit**
+- [x] **Step 3: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/verify/SKILL.md
@@ -347,7 +347,7 @@ uvx pre-commit run --files skills/verify/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/verify/SKILL.md
@@ -361,7 +361,7 @@ git commit -m "refactor(skills): make verify skill platform-agnostic"
 **Files:**
 - Modify: `skills/review/SKILL.md`
 
-- [ ] **Step 1: Replace Task Tracking section**
+- [x] **Step 1: Replace Task Tracking section**
 
 Replace the entire `## Task Tracking` section with:
 
@@ -391,7 +391,7 @@ Step 1 delegates to `hexis:verify`, which manages its own tasks. Steps 2–4:
 Use **track-tasks** to stop the current open task.
 ```
 
-- [ ] **Step 2: Update Step 3 to reference spawn-subagent capability**
+- [x] **Step 2: Update Step 3 to reference spawn-subagent capability**
 
 In `### Step 3: Run principles-reviewer`, replace:
 
@@ -409,7 +409,7 @@ Use the **spawn-subagent** capability to run the `hexis:principles-reviewer` age
 - Scope: the implementation delivered
 ```
 
-- [ ] **Step 3: Verify with pre-commit**
+- [x] **Step 3: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/review/SKILL.md
@@ -417,7 +417,7 @@ uvx pre-commit run --files skills/review/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/review/SKILL.md
@@ -431,7 +431,7 @@ git commit -m "refactor(skills): make review skill platform-agnostic"
 **Files:**
 - Modify: `skills/receive-review/SKILL.md`
 
-- [ ] **Step 1: Replace AskUserQuestion references**
+- [x] **Step 1: Replace AskUserQuestion references**
 
 In `## Response Pattern`, replace:
 
@@ -457,7 +457,7 @@ with:
 Use the **ask-user** capability to ask about unclear items.
 ```
 
-- [ ] **Step 2: Verify with pre-commit**
+- [x] **Step 2: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/receive-review/SKILL.md
@@ -465,7 +465,7 @@ uvx pre-commit run --files skills/receive-review/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/receive-review/SKILL.md
@@ -479,7 +479,7 @@ git commit -m "refactor(skills): make receive-review skill platform-agnostic"
 **Files:**
 - Modify: `skills/implement/SKILL.md`
 
-- [ ] **Step 1: Replace `$ARGUMENTS` AskUserQuestion reference**
+- [x] **Step 1: Replace `$ARGUMENTS` AskUserQuestion reference**
 
 In `## $ARGUMENTS`, replace:
 
@@ -493,7 +493,7 @@ with:
 use the **ask-user** capability to ask for the path (see `hexis:platform-capabilities`).
 ```
 
-- [ ] **Step 2: Replace EnterPlanMode/ExitPlanMode with plan-mode capability**
+- [x] **Step 2: Replace EnterPlanMode/ExitPlanMode with plan-mode capability**
 
 In `## Complexity Check`, replace:
 
@@ -507,7 +507,7 @@ with:
 **Complex task** → use the **plan-mode** capability. Review the plan, clarify execution strategy, get approval before writing any code (see `hexis:platform-capabilities`).
 ```
 
-- [ ] **Step 3: Replace Task Tracking section**
+- [x] **Step 3: Replace Task Tracking section**
 
 Replace the entire `## Task Tracking` section with:
 
@@ -542,7 +542,7 @@ Use **track-tasks** to mark the parent task completed.
 Use **track-tasks** to stop the current open task and the parent task.
 ```
 
-- [ ] **Step 4: Update Step 3 (Subagent Path) to reference spawn-subagent**
+- [x] **Step 4: Update Step 3 (Subagent Path) to reference spawn-subagent**
 
 In `### Step 3: Subagent Path`, replace:
 
@@ -556,7 +556,7 @@ with:
 Use the **spawn-subagent** capability for each task (see `hexis:platform-capabilities`). Review between tasks before dispatching the next. If **spawn-subagent** is unavailable, use the Inline Path instead.
 ```
 
-- [ ] **Step 5: Verify with pre-commit**
+- [x] **Step 5: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/implement/SKILL.md
@@ -564,7 +564,7 @@ uvx pre-commit run --files skills/implement/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add skills/implement/SKILL.md
@@ -578,7 +578,7 @@ git commit -m "refactor(skills): make implement skill platform-agnostic"
 **Files:**
 - Modify: `skills/use-worktree/SKILL.md`
 
-- [ ] **Step 1: Replace AskUserQuestion references**
+- [x] **Step 1: Replace AskUserQuestion references**
 
 In `### 3. Ask the User`, replace:
 
@@ -604,7 +604,7 @@ with:
 - Use the **ask-user** capability for directory selection when no config exists
 ```
 
-- [ ] **Step 2: Verify with pre-commit**
+- [x] **Step 2: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/use-worktree/SKILL.md
@@ -612,7 +612,7 @@ uvx pre-commit run --files skills/use-worktree/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/use-worktree/SKILL.md
@@ -626,7 +626,7 @@ git commit -m "refactor(skills): make use-worktree skill platform-agnostic"
 **Files:**
 - Modify: `skills/finish/SKILL.md`
 
-- [ ] **Step 1: Replace Task Tracking section**
+- [x] **Step 1: Replace Task Tracking section**
 
 Replace the entire `## Task Tracking` section with:
 
@@ -656,7 +656,7 @@ Step 1 delegates to `hexis:verify`, which manages its own tasks. Steps 2–5:
 Use **track-tasks** to stop the current open task.
 ```
 
-- [ ] **Step 2: Replace AskUserQuestion in Step 3**
+- [x] **Step 2: Replace AskUserQuestion in Step 3**
 
 In `### Step 3: Present options`, replace:
 
@@ -670,7 +670,7 @@ with:
 Use the **ask-user** capability (see `hexis:platform-capabilities`):
 ```
 
-- [ ] **Step 3: Verify with pre-commit**
+- [x] **Step 3: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files skills/finish/SKILL.md
@@ -678,7 +678,7 @@ uvx pre-commit run --files skills/finish/SKILL.md
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/finish/SKILL.md
@@ -695,7 +695,7 @@ git commit -m "refactor(skills): make finish skill platform-agnostic"
 - Create: `tests/pressure/universal-skill-support/scenarios/001-specify-no-interactive-tools.md`
 - Create: `tests/pressure/universal-skill-support/scenarios/002-implement-no-subagent.md`
 
-- [ ] **Step 1: Create README.md**
+- [x] **Step 1: Create README.md**
 
 ```markdown
 # Universal Skill Support — Pressure Tests
@@ -708,7 +708,7 @@ Tests that hexis workflow skills fall back gracefully when running on platforms 
 - `002-implement-no-subagent.md` — implement falls back to inline execution when spawn-subagent is unavailable
 ```
 
-- [ ] **Step 2: Create evaluation-log.md**
+- [x] **Step 2: Create evaluation-log.md**
 
 ```markdown
 # Evaluation Log
@@ -717,7 +717,7 @@ Tests that hexis workflow skills fall back gracefully when running on platforms 
 |---|---|---|---|---|---|
 ```
 
-- [ ] **Step 3: Create scenario 001**
+- [x] **Step 3: Create scenario 001**
 
 ```markdown
 # Scenario 001: Specify — No Interactive Tools
@@ -739,7 +739,7 @@ Agent tries to call `AskUserQuestion` or `TaskCreate`, fails with a tool-not-fou
 1. Agent identifies that **ask-user** capability resolves to inline text fallback on this platform
 2. Agent identifies that **track-tasks** capability resolves to inline checklist fallback
 3. Agent outputs clarifying questions inline in response text and waits for the next user message
-4. Agent maintains a markdown checklist (`- [ ] identify ambiguities`, etc.) in each response
+4. Agent maintains a markdown checklist (`- [x] identify ambiguities`, etc.) in each response
 5. Specify workflow completes: spec file is written and committed
 
 ## PASS Criteria
@@ -747,13 +747,13 @@ Agent tries to call `AskUserQuestion` or `TaskCreate`, fails with a tool-not-fou
 RED PASS if: agent errors on tool call or fails to complete specify without Claude Code tools.
 
 GREEN PASS if:
-- [ ] Agent does not attempt to call `AskUserQuestion` or `TaskCreate` directly
-- [ ] Clarifying questions appear as inline text in the response
-- [ ] A markdown checklist tracks step progress in the response
-- [ ] Spec file is written to `docs/specs/` and committed
+- [x] Agent does not attempt to call `AskUserQuestion` or `TaskCreate` directly
+- [x] Clarifying questions appear as inline text in the response
+- [x] A markdown checklist tracks step progress in the response
+- [x] Spec file is written to `docs/specs/` and committed
 ```
 
-- [ ] **Step 4: Create scenario 002**
+- [x] **Step 4: Create scenario 002**
 
 ```markdown
 # Scenario 002: Implement — No Subagent Dispatch
@@ -783,13 +783,13 @@ Agent tries to call `Agent` tool, fails, or attempts to dispatch subagents that 
 RED PASS if: agent calls `Agent` tool and errors, or dispatches zero-output subagents without falling back.
 
 GREEN PASS if:
-- [ ] Agent does not call `Agent` tool directly
-- [ ] Agent explicitly states it is using inline execution due to unavailable **spawn-subagent**
-- [ ] Tasks are executed sequentially in the current context
-- [ ] Progress is tracked inline via markdown checklist
+- [x] Agent does not call `Agent` tool directly
+- [x] Agent explicitly states it is using inline execution due to unavailable **spawn-subagent**
+- [x] Tasks are executed sequentially in the current context
+- [x] Progress is tracked inline via markdown checklist
 ```
 
-- [ ] **Step 5: Verify with pre-commit**
+- [x] **Step 5: Verify with pre-commit**
 
 ```bash
 uvx pre-commit run --files \
@@ -801,7 +801,7 @@ uvx pre-commit run --files \
 
 Expected: lint Passed, format Passed, test Passed
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add tests/pressure/universal-skill-support/

@@ -23,32 +23,34 @@ Before starting, assess scope complexity against these criteria (any one is suff
 - Success criteria are ambiguous
 - Multiple verification strategies are applicable
 
-**Complex scope** → call `EnterPlanMode`. Define verification commands and expected outputs, get user approval via `ExitPlanMode` before running anything.
+**Complex scope** → use the **plan-mode** capability. Define verification commands and expected outputs, get approval before running anything (see `hexis:platform-capabilities`).
 **Simple scope** → proceed directly.
 
 ## Task Tracking
 
 ### On Start
 
-Call `TaskList` filtered by prefix `verify:`. If open Tasks exist from a prior session:
-- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state) or **Start fresh** (call `TaskStop` on all open Tasks)
-- If no open Tasks: proceed directly
+Use the **track-tasks** capability filtered by prefix `verify:`. If open tasks exist from a prior session:
+- Use the **ask-user** capability: **Resume** (verify state of last open task) or **Start fresh** (stop all open tasks)
+- If no open tasks: proceed directly
+
+> **Fallbacks:** If **track-tasks** is unavailable, maintain a markdown checklist in the current response. If **ask-user** is unavailable, output the question inline and wait for the next message.
 
 ### Step Schedule
 
 | Check | On Start | On Done |
 |---|---|---|
-| Type check | `TaskCreate("verify: type check")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
-| Lint | `TaskCreate("verify: lint")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
-| Tests | `TaskCreate("verify: tests")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Type check | **track-tasks**: create "verify: type check" → mark in_progress | mark completed |
+| Lint | **track-tasks**: create "verify: lint" → mark in_progress | mark completed |
+| Tests | **track-tasks**: create "verify: tests" → mark in_progress | mark completed |
 
-Only create a Task for checks that are applicable. Skip a Task entirely if the check is declared inapplicable.
+Only create a task for checks that are applicable. Skip a task entirely if the check is declared inapplicable.
 
-When `verify` is invoked as a sub-step by another skill (`review`, `finish`), it manages its own Tasks independently — no coordination with the calling skill needed.
+When `verify` is invoked as a sub-step by another skill (`review`, `finish`), it manages its own tasks independently — no coordination with the calling skill needed.
 
 ### On Failure or Abort
 
-Call `TaskStop` on the current open Task.
+Use **track-tasks** to stop the current open task.
 
 ## The Iron Law
 

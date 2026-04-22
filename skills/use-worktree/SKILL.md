@@ -37,7 +37,7 @@ If a preference is specified, use it.
 
 ### 3. Ask the User
 
-If neither of the above applies, use `AskUserQuestion`:
+If neither of the above applies, use the **ask-user** capability (see `hexis:platform-capabilities`):
 
 ```
 No worktree directory found. Where should I create worktrees?
@@ -106,4 +106,4 @@ Ready to implement <feature-name>
 - Assume directory location — always follow the priority order
 
 **Always:**
-- Use `AskUserQuestion` for directory selection when no config exists
+- Use the **ask-user** capability for directory selection when no config exists

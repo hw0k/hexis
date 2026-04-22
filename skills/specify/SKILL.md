@@ -16,7 +16,7 @@ Turn blurry inputs into clear, precise specs. The goal is not to generate ideas 
 
 ## $ARGUMENTS
 
-If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use `AskUserQuestion` to ask what needs to be specified.
+If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use the **ask-user** capability to ask what needs to be specified (see `hexis:platform-capabilities`).
 
 ## Checklist
 
@@ -31,23 +31,25 @@ If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise use
 
 ### On Start
 
-Call `TaskList` filtered by prefix `specify:`. If open Tasks exist from a prior session:
-- Use `AskUserQuestion`: **Resume** (use `TaskGet` to verify state, continue from the last open Task) or **Start fresh** (call `TaskStop` on all open Tasks, then proceed from Step 1)
-- If no open Tasks: proceed directly
+Use the **track-tasks** capability filtered by prefix `specify:`. If open tasks exist from a prior session:
+- Use the **ask-user** capability: **Resume** (verify state of last open task, continue from it) or **Start fresh** (stop all open tasks, then proceed from Step 1)
+- If no open tasks: proceed directly
+
+> **Fallbacks:** If **track-tasks** is unavailable, maintain a markdown checklist in the current response. If **ask-user** is unavailable, output the question inline and wait for the next message.
 
 ### Step Schedule
 
 | Step | On Start | On Done |
 |---|---|---|
-| Step 1: Identify Ambiguities | `TaskCreate("specify: identify ambiguities")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
-| Step 2: Ask Clarifying Questions | `TaskCreate("specify: ask clarifying questions")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
-| Step 3: Draft | `TaskCreate("specify: draft spec")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
-| Step 4: Write and Commit | `TaskCreate("specify: write and commit spec")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
-| Step 5: Hand Off | `TaskCreate("specify: hand off to plan")` → `TaskUpdate(in_progress)` | `TaskUpdate(completed)` |
+| Step 1: Identify Ambiguities | **track-tasks**: create "specify: identify ambiguities" → mark in_progress | mark completed |
+| Step 2: Ask Clarifying Questions | **track-tasks**: create "specify: ask clarifying questions" → mark in_progress | mark completed |
+| Step 3: Draft | **track-tasks**: create "specify: draft spec" → mark in_progress | mark completed |
+| Step 4: Write and Commit | **track-tasks**: create "specify: write and commit spec" → mark in_progress | mark completed |
+| Step 5: Hand Off | **track-tasks**: create "specify: hand off to plan" → mark in_progress | mark completed |
 
 ### On Failure or Abort
 
-Call `TaskStop` on the current open Task. Do not leave any Task in an unresolved state.
+Use **track-tasks** to stop the current open task. Do not leave any task in an unresolved state.
 
 ## Process
 
@@ -62,7 +64,7 @@ Before asking questions, read the input and list what is unclear:
 If the input covers multiple independent subsystems, or the spec grows too large to be independently implementable as a single unit: decompose.
 
 **On decomposition:**
-1. Propose the N units to the user via `AskUserQuestion`. Do not proceed until confirmed.
+1. Propose the N units to the user using the **ask-user** capability. Do not proceed until confirmed.
 2. Write N Spec files: `docs/specs/YYYY-MM-DD-<unit-name>-design.md`
 3. Create N GitHub Issues: `gh issue create --title "<unit name>" --body $'<scope>\n\nDecomposed from: #<original>'`
 4. If an original issue exists, close it: `gh issue close <number> --comment "Decomposed into: #X, #Y, ..."`
@@ -70,7 +72,7 @@ If the input covers multiple independent subsystems, or the spec grows too large
 
 ### Step 2: Ask Clarifying Questions
 
-Use `AskUserQuestion`. Group related ambiguities into a single call when possible — the tool supports multiple questions at once.
+Use the **ask-user** capability. Group related ambiguities into a single request when possible.
 
 Questions clarify; they do not explore alternatives: "What do you mean by X?" not "Which approach would you prefer?"
 
@@ -119,4 +121,4 @@ Invoke `hexis:plan`.
 - ultrathink before writing the spec — never skip
 - If something is still blurry after 3 questions: write both interpretations and ask the user to pick one
 - No plan until the spec is unambiguous
-- If the user requests to skip writing the spec file: use `AskUserQuestion` to confirm. Only proceed without a spec file with explicit user confirmation, and note the skip explicitly.
+- If the user requests to skip writing the spec file: use the **ask-user** capability to confirm. Only proceed without a spec file with explicit user confirmation, and note the skip explicitly.
