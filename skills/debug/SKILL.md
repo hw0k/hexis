@@ -77,7 +77,7 @@ Find similar working code. Compare against the reference implementation. List th
 
 ## Phase 4: Implementation
 
-1. Write a failing test that reproduces the bug (`hexis:write-test`)
+1. Write a failing test that reproduces the bug (follow `hexis:testing-principles` Red-Green-Refactor)
 2. Fix the root cause. One change.
 3. Verify the fix — **cite test runner output**
 4. If the fix fails 3 or more times: stop. Suspect the architecture. Discuss with the user.
