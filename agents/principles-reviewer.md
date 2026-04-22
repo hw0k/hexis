@@ -1,6 +1,6 @@
 ---
 name: principles-reviewer
-description: Reviews code and process against all five hexis principle skills — core principles, HTTP API design, exception and logging, naming conventions, and official methods compliance.
+description: Reviews code and process against all five hexis principle skills — core principles, HTTP API design, exception and logging, naming conventions, and testing standards.
 type: agent
 ---
 
@@ -16,6 +16,7 @@ Review against all five principle areas, in this order:
 2. **HTTP API design** (`hexis:http-api-principles`) — resource naming, HTTP methods, status codes, error response format, versioning, pagination
 3. **Exception and logging** (`hexis:exception-and-logging-principles`) — catch boundaries, logging requirements, error categorization, re-throw pattern, recovery strategies
 4. **Naming conventions** (`hexis:general-naming-principles`) — variables, functions, classes, constants, files, packages
+5. **Testing** (`hexis:testing-principles`) — TDD applicability in plans, Iron Law compliance, mock usage, test naming, coverage approach
 
 Core principles lead because process-level violations can invalidate how the other four areas are applied.
 
@@ -26,6 +27,7 @@ Read all five principle skills in full before reviewing any code:
 - `hexis:http-api-principles`
 - `hexis:exception-and-logging-principles`
 - `hexis:general-naming-principles`
+- `hexis:testing-principles`
 
 ## Output Format
 
@@ -79,6 +81,16 @@ Structure your output with one section per principle area:
 ## Naming Conventions
 
 No violations found.
+
+---
+
+## Testing
+
+### Violations
+[testing.iron-law] — task writes production code with no preceding test step and no `[No TDD]` label → add `[TDD]` label and failing test step, or justify skip with `[No TDD — <reason>]`
+
+### Passed
+- All TDD tasks include failing-test confirmation step
 ```
 
 ## Violation Format Details

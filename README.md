@@ -45,7 +45,7 @@ hexis:dispatch
 Skills follow a linear flow. Each skill hands off to the next.
 
 ```
-specify → plan → [use-worktree] → write-test → implement → verify → review → finish
+specify → plan → [use-worktree] → implement → verify → review → finish
 ```
 
 | Situation | Skill to invoke |
@@ -54,7 +54,6 @@ specify → plan → [use-worktree] → write-test → implement → verify → 
 | Requirement or task is vague | `specify` |
 | Need an implementation plan | `plan` |
 | Starting feature work in isolation | `use-worktree` |
-| Writing code (TDD) | `write-test` |
 | Executing an implementation plan | `implement` |
 | Debugging a failure | `debug` |
 | Claiming work is done | `verify` |
@@ -72,7 +71,6 @@ specify → plan → [use-worktree] → write-test → implement → verify → 
 | `hexis:specify` | Any time a requirement, task, or idea is blurry — produces an unambiguous, actionable spec |
 | `hexis:plan` | After spec is complete — produces a step-by-step implementation plan with checkboxes |
 | `hexis:use-worktree` | Before executing a plan — sets up an isolated git worktree for the feature branch |
-| `hexis:write-test` | Before writing implementation code — writes failing tests first (TDD gate) |
 | `hexis:implement` | When a written plan exists — executes it task-by-task, subagent-first |
 | `hexis:debug` | On any bug, test failure, or unexpected behavior — investigates root cause before proposing a fix |
 | `hexis:verify` | Before claiming any work is complete — runs verification commands and confirms actual output |
@@ -92,6 +90,7 @@ Reference standards enforced across the workflow.
 | `hexis:http-api-principles` | HTTP API design — Richardson Level 2, `/api/{version}/{resource}`, JSON camelCase, RFC 9457 errors |
 | `hexis:exception-and-logging-principles` | Exception handling and structured logging — failure classification, log levels, correlation IDs |
 | `hexis:general-naming-principles` | Language-agnostic naming conventions — follow each language's official style guide, consistency rules |
+| `hexis:testing-principles` | Testing standards — Red-Green-Refactor, test type selection, mock guidelines, naming, and coverage approach |
 
 ### Setup Skills
 
