@@ -1,3 +1,6 @@
+---
+---
+
 # Migrate lefthook to Python pre-commit (uvx)
 
 ## Problem
