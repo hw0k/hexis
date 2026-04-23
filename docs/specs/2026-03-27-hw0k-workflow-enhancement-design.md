@@ -1,3 +1,9 @@
+---
+plan:
+  - docs/plans/2026-03-27-hw0k-workflow-enhancement-content.md
+  - docs/plans/2026-03-27-hw0k-workflow-enhancement-infra.md
+---
+
 # hw0k-workflow Enhancement Design
 
 > **Historical document.** This spec reflects the initial design state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).

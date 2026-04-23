@@ -1,6 +1,8 @@
-# hexis CLI Tool
+---
+issue: 22
+---
 
-Issue: #22
+# hexis CLI Tool
 
 Decomposed from: #21
 

@@ -1,3 +1,7 @@
+---
+plan: docs/plans/2026-04-01-issues-2-3-4-plan-mode-sync-pre-commit.md
+---
+
 # Plan Mode Migration to Executing Task Skills
 
 ## Problem

@@ -1,3 +1,7 @@
+---
+plan: docs/plans/2026-03-27-skill-philosophy-rewrite.md
+---
+
 # Skill Philosophy Rewrite Design
 
 > **Historical document.** This spec reflects the design state at the time of writing. `new-project-setup` has since been renamed to `setup-new-project`.

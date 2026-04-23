@@ -1,6 +1,8 @@
-# CLI-Enforced Integration Gate
+---
+issue: 21
+---
 
-Issue: #21
+# CLI-Enforced Integration Gate
 
 > **Superseded.** Decomposed into: [hw0k CLI Tool](2026-04-08-hw0k-cli-tool-design.md) (#22), [Skill Integration Gate](2026-04-08-skill-integration-gate-design.md) (#23)
 

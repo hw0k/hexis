@@ -1,6 +1,9 @@
-# Rename hw0k-workflow to hexis
+---
+issue: 25
+plan: docs/plans/2026-04-19-hexis-rename.md
+---
 
-Issue: #25
+# Rename hw0k-workflow to hexis
 
 ## Overview
 

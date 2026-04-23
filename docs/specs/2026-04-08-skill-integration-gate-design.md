@@ -1,6 +1,8 @@
-# Skill Integration Gate
+---
+issue: 23
+---
 
-Issue: #23
+# Skill Integration Gate
 
 Decomposed from: #21
 

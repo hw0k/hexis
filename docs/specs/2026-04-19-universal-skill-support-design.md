@@ -1,6 +1,9 @@
-# Universal Skill Support
+---
+issue: 16
+plan: docs/plans/2026-04-19-universal-skill-support.md
+---
 
-Issue: #16
+# Universal Skill Support
 
 ## What
 

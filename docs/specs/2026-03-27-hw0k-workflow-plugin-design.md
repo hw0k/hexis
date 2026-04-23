@@ -1,3 +1,7 @@
+---
+plan: docs/plans/2026-03-27-hw0k-workflow-plugin.md
+---
+
 # hw0k-workflow Plugin Design
 
 > **Historical document.** This spec reflects the initial design state. Some skill names have since been renamed (e.g., `conventional-commit` → `commit-principles`, `new-project-setup` → `setup-new-project`).
