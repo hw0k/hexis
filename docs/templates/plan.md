@@ -1,6 +1,7 @@
 ---
-linked_spec: docs/specs/<filename>.md
 issue: N
+status: READY_TO_IMPLEMENT
+linked_spec: docs/specs/<filename>.md
 ---
 
 # <Title> Implementation Plan
