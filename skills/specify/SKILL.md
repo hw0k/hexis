@@ -100,12 +100,18 @@ Write to `docs/specs/YYYY-MM-DD-<topic>-design.md`. The file must match `docs/te
 ```markdown
 ---
 issue: N
+status: READY_TO_PLAN
+checks:
+  - item: "criterion description"
+    done: false
 ---
 
 # <Title>
 ```
 
-Where `N` is the GitHub issue number this spec addresses (bare integer, no `#`). If there is no associated issue, omit the frontmatter. The `issue: N` frontmatter field is required for `hexis:dispatch` to locate the spec by issue number.
+Where `N` is the GitHub issue number this spec addresses (bare integer, no `#`). If there is no associated issue, omit `issue:`. The `issue: N` frontmatter field is required for `hexis:dispatch` to locate the spec by issue number.
+
+**HARD RULE:** The `## Done Criteria` body section is FORBIDDEN. All acceptance criteria MUST be defined in `checks:` frontmatter as a list of `{item, done}` objects. A spec file with a `## Done Criteria` body section is malformed.
 
 Commit: `docs: add <topic> spec`
 

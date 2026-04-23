@@ -1,4 +1,5 @@
 ---
+status: DONE
 ---
 
 # Skill Philosophy Rewrite Design

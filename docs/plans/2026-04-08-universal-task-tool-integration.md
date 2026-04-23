@@ -1,6 +1,7 @@
 ---
-linked_spec: docs/specs/2026-04-08-universal-task-tool-integration-design.md
 issue: 15
+status: DONE
+linked_spec: docs/specs/2026-04-08-universal-task-tool-integration-design.md
 ---
 
 # Universal Task Tool Integration Implementation Plan

@@ -1,4 +1,5 @@
 ---
+status: DONE
 linked_spec: docs/specs/2026-04-01-specify-artifact-enforcement-design.md
 ---
 

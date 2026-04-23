@@ -1,4 +1,5 @@
 ---
+status: DONE
 ---
 
 # hw0k-workflow Plugin Design

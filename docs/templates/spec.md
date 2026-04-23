@@ -1,5 +1,9 @@
 ---
 issue: N
+status: READY_TO_PLAN
+checks:
+  - item: "acceptance criterion here"
+    done: false
 ---
 
 # <Title>
@@ -11,5 +15,3 @@ issue: N
 ## Changes
 
 ## Out of Scope
-
-## Done Criteria

@@ -1,5 +1,21 @@
 ---
 issue: 20
+status: IN_PROGRESS
+checks:
+  - item: "`issue: N` — required when linked to a GitHub issue (bare integer, no `#`)"
+    done: false
+  - item: "`plan: docs/plans/...` — optional; added by the `plan` skill once the plan file is created"
+    done: false
+  - item: "`## Problem` — required"
+    done: false
+  - item: "`## Goal` — required"
+    done: false
+  - item: "`## Changes` — required"
+    done: false
+  - item: "`## Out of Scope` — optional"
+    done: false
+  - item: "`## Done Criteria` — required"
+    done: false
 ---
 
 # Standardize Spec and Plan Document Formats
@@ -37,24 +53,6 @@ issue: N
 ## Changes
 
 ## Out of Scope
-
-## Done Criteria
-```
-
-**Frontmatter fields:**
-- `issue: N` — required when linked to a GitHub issue (bare integer, no `#`)
-- `plan: docs/plans/...` — optional; added by the `plan` skill once the plan file is created
-
-**Body sections:**
-- `## Problem` — required
-- `## Goal` — required
-- `## Changes` — required
-- `## Out of Scope` — optional
-- `## Done Criteria` — required
-
-**Removed:** `Issue: #N` as a body line (replaced by frontmatter `issue: N`).
-
----
 
 ### 2. `docs/templates/plan.md` — canonical plan format
 

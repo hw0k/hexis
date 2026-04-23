@@ -1,5 +1,19 @@
 ---
 issue: 16
+status: DONE
+checks:
+  - item: "`skills/platform-capabilities/SKILL.md` created with capability map (generic fallback column complete; platform-specific columns TBD-allowed)"
+    done: false
+  - item: "All 5 principle skills confirmed platform-agnostic (no changes, or documented changes if a reference is found)"
+    done: false
+  - item: "`specify` and `plan` updated: platform-specific tool references replaced with capability names and fallback notes"
+    done: false
+  - item: "`verify`, `review`, `receive-review` updated: platform-specific tool references replaced with capability names and fallback notes"
+    done: false
+  - item: "`implement`, `use-worktree`, `finish` updated: platform-specific tool references replaced with capability names; Pattern 2 applied for spawn-subagent and worktree"
+    done: false
+  - item: "Pressure test scenario added at `tests/pressure/universal-skill-support/`"
+    done: false
 ---
 
 # Universal Skill Support
@@ -93,12 +107,3 @@ Replace platform-specific tool references with capability names. Add explicit co
 - `dispatch`, `sync-working-status`, `debug`, `setup-new-project`, `write-test` — deferred to a follow-up
 - Resolving all TBD entries in the capability map before shipping
 - Per-platform SKILL.md file splits
-
-## Done When
-
-- [ ] `skills/platform-capabilities/SKILL.md` created with capability map (generic fallback column complete; platform-specific columns TBD-allowed)
-- [ ] All 5 principle skills confirmed platform-agnostic (no changes, or documented changes if a reference is found)
-- [ ] `specify` and `plan` updated: platform-specific tool references replaced with capability names and fallback notes
-- [ ] `verify`, `review`, `receive-review` updated: platform-specific tool references replaced with capability names and fallback notes
-- [ ] `implement`, `use-worktree`, `finish` updated: platform-specific tool references replaced with capability names; Pattern 2 applied for spawn-subagent and worktree
-- [ ] Pressure test scenario added at `tests/pressure/universal-skill-support/`

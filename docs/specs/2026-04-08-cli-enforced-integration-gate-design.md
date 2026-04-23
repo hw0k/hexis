@@ -1,5 +1,6 @@
 ---
 issue: 21
+status: DONE
 ---
 
 # CLI-Enforced Integration Gate
@@ -57,7 +58,3 @@ Each skill adds a `## CLI Integration Gate` section. The LLM runs `hw0k status r
 - GitHub API calls from the CLI
 - LLM interpretation of workflow state
 - Persistent state files
-
-## Done When
-
-> See decomposed specs: [#22](2026-04-08-hw0k-cli-tool-design.md), [#23](2026-04-08-skill-integration-gate-design.md)

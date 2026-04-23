@@ -1,4 +1,5 @@
 ---
+status: DONE
 linked_spec: docs/specs/2026-03-27-hw0k-workflow-plugin-design.md
 ---
 

@@ -1,6 +1,7 @@
 ---
-linked_spec: docs/specs/2026-04-22-tdd-workflow-restructure-design.md
 issue: 27
+status: DONE
+linked_spec: docs/specs/2026-04-22-tdd-workflow-restructure-design.md
 ---
 
 # TDD Workflow Restructure Implementation Plan

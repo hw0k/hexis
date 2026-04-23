@@ -1,6 +1,7 @@
 ---
-linked_spec: docs/specs/2026-04-23-document-formats-design.md
 issue: 20
+status: IN_PROGRESS
+linked_spec: docs/specs/2026-04-23-document-formats-design.md
 ---
 
 # Document Formats Implementation Plan

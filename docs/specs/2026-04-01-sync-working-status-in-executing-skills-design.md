@@ -1,4 +1,8 @@
 ---
+status: DONE
+checks:
+  - item: "All three skills (`write-test`, `implement`, `verify`) include a `sync-working-status` invocation at their completion stage"
+    done: false
 ---
 
 # Sync Working Status in Executing Task Skills
@@ -32,7 +36,3 @@ Executing skills produce real work (code, commits). Syncing state at the point o
 
 - No changes to the `sync-working-status` skill itself
 - No additions to `specify`, `plan`, `debug`, or other non-executing skills
-
-## Done When
-
-- [ ] All three skills (`write-test`, `implement`, `verify`) include a `sync-working-status` invocation at their completion stage

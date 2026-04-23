@@ -1,5 +1,19 @@
 ---
 issue: 15
+status: DONE
+checks:
+  - item: "All listed skills create Tasks at the step level on invocation"
+    done: false
+  - item: "Every listed skill checks `TaskList` at start and presents resume/fresh-start choice when open Tasks exist"
+    done: false
+  - item: "`TaskStop` is called on all failure and cancellation paths"
+    done: false
+  - item: "`implement` creates a parent Task and instructs each dispatched subagent to create a child Task"
+    done: false
+  - item: "`TaskGet`/`TaskList` is used before dispatching sub-steps in `implement` to verify prior task state"
+    done: false
+  - item: "No Task is left in an unresolved state after a skill exits (success or failure)"
+    done: false
 ---
 
 # Universal Task Tool Integration
@@ -170,12 +184,3 @@ A stopped Task is terminal — it cannot be resumed. If the user chooses to retr
 - **`setup-new-project`:** Onboarding utility, not a repeating workflow.
 - **Principle skills** (`commit-principles`, `core-principles`, etc.): Reference material, not processes.
 - **`principles-reviewer` agent:** Not a skill.
-
-## Done When
-
-- [ ] All listed skills create Tasks at the step level on invocation
-- [ ] Every listed skill checks `TaskList` at start and presents resume/fresh-start choice when open Tasks exist
-- [ ] `TaskStop` is called on all failure and cancellation paths
-- [ ] `implement` creates a parent Task and instructs each dispatched subagent to create a child Task
-- [ ] `TaskGet`/`TaskList` is used before dispatching sub-steps in `implement` to verify prior task state
-- [ ] No Task is left in an unresolved state after a skill exits (success or failure)

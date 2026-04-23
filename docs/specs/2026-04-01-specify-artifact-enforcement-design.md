@@ -1,4 +1,5 @@
 ---
+status: DONE
 ---
 
 # Specify Skill — Artifact Enforcement Design
@@ -61,11 +62,3 @@ New rule in the Rules section:
 - New files or new tools
 - Changes to ExitPlanMode tool behavior
 - Verification gates inside the plan skill itself
-
-## Done When
-
-1. `specify/SKILL.md` has an explicit HARD-GATE at Step 5
-2. Plan file draft is clearly labeled as NOT the output artifact in Step 3
-3. Step 4 is labeled MANDATORY with "immediately, before anything else" language
-4. ExitPlanMode-rejected recovery path is in the Rules section
-5. User-skip confirmation gate is in the Rules section

@@ -1,6 +1,17 @@
 ---
-title: Plan Decomposition and Spec–Issue Alignment
 issue: 6
+status: DONE
+checks:
+  - item: "All Plan files include `linked_spec` frontmatter"
+    done: true
+  - item: "`specify` can split into N Specs + N Issues when scope is too large or multi-topic"
+    done: true
+  - item: "`plan` can split into N Specs + N Plans + N Issues when independent parallelism is detected"
+    done: true
+  - item: "Single-unit path unchanged except for `linked_spec` addition"
+    done: true
+  - item: "`sync-working-status` surfaces Spec–Issue mismatches"
+    done: true
 ---
 
 # Plan Decomposition and Spec–Issue Alignment
@@ -82,11 +93,3 @@ Issues are standalone — no sub-issue relationship to the original.
 
 - Decomposition does not cascade: Plan files are never further decomposed.
 - `sync-working-status` changes are limited to surfacing discrepancies, not auto-resolving them.
-
-## Done When
-
-- All Plan files include `linked_spec` frontmatter
-- `specify` can split into N Specs + N Issues when scope is too large or multi-topic
-- `plan` can split into N Specs + N Plans + N Issues when independent parallelism is detected
-- Single-unit path unchanged except for `linked_spec` addition
-- `sync-working-status` surfaces Spec–Issue mismatches
