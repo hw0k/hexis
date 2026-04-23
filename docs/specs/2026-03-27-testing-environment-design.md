@@ -1,3 +1,7 @@
+---
+status: DONE
+---
+
 # Testing Environment Design
 
 > **Historical document.** This spec compares testing approaches from a prior tooling setup with hw0k-workflow. References to the previous tooling are preserved as research context.

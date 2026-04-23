@@ -1,6 +1,9 @@
-# Rename hw0k-workflow to hexis
+---
+issue: 25
+status: DONE
+---
 
-Issue: #25
+# Rename hw0k-workflow to hexis
 
 ## Overview
 
@@ -61,10 +64,3 @@ Skills: `commit-principles`, `core-principles`, `debug`, `dispatch`, `exception-
 
 - `docs/` directory (historical assets — do not modify, do not verify)
 - Personal config (`~/.claude/CLAUDE.md`, memory files) — updated as part of implementation but excluded from spec/plan documentation and repo grep check
-
-## Done When
-
-1. `grep -r "hw0k-workflow" . --exclude-dir=.git --exclude-dir=docs` returns zero matches
-2. `gh repo view --json nameWithOwner` returns `{"nameWithOwner":"hw0k/hexis"}`
-3. `gh issue view 22` body contains no `hw0k-workflow`
-4. `gh issue view 23` body contains no `hw0k-workflow`

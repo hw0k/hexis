@@ -1,3 +1,12 @@
+---
+status: DONE
+checks:
+  - item: "`specify` and `plan` skills have no EnterPlanMode/ExitPlanMode references"
+    done: false
+  - item: "`write-test`, `implement`, `verify` skills enter plan mode based on complexity criteria"
+    done: false
+---
+
 # Plan Mode Migration to Executing Task Skills
 
 ## Problem
@@ -36,8 +45,3 @@ Simple task  → skip plan mode (proceed directly)
 
 - No other logic changes to specify or plan skills
 - No changes to human gate mechanisms other than plan mode
-
-## Done When
-
-- [ ] `specify` and `plan` skills have no EnterPlanMode/ExitPlanMode references
-- [ ] `write-test`, `implement`, `verify` skills enter plan mode based on complexity criteria

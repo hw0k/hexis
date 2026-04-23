@@ -1,4 +1,5 @@
 ---
+status: DONE
 linked_spec: docs/specs/2026-04-01-plan-mode-to-executing-skills-design.md
 ---
 

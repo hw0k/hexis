@@ -59,6 +59,8 @@ Every plan must start with this header:
 
 ```markdown
 ---
+issue: N
+status: READY_TO_IMPLEMENT
 linked_spec: docs/specs/YYYY-MM-DD-<topic>-design.md
 ---
 

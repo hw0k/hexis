@@ -1,3 +1,22 @@
+---
+status: DONE
+checks:
+  - item: "`.pre-commit-config.yaml` exists; `lefthook.yml` deleted"
+    done: false
+  - item: "`uvx pre-commit install` + `--hook-type commit-msg` installs hooks successfully"
+    done: false
+  - item: "commit-msg hook: commitlint rejects invalid commits"
+    done: false
+  - item: "pre-commit hook: `run-if-exists.sh` runs lint/format/test"
+    done: false
+  - item: "`setup-new-project` skill updated"
+    done: false
+  - item: "`use-worktree` skill updated"
+    done: false
+  - item: "`CLAUDE.md` lefthook references removed"
+    done: false
+---
+
 # Migrate lefthook to Python pre-commit (uvx)
 
 ## Problem
@@ -75,13 +94,3 @@ pre-commit installs directly to `.git/hooks/` (version-controlled config lives i
 
 - No changes to `run-if-exists.sh` internals
 - No changes to commitlint configuration (`.commitlintrc.yml`)
-
-## Done When
-
-- [ ] `.pre-commit-config.yaml` exists; `lefthook.yml` deleted
-- [ ] `uvx pre-commit install` + `--hook-type commit-msg` installs hooks successfully
-- [ ] commit-msg hook: commitlint rejects invalid commits
-- [ ] pre-commit hook: `run-if-exists.sh` runs lint/format/test
-- [ ] `setup-new-project` skill updated
-- [ ] `use-worktree` skill updated
-- [ ] `CLAUDE.md` lefthook references removed

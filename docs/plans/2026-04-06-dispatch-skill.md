@@ -1,4 +1,6 @@
 ---
+issue: 10
+status: DONE
 linked_spec: docs/specs/2026-04-06-dispatch-skill-design.md
 ---
 

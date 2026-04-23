@@ -1,4 +1,6 @@
 ---
+issue: 16
+status: DONE
 linked_spec: docs/specs/2026-04-19-universal-skill-support-design.md
 ---
 

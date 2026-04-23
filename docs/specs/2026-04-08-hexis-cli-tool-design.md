@@ -1,6 +1,24 @@
-# hexis CLI Tool
+---
+issue: 22
+status: READY_TO_PLAN
+checks:
+  - item: "`hexis status read <issue>` outputs correct STATE label for all 5 states"
+    done: false
+  - item: "`hexis status read <issue> --json` outputs valid JSON with correct `state` key and `done_when` array with indices"
+    done: false
+  - item: "`hexis status update <issue> --checked <indices> --unchecked <indices>` rewrites all Done When items atomically"
+    done: false
+  - item: "Incomplete or overlapping index coverage exits 1 with an error message"
+    done: false
+  - item: "All state transitions are covered by pytest unit tests"
+    done: false
+  - item: "`uv tool install ./cli` succeeds in a clean environment"
+    done: false
+  - item: "CLI handles missing `docs/` directory gracefully (outputs `NEEDS_SPEC`, exit 0)"
+    done: false
+---
 
-Issue: #22
+# hexis CLI Tool
 
 Decomposed from: #21
 
@@ -148,13 +166,3 @@ Lives in the `cli/` subdirectory of the hexis repository.
 - Network calls of any kind
 - Persistent state of any kind (no marker files, no database)
 - Modifying plan task checklist items (plan tasks are read-only from the CLI)
-
-## Done When
-
-- [ ] `hexis status read <issue>` outputs correct STATE label for all 5 states
-- [ ] `hexis status read <issue> --json` outputs valid JSON with correct `state` key and `done_when` array with indices
-- [ ] `hexis status update <issue> --checked <indices> --unchecked <indices>` rewrites all Done When items atomically
-- [ ] Incomplete or overlapping index coverage exits 1 with an error message
-- [ ] All state transitions are covered by pytest unit tests
-- [ ] `uv tool install ./cli` succeeds in a clean environment
-- [ ] CLI handles missing `docs/` directory gracefully (outputs `NEEDS_SPEC`, exit 0)

@@ -1,4 +1,6 @@
 ---
+issue: 25
+status: DONE
 linked_spec: docs/specs/2026-04-19-hexis-rename-design.md
 ---
 

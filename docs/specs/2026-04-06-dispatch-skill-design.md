@@ -1,6 +1,26 @@
-# hw0k-workflow:dispatch Skill Design
+---
+issue: 10
+status: DONE
+checks:
+  - item: "`skills/dispatch/SKILL.md` exists with correct frontmatter"
+    done: false
+  - item: "Skill detects state from git branch, git status, docs/specs/, docs/plans/, and GitHub PR"
+    done: false
+  - item: "Routes to the correct next skill based on routing table (first-match)"
+    done: false
+  - item: "Directly invokes the next skill — not just recommends"
+    done: false
+  - item: "Works correctly when invoked at any point in the workflow"
+    done: false
+  - item: "Outputs workflow enforcement header on every run"
+    done: false
+  - item: "`sync-working-status` path instructs re-run instead of auto-resuming"
+    done: false
+  - item: "\"No issue detected\" path asks user before defaulting to `specify`"
+    done: false
+---
 
-Issue: #10
+# hw0k-workflow:dispatch Skill Design
 
 ## Problem
 
@@ -100,14 +120,3 @@ This serves as the explicit acknowledgment that hw0k-workflow rules are in effec
 ## Issue Number in Spec/Plan Files
 
 For dispatch to find spec/plan files by issue number, those files must reference the issue number. Convention: include `Issue: #N` in the file header (as this spec does). The `specify` skill should embed this when creating new spec files.
-
-## Done When
-
-- [ ] `skills/dispatch/SKILL.md` exists with correct frontmatter
-- [ ] Skill detects state from git branch, git status, docs/specs/, docs/plans/, and GitHub PR
-- [ ] Routes to the correct next skill based on routing table (first-match)
-- [ ] Directly invokes the next skill — not just recommends
-- [ ] Works correctly when invoked at any point in the workflow
-- [ ] Outputs workflow enforcement header on every run
-- [ ] `sync-working-status` path instructs re-run instead of auto-resuming
-- [ ] "No issue detected" path asks user before defaulting to `specify`

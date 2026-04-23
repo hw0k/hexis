@@ -54,14 +54,16 @@ Use `AskUserQuestion` to ask: "What issue number are you working on? Enter the n
 Run in parallel:
 
 ```bash
-grep -rl "#N" docs/specs/ 2>/dev/null
-grep -rl "#N" docs/plans/ 2>/dev/null
+grep -rl "^issue: N$" docs/specs/ 2>/dev/null
+grep -rl "^issue: N$" docs/plans/ 2>/dev/null
 gh pr list --head $(git branch --show-current) --json number,state,isDraft,reviewDecision,statusCheckRollup --limit 1
 ```
 
+Where `N` is the literal issue number (e.g., for issue 20: `grep -rl "^issue: 20$" docs/specs/ 2>/dev/null`).
+
 Collect:
-- `spec_found`: true if any file in `docs/specs/` contains `#N`
-- `plan_found`: true if any file in `docs/plans/` contains `#N`
+- `spec_found`: true if any file in `docs/specs/` has frontmatter line `issue: N`
+- `plan_found`: true if any file in `docs/plans/` has frontmatter line `issue: N`
 - `pr`: the PR object from `gh`, or empty if none
 
 ## Step 2: Routing
@@ -111,5 +113,5 @@ Then immediately invoke the determined skill. No confirmation prompt.
 
 ## Notes
 
-- If spec/plan files do not embed `Issue: #N` in their content, dispatch cannot locate them — they are treated as non-existent, and dispatch routes to `specify` or `plan` accordingly.
+- If spec/plan files do not have `issue: N` in their YAML frontmatter, dispatch cannot locate them — they are treated as non-existent, and dispatch routes to `specify` or `plan` accordingly.
 - Multiple issues on one branch: dispatch uses the first integer found in the branch name. If this is wrong, pass the correct issue number when asked.

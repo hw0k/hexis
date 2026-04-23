@@ -1,6 +1,24 @@
-# Skill Integration Gate
+---
+issue: 23
+status: READY_TO_PLAN
+checks:
+  - item: "`dispatch` routes via `hexis status read` output for all 5 state labels"
+    done: false
+  - item: "`specify` gate runs `hexis status read` and blocks overwrite of existing spec without confirmation"
+    done: false
+  - item: "`plan` gate runs `hexis status read` and blocks on non-`NEEDS_PLAN` state"
+    done: false
+  - item: "`write-test` and `implement` gates run `hexis status read` and block on non-`IN_PROGRESS` state"
+    done: false
+  - item: "`verify` entry gate runs `hexis status read` and blocks on non-`NEEDS_VERIFY` state"
+    done: false
+  - item: "`verify` exit gate runs `hexis status update` with complete AC state after verification"
+    done: false
+  - item: "`finish` gate runs `hexis status read` at entry and blocks on non-`DONE` state"
+    done: false
+---
 
-Issue: #23
+# Skill Integration Gate
 
 Decomposed from: #21
 
@@ -117,13 +135,3 @@ Rules 1 (uncommitted changes) and 5–8 (PR state) remain unchanged — they sti
 - Modifying skill process logic beyond the gate sections
 - Updating `sync-working-status`, `debug`, `review`, `receive-review` (no file-based state gates needed)
 - Adding tests for skill files (they are instructions, not code)
-
-## Done When
-
-- [ ] `dispatch` routes via `hexis status read` output for all 5 state labels
-- [ ] `specify` gate runs `hexis status read` and blocks overwrite of existing spec without confirmation
-- [ ] `plan` gate runs `hexis status read` and blocks on non-`NEEDS_PLAN` state
-- [ ] `write-test` and `implement` gates run `hexis status read` and block on non-`IN_PROGRESS` state
-- [ ] `verify` entry gate runs `hexis status read` and blocks on non-`NEEDS_VERIFY` state
-- [ ] `verify` exit gate runs `hexis status update` with complete AC state after verification
-- [ ] `finish` gate runs `hexis status read` at entry and blocks on non-`DONE` state

@@ -1,4 +1,5 @@
 ---
+status: DONE
 linked_spec: docs/specs/2026-04-06-plan-decomposition-design.md
 ---
 
@@ -67,6 +68,7 @@ Every plan must start with this header:
 ```markdown
 ---
 linked_spec: docs/specs/YYYY-MM-DD-<topic>-design.md
+status: DONE
 ---
 
 # [Feature Name] Implementation Plan
@@ -269,6 +271,7 @@ New first two blocks:
 ```markdown
 ---
 linked_spec: docs/specs/2026-03-27-hw0k-workflow-plugin-design.md
+status: DONE
 ---
 
 # hw0k-workflow Plugin Implementation Plan
