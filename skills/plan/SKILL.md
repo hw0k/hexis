@@ -187,8 +187,7 @@ After writing: spec coverage, placeholder scan, type/method name consistency.
 
 ## Save
 
-1. Write `docs/plans/YYYY-MM-DD-<feature>.md`. Commit: `docs: add <feature> plan`.
-2. Update the linked spec's YAML frontmatter: add `plan: docs/plans/<filename>.md`. Commit: `docs: add plan back-link to <topic> spec (#N)`.
+`docs/plans/YYYY-MM-DD-<feature>.md`. Commit: `docs: add <feature> plan`.
 
 ## Execution Handoff
 

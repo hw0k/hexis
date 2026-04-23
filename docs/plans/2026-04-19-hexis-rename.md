@@ -1,5 +1,6 @@
 ---
 linked_spec: docs/specs/2026-04-19-hexis-rename-design.md
+issue: 25
 ---
 
 # Hexis Rename Implementation Plan

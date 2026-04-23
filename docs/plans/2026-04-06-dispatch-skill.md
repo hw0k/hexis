@@ -1,5 +1,6 @@
 ---
 linked_spec: docs/specs/2026-04-06-dispatch-skill-design.md
+issue: 10
 ---
 
 # hw0k-workflow:dispatch Implementation Plan

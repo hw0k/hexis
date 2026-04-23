@@ -1,5 +1,6 @@
 ---
 linked_spec: docs/specs/2026-04-22-tdd-workflow-restructure-design.md
+issue: 27
 ---
 
 # TDD Workflow Restructure Implementation Plan

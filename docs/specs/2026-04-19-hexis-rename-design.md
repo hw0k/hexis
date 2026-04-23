@@ -1,6 +1,5 @@
 ---
 issue: 25
-plan: docs/plans/2026-04-19-hexis-rename.md
 ---
 
 # Rename hw0k-workflow to hexis

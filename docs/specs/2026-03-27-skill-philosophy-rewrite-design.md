@@ -1,5 +1,4 @@
 ---
-plan: docs/plans/2026-03-27-skill-philosophy-rewrite.md
 ---
 
 # Skill Philosophy Rewrite Design

@@ -1,6 +1,5 @@
 ---
 issue: 15
-plan: docs/plans/2026-04-08-universal-task-tool-integration.md
 ---
 
 # Universal Task Tool Integration

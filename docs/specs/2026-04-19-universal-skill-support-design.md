@@ -1,6 +1,5 @@
 ---
 issue: 16
-plan: docs/plans/2026-04-19-universal-skill-support.md
 ---
 
 # Universal Skill Support

@@ -1,6 +1,5 @@
 ---
 issue: 10
-plan: docs/plans/2026-04-06-dispatch-skill.md
 ---
 
 # hw0k-workflow:dispatch Skill Design

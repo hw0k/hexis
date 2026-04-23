@@ -1,6 +1,5 @@
 ---
 issue: N
-plan: docs/plans/<filename>.md
 ---
 
 # <Title>

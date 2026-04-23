@@ -1,6 +1,5 @@
 ---
 issue: 27
-plan: docs/plans/2026-04-22-tdd-workflow-restructure.md
 ---
 
 # TDD Workflow Restructure — Remove write-test, add testing-principles

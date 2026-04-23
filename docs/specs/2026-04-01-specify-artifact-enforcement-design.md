@@ -1,5 +1,4 @@
 ---
-plan: docs/plans/2026-04-01-specify-artifact-enforcement.md
 ---
 
 # Specify Skill — Artifact Enforcement Design

@@ -1,6 +1,5 @@
 ---
 issue: 20
-plan: docs/plans/2026-04-23-document-formats.md
 ---
 
 # Standardize Spec and Plan Document Formats
@@ -27,7 +26,6 @@ Issue body format and PR description format are **out of scope** — those follo
 ```markdown
 ---
 issue: N
-plan: docs/plans/<filename>.md
 ---
 
 # <Title>
