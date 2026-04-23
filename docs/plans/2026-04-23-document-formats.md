@@ -32,7 +32,7 @@ issue: 20
 **Files:**
 - Modify: `skills/specify/SKILL.md:94-110`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Replace in `skills/specify/SKILL.md`:
 
@@ -64,7 +64,7 @@ issue: N
 Where `N` is the GitHub issue number this spec addresses (bare integer, no `#`). If there is no associated issue, omit the frontmatter. The `issue: N` frontmatter field is required for `hexis:dispatch` to locate the spec by issue number.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 grep -A 12 "Step 4: Write and Commit" skills/specify/SKILL.md | grep "issue: N"
@@ -72,7 +72,7 @@ grep -A 12 "Step 4: Write and Commit" skills/specify/SKILL.md | grep "issue: N"
 
 Expected: `issue: N`
 
-- [ ] **Step 3: Commit** *(skip — commit at end of Task 5 with all skills together)*
+- [x] **Step 3: Commit** *(skip — commit at end of Task 5 with all skills together)*
 
 ---
 
@@ -82,7 +82,7 @@ Expected: `issue: N`
 - Modify: `skills/plan/SKILL.md:60-63` (Plan Header frontmatter)
 - Modify: `skills/plan/SKILL.md:187-189` (Save section)
 
-- [ ] **Step 1: Implement Edit A — Plan Header frontmatter**
+- [x] **Step 1: Implement Edit A — Plan Header frontmatter**
 
 Replace in `skills/plan/SKILL.md`:
 
@@ -101,7 +101,7 @@ issue: N
 ---
 ```
 
-- [ ] **Step 2: Implement Edit B — Save section**
+- [x] **Step 2: Implement Edit B — Save section**
 
 Replace in `skills/plan/SKILL.md`:
 
@@ -120,7 +120,7 @@ With:
 2. Update the linked spec's YAML frontmatter: add `plan: docs/plans/<filename>.md`. Commit: `docs: add plan back-link to <topic> spec (#N)`.
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 ```bash
 grep "issue: N" skills/plan/SKILL.md && grep "plan back-link" skills/plan/SKILL.md
@@ -137,7 +137,7 @@ Expected: both lines found
 - Modify: `skills/dispatch/SKILL.md:63-64` (spec_found/plan_found description)
 - Modify: `skills/dispatch/SKILL.md:114` (Notes)
 
-- [ ] **Step 1: Implement Edit A — grep commands**
+- [x] **Step 1: Implement Edit A — grep commands**
 
 Replace in `skills/dispatch/SKILL.md`:
 
@@ -155,7 +155,7 @@ grep -rl "^issue: N$" docs/plans/ 2>/dev/null
 
 Where `N` is the literal issue number (e.g., for issue 20: `grep -rl "^issue: 20$" docs/specs/ 2>/dev/null`).
 
-- [ ] **Step 2: Implement Edit B — Collect description**
+- [x] **Step 2: Implement Edit B — Collect description**
 
 Replace in `skills/dispatch/SKILL.md`:
 
@@ -171,7 +171,7 @@ With:
 - `plan_found`: true if any file in `docs/plans/` has frontmatter line `issue: N`
 ```
 
-- [ ] **Step 3: Implement Edit C — Notes**
+- [x] **Step 3: Implement Edit C — Notes**
 
 Replace in `skills/dispatch/SKILL.md`:
 
@@ -185,7 +185,7 @@ With:
 - If spec/plan files do not have `issue: N` in their YAML frontmatter, dispatch cannot locate them — they are treated as non-existent, and dispatch routes to `specify` or `plan` accordingly.
 ```
 
-- [ ] **Step 4: Verify**
+- [x] **Step 4: Verify**
 
 ```bash
 grep "^issue: N" skills/dispatch/SKILL.md
@@ -200,7 +200,7 @@ Expected: two lines (one for specs, one for plans)
 **Files:**
 - Modify: `skills/sync-working-status/SKILL.md:47-52`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Replace in `skills/sync-working-status/SKILL.md`:
 
@@ -222,7 +222,7 @@ gh issue list --state open --json number,title
 grep -rn "^issue: " docs/specs/
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 grep "^issue: " skills/sync-working-status/SKILL.md
@@ -237,7 +237,7 @@ Expected: `grep -rn "^issue: " docs/specs/`
 **Files:**
 - Modify: `skills/review/SKILL.md` (Red Flags section)
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Replace in `skills/review/SKILL.md`:
 
@@ -252,7 +252,7 @@ With:
 - Spec or plan files in the diff that don't follow `docs/templates/spec.md` / `docs/templates/plan.md`
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 grep "docs/templates" skills/review/SKILL.md
@@ -260,7 +260,7 @@ grep "docs/templates" skills/review/SKILL.md
 
 Expected: `docs/templates/spec.md` / `docs/templates/plan.md`
 
-- [ ] **Step 3: Commit all skills changes together**
+- [x] **Step 3: Commit all skills changes together**
 
 ```bash
 git add skills/specify/SKILL.md skills/plan/SKILL.md skills/dispatch/SKILL.md skills/sync-working-status/SKILL.md skills/review/SKILL.md
@@ -274,7 +274,7 @@ git commit -m "feat(skills): update specify/plan/dispatch/sync/review to use fro
 **Files:**
 - Modify: all 17 existing files in `docs/specs/`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Create and run the following Python script from the repo root:
 
@@ -348,7 +348,7 @@ for fname in sorted(os.listdir(specs_dir)):
     print(f"Updated: {fname} (issue={issue_num}, plans={plans})")
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 grep -l "^---" docs/specs/*.md | wc -l
@@ -362,7 +362,7 @@ grep -rl "^Issue: #" docs/specs/
 
 Expected: no output (all `Issue: #N` body lines removed)
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/specs/
@@ -378,7 +378,7 @@ git commit -m "docs(specs): backfill frontmatter — move issue number from body
 
 **Note:** Task 6 must be complete before Task 7 — the plan backfill reads issue numbers from spec frontmatter.
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Create and run the following Python script from the repo root:
 
@@ -435,7 +435,7 @@ for fname in sorted(os.listdir(plans_dir)):
     print(f"Updated: {fname} (issue={issue_num})")
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 ```bash
 grep -l "^issue:" docs/plans/*.md | wc -l
@@ -444,7 +444,7 @@ grep -l "^issue:" docs/plans/*.md | wc -l
 Expected: `5`
 (dispatch #10, universal-task-tool #15, universal-skill-support #16, hexis-rename #25, tdd-restructure #27)
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/plans/

@@ -1,6 +1,6 @@
 ---
 title: Plan Decomposition and Spec–Issue Alignment
-issue: "#6"
+issue: 6
 ---
 
 # Plan Decomposition and Spec–Issue Alignment
