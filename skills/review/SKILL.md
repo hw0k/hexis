@@ -81,3 +81,4 @@ Use the **spawn-subagent** capability to run the `hexis:principles-reviewer` age
 - Request review while verify is failing
 - Ignore principle violations
 - Skip review because "it's simple"
+- Spec or plan files in the diff that don't follow `docs/templates/spec.md` / `docs/templates/plan.md`

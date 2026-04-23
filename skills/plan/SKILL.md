@@ -60,6 +60,7 @@ Every plan must start with this header:
 ```markdown
 ---
 linked_spec: docs/specs/YYYY-MM-DD-<topic>-design.md
+issue: N
 ---
 
 # [Feature Name] Implementation Plan
@@ -186,7 +187,8 @@ After writing: spec coverage, placeholder scan, type/method name consistency.
 
 ## Save
 
-`docs/plans/YYYY-MM-DD-<feature>.md`. Commit: `docs: add <feature> plan`.
+1. Write `docs/plans/YYYY-MM-DD-<feature>.md`. Commit: `docs: add <feature> plan`.
+2. Update the linked spec's YAML frontmatter: add `plan: docs/plans/<filename>.md`. Commit: `docs: add plan back-link to <topic> spec (#N)`.
 
 ## Execution Handoff
 

@@ -48,8 +48,8 @@ Also verify the **1 Spec = 1 Issue** invariant:
 # List open issues
 gh issue list --state open --json number,title
 
-# List spec files
-ls docs/specs/
+# List spec files with their issue numbers
+grep -rn "^issue: " docs/specs/
 ```
 
 - For each open issue: is there a corresponding Spec file (matching issue number in frontmatter)?
