@@ -2,19 +2,19 @@
 status: DONE
 checks:
   - item: "`.pre-commit-config.yaml` exists; `lefthook.yml` deleted"
-    done: false
+    done: true
   - item: "`uvx pre-commit install` + `--hook-type commit-msg` installs hooks successfully"
-    done: false
+    done: true
   - item: "commit-msg hook: commitlint rejects invalid commits"
-    done: false
+    done: true
   - item: "pre-commit hook: `run-if-exists.sh` runs lint/format/test"
-    done: false
+    done: true
   - item: "`setup-new-project` skill updated"
-    done: false
+    done: true
   - item: "`use-worktree` skill updated"
-    done: false
+    done: true
   - item: "`CLAUDE.md` lefthook references removed"
-    done: false
+    done: true
 ---
 
 # Migrate lefthook to Python pre-commit (uvx)

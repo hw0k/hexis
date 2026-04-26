@@ -3,21 +3,21 @@ issue: 10
 status: DONE
 checks:
   - item: "`skills/dispatch/SKILL.md` exists with correct frontmatter"
-    done: false
+    done: true
   - item: "Skill detects state from git branch, git status, docs/specs/, docs/plans/, and GitHub PR"
-    done: false
+    done: true
   - item: "Routes to the correct next skill based on routing table (first-match)"
-    done: false
+    done: true
   - item: "Directly invokes the next skill — not just recommends"
-    done: false
+    done: true
   - item: "Works correctly when invoked at any point in the workflow"
-    done: false
+    done: true
   - item: "Outputs workflow enforcement header on every run"
-    done: false
+    done: true
   - item: "`sync-working-status` path instructs re-run instead of auto-resuming"
-    done: false
+    done: true
   - item: "\"No issue detected\" path asks user before defaulting to `specify`"
-    done: false
+    done: true
 ---
 
 # hw0k-workflow:dispatch Skill Design

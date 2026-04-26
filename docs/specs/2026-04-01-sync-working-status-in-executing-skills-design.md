@@ -2,7 +2,7 @@
 status: DONE
 checks:
   - item: "All three skills (`write-test`, `implement`, `verify`) include a `sync-working-status` invocation at their completion stage"
-    done: false
+    done: true
 ---
 
 # Sync Working Status in Executing Task Skills

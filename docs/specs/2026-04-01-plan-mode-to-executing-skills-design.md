@@ -2,9 +2,9 @@
 status: DONE
 checks:
   - item: "`specify` and `plan` skills have no EnterPlanMode/ExitPlanMode references"
-    done: false
+    done: true
   - item: "`write-test`, `implement`, `verify` skills enter plan mode based on complexity criteria"
-    done: false
+    done: true
 ---
 
 # Plan Mode Migration to Executing Task Skills

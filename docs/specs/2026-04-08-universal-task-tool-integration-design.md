@@ -3,17 +3,17 @@ issue: 15
 status: DONE
 checks:
   - item: "All listed skills create Tasks at the step level on invocation"
-    done: false
+    done: true
   - item: "Every listed skill checks `TaskList` at start and presents resume/fresh-start choice when open Tasks exist"
-    done: false
+    done: true
   - item: "`TaskStop` is called on all failure and cancellation paths"
-    done: false
+    done: true
   - item: "`implement` creates a parent Task and instructs each dispatched subagent to create a child Task"
-    done: false
+    done: true
   - item: "`TaskGet`/`TaskList` is used before dispatching sub-steps in `implement` to verify prior task state"
-    done: false
+    done: true
   - item: "No Task is left in an unresolved state after a skill exits (success or failure)"
-    done: false
+    done: true
 ---
 
 # Universal Task Tool Integration

@@ -3,17 +3,17 @@ issue: 16
 status: DONE
 checks:
   - item: "`skills/platform-capabilities/SKILL.md` created with capability map (generic fallback column complete; platform-specific columns TBD-allowed)"
-    done: false
+    done: true
   - item: "All 5 principle skills confirmed platform-agnostic (no changes, or documented changes if a reference is found)"
-    done: false
+    done: true
   - item: "`specify` and `plan` updated: platform-specific tool references replaced with capability names and fallback notes"
-    done: false
+    done: true
   - item: "`verify`, `review`, `receive-review` updated: platform-specific tool references replaced with capability names and fallback notes"
-    done: false
+    done: true
   - item: "`implement`, `use-worktree`, `finish` updated: platform-specific tool references replaced with capability names; Pattern 2 applied for spawn-subagent and worktree"
-    done: false
+    done: true
   - item: "Pressure test scenario added at `tests/pressure/universal-skill-support/`"
-    done: false
+    done: true
 ---
 
 # Universal Skill Support
