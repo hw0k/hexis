@@ -14,30 +14,6 @@ Verify → commit → choose integration method → execute → clean up.
 
 If `$ARGUMENTS` contains a branch or feature description, use it as context.
 
-## Task Tracking
-
-### On Start
-
-Use the **track-tasks** capability filtered by prefix `finish:`. If open tasks exist from a prior session:
-- Use the **ask-user** capability: **Resume** (verify state of last open task) or **Start fresh** (stop all open tasks)
-- If no open tasks: proceed directly
-
-> **Fallbacks:** If **track-tasks** is unavailable, maintain a markdown checklist in the current response. If **ask-user** is unavailable, output the question inline and wait for the next message.
-
-### Step Schedule
-
-Step 1 delegates to `hexis:verify`, which manages its own tasks. Steps 2–5:
-
-| Step | On Start | On Done |
-|---|---|---|
-| Step 2: Handle uncommitted changes | **track-tasks**: create "finish: handle uncommitted changes" → mark in_progress | mark completed |
-| Steps 3–4: Integration | **track-tasks**: create "finish: integration" → mark in_progress | mark completed |
-| Step 5: Clean up worktree | **track-tasks**: create "finish: clean up worktree" → mark in_progress | mark completed |
-
-### On Failure or Abort
-
-Use **track-tasks** to stop the current open task.
-
 ## Process
 
 ### Step 1: Run verify
@@ -50,7 +26,7 @@ If uncommitted changes exist, commit them following `hexis:commit-principles` ru
 
 ### Step 3: Present options
 
-Use the **ask-user** capability (see `hexis:platform-capabilities`):
+Ask the user:
 
 ```
 Implementation complete. How should we integrate?
