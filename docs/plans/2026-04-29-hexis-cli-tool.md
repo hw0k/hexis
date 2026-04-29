@@ -43,13 +43,13 @@ linked_spec: docs/specs/2026-04-08-hexis-cli-tool-design.md
 - Create: `cli/tests/test_state.py`
 - Create: `cli/tests/test_cli.py`
 
-- [ ] **Step 1: Create directory structure**
+- [x] **Step 1: Create directory structure**
 
 ```bash
 mkdir -p cli/src/hexis cli/tests
 ```
 
-- [ ] **Step 2: Write `cli/pyproject.toml`**
+- [x] **Step 2: Write `cli/pyproject.toml`**
 
 ```toml
 [build-system]
@@ -78,7 +78,7 @@ packages = ["src/hexis"]
 testpaths = ["tests"]
 ```
 
-- [ ] **Step 3: Write skeleton source files**
+- [x] **Step 3: Write skeleton source files**
 
 `cli/src/hexis/__init__.py` — empty file.
 
@@ -110,7 +110,7 @@ app.add_typer(status_app, name="status")
 
 `cli/tests/test_parser.py`, `cli/tests/test_state.py`, `cli/tests/test_cli.py` — empty files.
 
-- [ ] **Step 4: Verify install**
+- [x] **Step 4: Verify install**
 
 ```bash
 cd cli && uv pip install -e ".[dev]" --quiet && python -c "import hexis; print('OK')"
@@ -118,7 +118,7 @@ cd cli && uv pip install -e ".[dev]" --quiet && python -c "import hexis; print('
 
 Expected: `OK`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/
@@ -133,7 +133,7 @@ git commit -m "feat: scaffold hexis CLI package (#22)"
 - Modify: `cli/src/hexis/parser.py`
 - Modify: `cli/tests/test_parser.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_parser.py
@@ -156,7 +156,7 @@ def test_parse_frontmatter_incomplete_delimiter():
     assert parse_frontmatter("---\nissue: 5\n") == {}
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py -x
@@ -164,7 +164,7 @@ cd cli && uv run pytest tests/test_parser.py -x
 
 Expected: FAIL — `ImportError` or `AttributeError`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 ```python
 # cli/src/hexis/parser.py — add after imports
@@ -177,7 +177,7 @@ def parse_frontmatter(content: str) -> dict:
     return yaml.safe_load(content[4:end]) or {}
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py -x
@@ -185,7 +185,7 @@ cd cli && uv run pytest tests/test_parser.py -x
 
 Expected: 4 passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/src/hexis/parser.py cli/tests/test_parser.py
@@ -200,7 +200,7 @@ git commit -m "feat(cli): implement parse_frontmatter (#22)"
 - Modify: `cli/src/hexis/parser.py`
 - Modify: `cli/tests/test_parser.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_parser.py — append
@@ -249,7 +249,7 @@ def test_find_plan_file_missing_dir(tmp_path):
     assert find_plan_file(tmp_path, 5) is None
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py::test_find_spec_file_found -x
@@ -257,7 +257,7 @@ cd cli && uv run pytest tests/test_parser.py::test_find_spec_file_found -x
 
 Expected: FAIL — `ImportError`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 ```python
 # cli/src/hexis/parser.py — append
@@ -292,7 +292,7 @@ def find_plan_file(root: Path, issue: int) -> Path | None:
     return matches[0] if matches else None
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py -x
@@ -300,7 +300,7 @@ cd cli && uv run pytest tests/test_parser.py -x
 
 Expected: all passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/src/hexis/parser.py cli/tests/test_parser.py
@@ -315,7 +315,7 @@ git commit -m "feat(cli): implement find_spec_file and find_plan_file (#22)"
 - Modify: `cli/src/hexis/parser.py`
 - Modify: `cli/tests/test_parser.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_parser.py — append
@@ -353,7 +353,7 @@ def test_parse_depends_on_null():
     assert parse_depends_on({"depends_on": None}) == []
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py::test_parse_checks_mixed -x
@@ -361,7 +361,7 @@ cd cli && uv run pytest tests/test_parser.py::test_parse_checks_mixed -x
 
 Expected: FAIL — `ImportError`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 ```python
 # cli/src/hexis/parser.py — insert after imports, before parse_frontmatter
@@ -386,7 +386,7 @@ def parse_depends_on(fm: dict) -> list[int]:
     return list(fm.get("depends_on") or [])
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py -x
@@ -394,7 +394,7 @@ cd cli && uv run pytest tests/test_parser.py -x
 
 Expected: all passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/src/hexis/parser.py cli/tests/test_parser.py
@@ -409,7 +409,7 @@ git commit -m "feat(cli): implement parse_checks and parse_depends_on (#22)"
 - Modify: `cli/src/hexis/parser.py`
 - Modify: `cli/tests/test_parser.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_parser.py — append
@@ -432,7 +432,7 @@ def test_parse_plan_tasks_excludes_frontmatter():
     assert parse_plan_tasks(content) == PlanTasks(complete=1, total=1)
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py::test_parse_plan_tasks_mixed -x
@@ -440,7 +440,7 @@ cd cli && uv run pytest tests/test_parser.py::test_parse_plan_tasks_mixed -x
 
 Expected: FAIL — `ImportError`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 ```python
 # cli/src/hexis/parser.py — insert dataclass before parse_frontmatter, add function at end
@@ -465,7 +465,7 @@ def parse_plan_tasks(content: str) -> PlanTasks:
     return PlanTasks(complete=checked, total=checked + unchecked)
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_parser.py -x
@@ -473,7 +473,7 @@ cd cli && uv run pytest tests/test_parser.py -x
 
 Expected: all passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/src/hexis/parser.py cli/tests/test_parser.py
@@ -488,7 +488,7 @@ git commit -m "feat(cli): implement parse_plan_tasks (#22)"
 - Modify: `cli/src/hexis/state.py`
 - Modify: `cli/tests/test_state.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_state.py
@@ -572,7 +572,7 @@ def test_depends_on_surfaced(tmp_path):
     assert result.depends_on == [22]
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_state.py -x
@@ -580,7 +580,7 @@ cd cli && uv run pytest tests/test_state.py -x
 
 Expected: FAIL — `ImportError`
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 ```python
 # cli/src/hexis/state.py — full content
@@ -667,7 +667,7 @@ def determine_state(root: Path, issue: int) -> StateResult:
     )
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_state.py -x
@@ -675,7 +675,7 @@ cd cli && uv run pytest tests/test_state.py -x
 
 Expected: all passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/src/hexis/state.py cli/tests/test_state.py
@@ -690,7 +690,7 @@ git commit -m "feat(cli): implement determine_state (#22)"
 - Modify: `cli/src/hexis/cli.py`
 - Modify: `cli/tests/test_cli.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_cli.py
@@ -765,7 +765,7 @@ def test_status_read_missing_docs_graceful(tmp_path):
     assert "STATE: NEEDS_SPEC" in result.output
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_cli.py::test_status_read_needs_spec_plain -x
@@ -773,7 +773,7 @@ cd cli && uv run pytest tests/test_cli.py::test_status_read_needs_spec_plain -x
 
 Expected: FAIL — command not found or no such command
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 ```python
 # cli/src/hexis/cli.py — full content
@@ -849,7 +849,7 @@ def status_read(
         _render_plain(result)
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_cli.py -x -k "read"
@@ -857,7 +857,7 @@ cd cli && uv run pytest tests/test_cli.py -x -k "read"
 
 Expected: all `read` tests passed
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add cli/src/hexis/cli.py cli/tests/test_cli.py
@@ -873,7 +873,7 @@ git commit -m "feat(cli): implement status read command (#22)"
 - Modify: `cli/src/hexis/cli.py` (add `status update` command)
 - Modify: `cli/tests/test_cli.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```python
 # cli/tests/test_cli.py — append
@@ -944,7 +944,7 @@ def test_status_update_no_spec_exits_1(tmp_path):
     assert result.exit_code == 1
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 ```bash
 cd cli && uv run pytest tests/test_cli.py::test_status_update_sets_checked -x
@@ -952,7 +952,7 @@ cd cli && uv run pytest tests/test_cli.py::test_status_update_sets_checked -x
 
 Expected: FAIL — no such command `update`
 
-- [ ] **Step 3: Implement `write_checks` in `parser.py`**
+- [x] **Step 3: Implement `write_checks` in `parser.py`**
 
 ```python
 # cli/src/hexis/parser.py — add imports at top and function at end
@@ -976,7 +976,7 @@ def write_checks(path: Path, new_checks: list[dict]) -> None:
     os.replace(tmp, path)
 ```
 
-- [ ] **Step 4: Implement `status update` in `cli.py`**
+- [x] **Step 4: Implement `status update` in `cli.py`**
 
 ```python
 # cli/src/hexis/cli.py — add import and command
@@ -1036,7 +1036,7 @@ def status_update(
     _render_plain(result)
 ```
 
-- [ ] **Step 5: Confirm pass**
+- [x] **Step 5: Confirm pass**
 
 ```bash
 cd cli && uv run pytest tests/test_cli.py -x
@@ -1044,7 +1044,7 @@ cd cli && uv run pytest tests/test_cli.py -x
 
 Expected: all passed
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add cli/src/hexis/parser.py cli/src/hexis/cli.py cli/tests/test_cli.py
@@ -1058,7 +1058,7 @@ git commit -m "feat(cli): implement status update command (#22)"
 **Files:**
 - No code changes — install and smoke-test only
 
-- [ ] **Step 1: Run full test suite**
+- [x] **Step 1: Run full test suite**
 
 ```bash
 cd cli && uv run pytest
@@ -1066,7 +1066,7 @@ cd cli && uv run pytest
 
 Expected: all tests pass, 0 failures
 
-- [ ] **Step 2: Install via `uv tool install`**
+- [x] **Step 2: Install via `uv tool install`**
 
 ```bash
 uv tool install ./cli
@@ -1074,7 +1074,7 @@ uv tool install ./cli
 
 Expected: exits 0, no errors
 
-- [ ] **Step 3: Smoke-test installed binary**
+- [x] **Step 3: Smoke-test installed binary**
 
 ```bash
 hexis --help
@@ -1084,7 +1084,7 @@ hexis status update --help
 
 Expected: each shows command help without errors.
 
-- [ ] **Step 4: Verify NEEDS_SPEC output with real repo**
+- [x] **Step 4: Verify NEEDS_SPEC output with real repo**
 
 ```bash
 hexis status read 999
@@ -1100,7 +1100,7 @@ BLOCKING:
   No spec file found in docs/specs/ for issue #999
 ```
 
-- [ ] **Step 5: Verify real issue lookup**
+- [x] **Step 5: Verify real issue lookup**
 
 ```bash
 hexis status read 22
@@ -1108,7 +1108,7 @@ hexis status read 22
 
 Expected: first line is `STATE: NEEDS_VERIFY` or `STATE: IN_PROGRESS` (since spec and plan now exist for #22).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
