@@ -16,6 +16,18 @@ A claim without evidence is a lie.
 
 If `$ARGUMENTS` describes the verification scope, use it. Otherwise infer from current context.
 
+## CLI Integration Gate
+
+### Entry Gate
+
+At skill start, before running any verification commands:
+
+1. Obtain the issue number: use the number in `$ARGUMENTS` if provided; otherwise infer from the current branch name (first integer after the last `/`) or ask the user.
+2. Run: `hexis status read <issue> --json`
+3. If `state` is `NEEDS_VERIFY`: proceed. Surface the `checks` array to the user so they know which items need verification.
+4. If `state` is `IN_PROGRESS`: surface the full CLI output verbatim to the user (blocking plan tasks are shown); stop — implementation must complete first.
+5. If `state` is any other value: surface the full CLI output verbatim to the user; stop.
+
 ## Complexity Check
 
 Before starting, assess scope complexity against these criteria (any one is sufficient):
@@ -79,8 +91,9 @@ Before claiming completion:
 4. VERIFY: does the output confirm the claim?
    - NO: state actual status with evidence
    - YES: proceed to step 5
-5. SYNC: invoke hexis:sync-working-status
-6. ONLY THEN: claim
+5. UPDATE: run `hexis status update <issue> --checked <satisfied-indices> --unchecked <unsatisfied-indices>` using the checks from the entry gate read output (exit gate — updates spec before sync so the change is included in the commit)
+6. SYNC: invoke hexis:sync-working-status
+7. ONLY THEN: claim
 ```
 
 ## On Failure
