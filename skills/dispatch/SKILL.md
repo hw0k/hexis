@@ -44,7 +44,7 @@ Take the branch name substring after the last `/`, then extract the first contig
 
 **If no issue number detected:**
 
-Use `AskUserQuestion` to ask: "What issue number are you working on? Enter the number, or 'none' if starting new work."
+Use the **ask-user** capability to ask: "What issue number are you working on? Enter the number, or 'none' if starting new work." (see `hexis:platform-capabilities`)
 
 - Number provided → use as `N`, proceed to Step 1b
 - "none" → invoke `hexis:specify`
