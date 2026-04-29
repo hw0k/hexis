@@ -15,3 +15,47 @@ def test_parse_frontmatter_no_frontmatter():
 
 def test_parse_frontmatter_incomplete_delimiter():
     assert parse_frontmatter("---\nissue: 5\n") == {}
+
+import pytest
+from hexis.parser import find_spec_file, find_plan_file, MultipleMatchError
+
+def test_find_spec_file_found(tmp_path):
+    specs_dir = tmp_path / "docs" / "specs"
+    specs_dir.mkdir(parents=True)
+    (specs_dir / "2026-01-01-foo-design.md").write_text(
+        "---\nissue: 5\nstatus: READY_TO_PLAN\n---\n\n# Foo\n"
+    )
+    result = find_spec_file(tmp_path, 5)
+    assert result is not None
+    assert result.name == "2026-01-01-foo-design.md"
+
+def test_find_spec_file_not_found(tmp_path):
+    (tmp_path / "docs" / "specs").mkdir(parents=True)
+    assert find_spec_file(tmp_path, 99) is None
+
+def test_find_spec_file_missing_dir(tmp_path):
+    assert find_spec_file(tmp_path, 5) is None
+
+def test_find_spec_file_multiple_raises(tmp_path):
+    specs_dir = tmp_path / "docs" / "specs"
+    specs_dir.mkdir(parents=True)
+    (specs_dir / "a.md").write_text("---\nissue: 5\n---\n\n# A\n")
+    (specs_dir / "b.md").write_text("---\nissue: 5\n---\n\n# B\n")
+    with pytest.raises(MultipleMatchError):
+        find_spec_file(tmp_path, 5)
+
+def test_find_plan_file_found(tmp_path):
+    plans_dir = tmp_path / "docs" / "plans"
+    plans_dir.mkdir(parents=True)
+    (plans_dir / "2026-01-01-foo.md").write_text(
+        "---\nissue: 5\nstatus: READY_TO_IMPLEMENT\n---\n\n# Foo Plan\n"
+    )
+    result = find_plan_file(tmp_path, 5)
+    assert result is not None
+
+def test_find_plan_file_not_found(tmp_path):
+    (tmp_path / "docs" / "plans").mkdir(parents=True)
+    assert find_plan_file(tmp_path, 99) is None
+
+def test_find_plan_file_missing_dir(tmp_path):
+    assert find_plan_file(tmp_path, 5) is None
