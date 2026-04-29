@@ -16,29 +16,6 @@ Catch principle violations and quality issues before merge.
 
 If `$ARGUMENTS` contains a PR number or scope description, use it. Otherwise infer from current branch/changes.
 
-## Task Tracking
-
-### On Start
-
-Use the **track-tasks** capability filtered by prefix `review:`. If open tasks exist from a prior session:
-- Use the **ask-user** capability: **Resume** (verify state of last open task) or **Start fresh** (stop all open tasks)
-- If no open tasks: proceed directly
-
-> **Fallbacks:** If **track-tasks** is unavailable, maintain a markdown checklist in the current response. If **ask-user** is unavailable, output the question inline and wait for the next message.
-
-### Step Schedule
-
-Step 1 delegates to `hexis:verify`, which manages its own tasks. Steps 2–4:
-
-| Step | On Start | On Done |
-|---|---|---|
-| Step 2: Collect git SHAs | **track-tasks**: create "review: collect git SHAs" → mark in_progress | mark completed |
-| Step 3: Principles review | **track-tasks**: create "review: principles review" → mark in_progress | mark completed |
-| Step 4: Handle results | **track-tasks**: create "review: handle results" → mark in_progress | mark completed |
-
-### On Failure or Abort
-
-Use **track-tasks** to stop the current open task.
 
 ## When to Review
 
@@ -65,7 +42,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 ### Step 3: Run principles-reviewer
 
-Use the **spawn-subagent** capability to run the `hexis:principles-reviewer` agent (see `hexis:platform-capabilities`). If **spawn-subagent** is unavailable, run the principles review sequentially in the current context.
+Run the `hexis:principles-reviewer` agent.
 - Changed files: `git diff --name-only $BASE_SHA $HEAD_SHA`
 - Scope: the implementation delivered
 
