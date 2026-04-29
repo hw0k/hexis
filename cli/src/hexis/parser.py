@@ -5,6 +5,13 @@ import re
 import yaml
 
 
+@dataclass
+class Check:
+    index: int
+    text: str
+    checked: bool
+
+
 def parse_frontmatter(content: str) -> dict:
     if not content.startswith("---\n"):
         return {}
@@ -44,3 +51,14 @@ def find_plan_file(root: Path, issue: int) -> Path | None:
         names = ", ".join(p.name for p in sorted(matches))
         raise MultipleMatchError(f"Multiple plan files match issue #{issue}: {names}")
     return matches[0] if matches else None
+
+
+def parse_checks(fm: dict) -> list[Check]:
+    return [
+        Check(index=i, text=c["item"], checked=bool(c["done"]))
+        for i, c in enumerate(fm.get("checks") or [])
+    ]
+
+
+def parse_depends_on(fm: dict) -> list[int]:
+    return list(fm.get("depends_on") or [])

@@ -59,3 +59,36 @@ def test_find_plan_file_not_found(tmp_path):
 
 def test_find_plan_file_missing_dir(tmp_path):
     assert find_plan_file(tmp_path, 5) is None
+
+from hexis.parser import parse_checks, parse_depends_on, Check
+
+def test_parse_checks_mixed():
+    fm = {
+        "checks": [
+            {"item": "First criterion", "done": True},
+            {"item": "Second criterion", "done": False},
+        ]
+    }
+    result = parse_checks(fm)
+    assert result == [
+        Check(index=0, text="First criterion", checked=True),
+        Check(index=1, text="Second criterion", checked=False),
+    ]
+
+def test_parse_checks_empty_fm():
+    assert parse_checks({}) == []
+
+def test_parse_checks_preserves_order():
+    fm = {"checks": [{"item": "Z", "done": False}, {"item": "A", "done": True}]}
+    result = parse_checks(fm)
+    assert result[0].text == "Z"
+    assert result[1].text == "A"
+
+def test_parse_depends_on_list():
+    assert parse_depends_on({"depends_on": [22, 23]}) == [22, 23]
+
+def test_parse_depends_on_absent():
+    assert parse_depends_on({}) == []
+
+def test_parse_depends_on_null():
+    assert parse_depends_on({"depends_on": None}) == []
