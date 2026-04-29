@@ -1,22 +1,28 @@
 ---
 issue: 23
 status: IN_PROGRESS
-depends_on: [22]
+depends_on:
+- 22
 checks:
-  - item: "`dispatch` routes via `hexis status read` output for all 5 state labels"
-    done: false
-  - item: "`specify` gate runs `hexis status read` and blocks overwrite of existing spec without confirmation"
-    done: false
-  - item: "`plan` gate runs `hexis status read` and blocks on non-`NEEDS_PLAN` state"
-    done: false
-  - item: "`implement` gate runs `hexis status read` and blocks on non-`IN_PROGRESS` state"
-    done: false
-  - item: "`verify` entry gate runs `hexis status read` and blocks on non-`NEEDS_VERIFY` state"
-    done: false
-  - item: "`verify` exit gate runs `hexis status update` with complete AC state after verification"
-    done: false
-  - item: "`finish` gate runs `hexis status read` at entry and blocks on non-`DONE` state"
-    done: false
+- item: '`dispatch` routes via `hexis status read` output for all 5 state labels'
+  done: true
+- item: '`specify` gate runs `hexis status read` and blocks overwrite of existing
+    spec without confirmation'
+  done: true
+- item: '`plan` gate runs `hexis status read` and blocks on non-`NEEDS_PLAN` state'
+  done: true
+- item: '`implement` gate runs `hexis status read` and blocks on non-`IN_PROGRESS`
+    state'
+  done: true
+- item: '`verify` entry gate runs `hexis status read` and blocks on non-`NEEDS_VERIFY`
+    state'
+  done: true
+- item: '`verify` exit gate runs `hexis status update` with complete AC state after
+    verification'
+  done: true
+- item: '`finish` gate runs `hexis status read` at entry and blocks on non-`DONE`
+    state'
+  done: true
 ---
 
 # Skill Integration Gate
