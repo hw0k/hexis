@@ -54,16 +54,14 @@ Ask the user: "What issue number are you working on? Enter the number, or 'none'
 Run in parallel:
 
 ```bash
-grep -rl "^issue: N$" docs/specs/ 2>/dev/null
-grep -rl "^issue: N$" docs/plans/ 2>/dev/null
+hexis status read N --json
 gh pr list --head $(git branch --show-current) --json number,state,isDraft,reviewDecision,statusCheckRollup --limit 1
 ```
 
-Where `N` is the literal issue number (e.g., for issue 20: `grep -rl "^issue: 20$" docs/specs/ 2>/dev/null`).
+Where `N` is the literal issue number (e.g., for issue 20: `hexis status read 20 --json`).
 
 Collect:
-- `spec_found`: true if any file in `docs/specs/` has frontmatter line `issue: N`
-- `plan_found`: true if any file in `docs/plans/` has frontmatter line `issue: N`
+- `status`: the full JSON object from `hexis status read --json` (contains `state`, `issue`, `plan_tasks`, `checks`, `blocking`)
 - `pr`: the PR object from `gh`, or empty if none
 
 ## Step 2: Routing
@@ -73,13 +71,15 @@ Apply the **first matching rule** in this order:
 | Rule | Condition | Next Skill |
 |------|-----------|-----------|
 | 1 | `git status --short` output is non-empty | `sync-working-status` |
-| 2 | `spec_found` is false | `specify` |
-| 3 | `spec_found` is true AND `plan_found` is false | `plan` |
-| 4 | `plan_found` is true AND (no PR exists OR PR is draft) | `implement` |
-| 5 | PR open AND any check is failing | `verify` |
-| 6 | PR open AND all checks passing AND review not approved | `review` |
-| 7 | PR open AND approved | `finish` |
-| 8 | PR merged | — (stop, see below) |
+| 2 | `status.state` is `NEEDS_SPEC` | `specify` |
+| 3 | `status.state` is `NEEDS_PLAN` | `plan` |
+| 4 | `status.state` is `IN_PROGRESS` | `implement` |
+| 5 | `status.state` is `NEEDS_VERIFY` | `verify` |
+| 6 | `status.state` is `DONE` AND no open PR | — (stop: output "Issue #N is complete. Nothing to dispatch.") |
+| 7 | PR open AND any check is failing | `verify` |
+| 8 | PR open AND all checks passing AND review not approved | `review` |
+| 9 | PR open AND approved | `finish` |
+| 10 | PR merged | — (stop, see below) |
 
 **Rule 1 — sync-working-status special handling:**
 
@@ -91,7 +91,7 @@ After it completes, re-run hexis:dispatch to continue.
 
 Invoke `hexis:sync-working-status`. Do NOT continue routing after sync — stop dispatch here. The user re-invokes dispatch manually.
 
-**Rule 8 — PR merged:**
+**Rule 10 — PR merged:**
 
 Output:
 ```
@@ -113,5 +113,5 @@ Then immediately invoke the determined skill. No confirmation prompt.
 
 ## Notes
 
-- If spec/plan files do not have `issue: N` in their YAML frontmatter, dispatch cannot locate them — they are treated as non-existent, and dispatch routes to `specify` or `plan` accordingly.
+- `hexis status read` is the authoritative source for issue state. The LLM does not infer state from file presence independently — CLI output determines routing.
 - Multiple issues on one branch: dispatch uses the first integer found in the branch name. If this is wrong, pass the correct issue number when asked.
