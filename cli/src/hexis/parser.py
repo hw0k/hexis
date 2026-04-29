@@ -12,6 +12,12 @@ class Check:
     checked: bool
 
 
+@dataclass
+class PlanTasks:
+    complete: int
+    total: int
+
+
 def parse_frontmatter(content: str) -> dict:
     if not content.startswith("---\n"):
         return {}
@@ -62,3 +68,14 @@ def parse_checks(fm: dict) -> list[Check]:
 
 def parse_depends_on(fm: dict) -> list[int]:
     return list(fm.get("depends_on") or [])
+
+
+def parse_plan_tasks(content: str) -> PlanTasks:
+    body = content
+    if content.startswith("---\n"):
+        end = content.find("\n---\n", 4)
+        if end != -1:
+            body = content[end + 5:]
+    checked = len(re.findall(r"^- \[x\]", body, re.MULTILINE))
+    unchecked = len(re.findall(r"^- \[ \]", body, re.MULTILINE))
+    return PlanTasks(complete=checked, total=checked + unchecked)

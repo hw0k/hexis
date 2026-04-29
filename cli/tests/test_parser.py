@@ -92,3 +92,21 @@ def test_parse_depends_on_absent():
 
 def test_parse_depends_on_null():
     assert parse_depends_on({"depends_on": None}) == []
+
+from hexis.parser import parse_plan_tasks, PlanTasks
+
+def test_parse_plan_tasks_mixed():
+    content = "---\nissue: 5\n---\n\n- [x] Task one\n- [ ] Task two\n- [x] Task three\n"
+    assert parse_plan_tasks(content) == PlanTasks(complete=2, total=3)
+
+def test_parse_plan_tasks_all_done():
+    content = "---\nissue: 5\n---\n\n- [x] Task one\n- [x] Task two\n"
+    assert parse_plan_tasks(content) == PlanTasks(complete=2, total=2)
+
+def test_parse_plan_tasks_none():
+    content = "---\nissue: 5\n---\n\n# No tasks\n"
+    assert parse_plan_tasks(content) == PlanTasks(complete=0, total=0)
+
+def test_parse_plan_tasks_excludes_frontmatter():
+    content = "---\nchecks:\n  - item: x\n    done: false\n---\n\n- [x] Real task\n"
+    assert parse_plan_tasks(content) == PlanTasks(complete=1, total=1)
