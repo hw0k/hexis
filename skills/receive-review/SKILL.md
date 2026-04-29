@@ -19,7 +19,7 @@ If `$ARGUMENTS` contains review feedback text, use it.
 ## Response Pattern
 
 1. **Read** — read the full feedback without reacting
-2. **Understand** — if anything is unclear, use the **ask-user** capability to clarify before implementing (see `hexis:platform-capabilities`)
+2. **Understand** — if anything is unclear, ask the user to clarify before implementing
 3. **Validate** — check against codebase reality
 4. **Evaluate** — is this technically sound for this codebase?
 5. **Implement** — one item at a time, test each
@@ -29,7 +29,7 @@ If `$ARGUMENTS` contains review feedback text, use it.
 
 If any item is unclear: clarify before implementing. Items may be related. Partial understanding = wrong implementation.
 
-Use the **ask-user** capability to ask about unclear items.
+Ask the user about unclear items.
 
 ## Feedback From External Reviewers
 

@@ -23,34 +23,9 @@ Before starting, assess scope complexity against these criteria (any one is suff
 - Success criteria are ambiguous
 - Multiple verification strategies are applicable
 
-**Complex scope** → use the **plan-mode** capability. Define verification commands and expected outputs, get approval before running anything (see `hexis:platform-capabilities`).
+**Complex scope** → present a verification plan and get user approval before running anything.
 **Simple scope** → proceed directly.
 
-## Task Tracking
-
-### On Start
-
-Use the **track-tasks** capability filtered by prefix `verify:`. If open tasks exist from a prior session:
-- Use the **ask-user** capability: **Resume** (verify state of last open task) or **Start fresh** (stop all open tasks)
-- If no open tasks: proceed directly
-
-> **Fallbacks:** If **track-tasks** is unavailable, maintain a markdown checklist in the current response. If **ask-user** is unavailable, output the question inline and wait for the next message.
-
-### Step Schedule
-
-| Check | On Start | On Done |
-|---|---|---|
-| Type check | **track-tasks**: create "verify: type check" → mark in_progress | mark completed |
-| Lint | **track-tasks**: create "verify: lint" → mark in_progress | mark completed |
-| Tests | **track-tasks**: create "verify: tests" → mark in_progress | mark completed |
-
-Only create a task for checks that are applicable. Skip a task entirely if the check is declared inapplicable.
-
-When `verify` is invoked as a sub-step by another skill (`review`, `finish`), it manages its own tasks independently — no coordination with the calling skill needed.
-
-### On Failure or Abort
-
-Use **track-tasks** to stop the current open task.
 
 ## The Iron Law
 
