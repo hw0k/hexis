@@ -2,20 +2,23 @@
 issue: 22
 status: READY_TO_PLAN
 checks:
-  - item: "`hexis status read <issue>` outputs correct STATE label for all 5 states"
-    done: false
-  - item: "`hexis status read <issue> --json` outputs valid JSON with correct `state` key and `checks` array with indices"
-    done: false
-  - item: "`hexis status update <issue> --checked <indices> --unchecked <indices>` rewrites all Checks items atomically"
-    done: false
-  - item: "Incomplete or overlapping index coverage exits 1 with an error message"
-    done: false
-  - item: "All state transitions are covered by pytest unit tests"
-    done: false
-  - item: "`uv tool install ./cli` succeeds in a clean environment"
-    done: false
-  - item: "CLI handles missing `docs/` directory gracefully (outputs `NEEDS_SPEC`, exit 0)"
-    done: false
+  - item: '`hexis status read <issue>` outputs correct STATE label for all 5 states'
+    done: true
+  - item: '`hexis status read <issue> --json` outputs valid JSON with correct `state`
+      key and `checks` array with indices'
+    done: true
+  - item: '`hexis status update <issue> --checked <indices> --unchecked <indices>`
+      rewrites all Checks items atomically'
+    done: true
+  - item: Incomplete or overlapping index coverage exits 1 with an error message
+    done: true
+  - item: All state transitions are covered by pytest unit tests
+    done: true
+  - item: '`uv tool install ./cli` succeeds in a clean environment'
+    done: true
+  - item: CLI handles missing `docs/` directory gracefully (outputs `NEEDS_SPEC`,
+      exit 0)
+    done: true
 ---
 
 # hexis CLI Tool
