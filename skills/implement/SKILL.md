@@ -12,7 +12,7 @@ Execute an implementation plan. Default: dispatch subagents per task. Inline exe
 
 ## $ARGUMENTS
 
-If `$ARGUMENTS` is a plan file path, load that file. Otherwise use the **ask-user** capability to ask for the path (see `hexis:platform-capabilities`).
+If `$ARGUMENTS` is a plan file path, load that file. Otherwise ask the user for the plan file path.
 
 ## Complexity Check
 
@@ -21,43 +21,14 @@ Before starting, assess task complexity against these criteria (any one is suffi
 - Execution approach is unclear (inline vs. subagent decision is non-obvious)
 - Architectural or structural decisions required
 
-**Complex task** → use the **plan-mode** capability. Review the plan, clarify execution strategy, get approval before writing any code (see `hexis:platform-capabilities`).
+**Complex task** → present a plan and get user approval before writing any code.
 **Simple task** → proceed directly.
-
-## Task Tracking
-
-### On Start
-
-1. Use the **track-tasks** capability filtered by prefix `implement:`. If open tasks exist from a prior session:
-   - Use the **ask-user** capability: **Resume** (verify state of last open task) or **Start fresh** (stop all open tasks)
-2. **track-tasks**: create "implement: execute plan <plan-filename>" → mark in_progress (parent task — created regardless of subagent or inline path)
-
-> **Fallbacks:** If **track-tasks** is unavailable, maintain a markdown checklist in the current response. If **ask-user** is unavailable, output the question inline and wait for the next message.
-
-### Subagent Path
-
-Before dispatching each subagent:
-- Use **track-tasks** filtered by prefix `implement/task-`. Confirm the prior task (if any) shows completed before dispatching the next.
-- Instruct each dispatched subagent to use **track-tasks**: create "implement/task-N: <task-name>" → mark in_progress at start; mark completed on success; stop on failure. Use `N` and task name from the plan.
-- After reviewing each subagent's output: update the parent task with a progress note.
-
-### Inline Path
-
-**track-tasks**: create task before the existing update in Step 4 (see below).
-
-### On All Tasks Complete
-
-Use **track-tasks** to mark the parent task completed.
-
-### On Failure or Abort
-
-Use **track-tasks** to stop the current open task and the parent task.
 
 ## Process
 
 ### Step 0: Branch Check
 
-Check the current branch. If it is `main` or `master`, use the **ask-user** capability to ask the user whether to proceed on this branch or switch to a feature branch. Do not proceed until the user explicitly confirms. This check is mandatory even if the user invoked the skill directly.
+Check the current branch. If it is `main` or `master`, ask the user whether to proceed on this branch or switch to a feature branch. Do not proceed until the user explicitly confirms. This check is mandatory even if the user invoked the skill directly.
 
 ### Step 1: Load and Review
 
@@ -78,18 +49,16 @@ If any condition is unmet, use subagents. State the reason if choosing inline.
 
 ### Step 3: Subagent Path
 
-Use the **spawn-subagent** capability for each task (see `hexis:platform-capabilities`). If **spawn-subagent** is unavailable, use the Inline Path instead.
+Dispatch a subagent for each task.
 
-**Parallel dispatch rule:** Tasks with no dependencies on each other MUST be dispatched in a single message — all spawn-subagent calls in one response. Dispatching task A, waiting for the result, then dispatching task B is sequential regardless of what the surrounding text says. To dispatch N tasks in parallel: compose all N prompts first, then emit all N spawn-subagent calls in one message. Only dispatch the next task after a prior task completes when a data dependency exists (e.g., task B needs output from task A).
+**Parallel dispatch rule:** Tasks with no dependencies on each other MUST be dispatched in a single message — all subagent dispatches in one response. Dispatching task A, waiting for the result, then dispatching task B is sequential regardless of what the surrounding text says. To dispatch N tasks in parallel: compose all N prompts first, then emit all N subagent dispatches in one message. Only dispatch the next task after a prior task completes when a data dependency exists (e.g., task B needs output from task A).
 
 ### Step 4: Inline Path (exception only)
 
 For each task:
-1. TaskCreate("implement/task-N: <task-name>") → TaskUpdate(in_progress)
-2. Follow each step exactly as written
-3. Run verifications as specified
-4. TaskUpdate(completed)
-5. Stop if blocked — report and wait
+1. Follow each step exactly as written
+2. Run verifications as specified
+3. Stop if blocked — report and wait
 
 After all tasks done, invoke `hexis:sync-working-status`. Then invoke `hexis:finish`.
 
