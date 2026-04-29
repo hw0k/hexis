@@ -4,9 +4,9 @@ status: READY_TO_PLAN
 checks:
   - item: "`hexis status read <issue>` outputs correct STATE label for all 5 states"
     done: false
-  - item: "`hexis status read <issue> --json` outputs valid JSON with correct `state` key and `done_when` array with indices"
+  - item: "`hexis status read <issue> --json` outputs valid JSON with correct `state` key and `checks` array with indices"
     done: false
-  - item: "`hexis status update <issue> --checked <indices> --unchecked <indices>` rewrites all Done When items atomically"
+  - item: "`hexis status update <issue> --checked <indices> --unchecked <indices>` rewrites all Checks items atomically"
     done: false
   - item: "Incomplete or overlapping index coverage exits 1 with an error message"
     done: false
@@ -31,7 +31,7 @@ A stateless Python CLI tool (`hexis`) that reads `docs/specs/` and `docs/plans/`
 | Command | Behavior |
 |---|---|
 | `hexis status read <issue>` | Parse spec/plan files; report state label, plan task progress, and indexed AC items |
-| `hexis status update <issue> --checked <indices> --unchecked <indices>` | Bulk-set all Done When AC items in one write — last-write-wins, all indices must be covered |
+| `hexis status update <issue> --checked <indices> --unchecked <indices>` | Bulk-set all Checks items in one write — last-write-wins, all indices must be covered |
 
 All commands accept `--json` for machine-readable output and `--root <path>` to specify the project root (defaults to current working directory).
 
@@ -52,24 +52,26 @@ Full `status read` example:
 ```
 STATE: NEEDS_VERIFY
 ISSUE: 21
+DEPENDS ON: (none)
 
 PLAN TASKS: 4/4 complete
 
-DONE WHEN (AC):
+CHECKS:
   [x] #0  Custom CLI tool designed with final command surface
   [ ] #1  All state transitions covered by pytest unit tests
   [ ] #2  uv tool install succeeds in a clean environment
   [x] #3  CLI handles missing docs/ directory gracefully
 ```
 
-When state is `NEEDS_SPEC` or `NEEDS_PLAN`, only the STATE/ISSUE lines and a BLOCKING reason are shown:
+When state is `NEEDS_SPEC` or `NEEDS_PLAN`, only the STATE/ISSUE/DEPENDS ON lines and a BLOCKING reason are shown:
 
 ```
 STATE: NEEDS_PLAN
-ISSUE: 21
+ISSUE: 23
+DEPENDS ON: #22
 
 BLOCKING:
-  No plan file found in docs/plans/ for issue #21
+  No plan file found in docs/plans/ for issue #23
 ```
 
 ### JSON output (`--json`)
@@ -78,8 +80,9 @@ BLOCKING:
 {
   "state": "NEEDS_VERIFY",
   "issue": 21,
+  "depends_on": [],
   "plan_tasks": { "complete": 4, "total": 4 },
-  "done_when": [
+  "checks": [
     { "index": 0, "text": "Custom CLI tool designed with final command surface", "checked": true },
     { "index": 1, "text": "All state transitions covered by pytest unit tests", "checked": false },
     { "index": 2, "text": "uv tool install succeeds in a clean environment", "checked": false },
@@ -97,11 +100,13 @@ Exit codes: `0` = success, `1` = usage/argument error, `2` = parse error (malfor
 
 The CLI scans `docs/specs/` and `docs/plans/` relative to the project root. State is computed fresh on every invocation.
 
-**Finding a spec file:** Any `docs/specs/*.md` file containing `Issue: #<N>` anywhere in the file body.
+**Finding a spec file:** Any `docs/specs/*.md` file whose YAML frontmatter `issue:` field equals `N`. If more than one file matches, exit code 2 with an error message to stderr.
 
-**Finding a plan file:** Any `docs/plans/*.md` file containing `Issue: #<N>` anywhere in the file body, OR whose YAML frontmatter contains a `linked_spec` key that points to a spec containing `Issue: #<N>`.
+**Finding a plan file:** Any `docs/plans/*.md` file whose YAML frontmatter `issue:` field equals `N`. If more than one file matches, exit code 2 with an error message to stderr.
 
-**Parsing spec Done When:** Extract all checklist items (`- [ ]` or `- [x]`) under the `## Done When` heading, up to the next `##` heading or end of file. Items are zero-indexed in the order they appear.
+**Parsing spec depends_on:** Read the `depends_on:` YAML frontmatter field if present. Value is a list of bare issue numbers (integers). Absent or empty means no dependencies. Surfaced in output as-is; not used in state determination.
+
+**Parsing spec Checks:** Read the `checks:` YAML frontmatter array. Each entry is an object with `item` (string) and `done` (boolean). Items are zero-indexed in the order they appear.
 
 **Parsing plan tasks:** Extract all checklist items (`- [ ]` or `- [x]`) anywhere in the plan file body (excluding YAML frontmatter).
 
@@ -112,8 +117,8 @@ The CLI scans `docs/specs/` and `docs/plans/` relative to the project root. Stat
 | No spec file found | `NEEDS_SPEC` |
 | Spec found, no plan file found | `NEEDS_PLAN` |
 | Plan found, any plan task item is `[ ]` | `IN_PROGRESS` |
-| All plan tasks `[x]`, any Done When item is `[ ]` | `NEEDS_VERIFY` |
-| All plan tasks `[x]`, all Done When items `[x]` | `DONE` |
+| All plan tasks `[x]`, any Checks item has `done: false` | `NEEDS_VERIFY` |
+| All plan tasks `[x]`, all Checks items have `done: true` | `DONE` |
 
 Conditions are evaluated in order. The first match determines the state.
 
@@ -126,11 +131,11 @@ A bulk, last-write-wins command. Accepts `--checked <indices>` and `--unchecked 
 hexis status update 21 --checked 0,3 --unchecked 1,2
 ```
 
-The entire Done When section is rewritten atomically from this single call. One call replaces all AC item states — no sequential per-index calls required.
+The entire `checks:` frontmatter array is rewritten atomically from this single call. One call replaces all Checks item states — no sequential per-index calls required.
 
 Outputs the new state after writing (same format as `status read`).
 
-`status update` modifies **only** Done When (AC) items in the spec file. Plan task items are read-only from the CLI's perspective.
+`status update` modifies **only** the `checks:` frontmatter field in the spec file. Plan task items are read-only from the CLI's perspective.
 
 ## Package Layout
 
@@ -141,8 +146,8 @@ cli/
     hexis/
       __init__.py
       cli.py          # Typer app, command definitions
-      parser.py       # find_spec_file, find_plan_file, parse_done_when, parse_plan_tasks
-      state.py        # determine_state, StateResult
+      parser.py       # MultipleMatchError, Check, PlanTasks; find_spec_file, find_plan_file, parse_frontmatter, parse_checks, parse_depends_on, parse_plan_tasks, write_checks
+      state.py        # State, StateResult, determine_state
   tests/
     test_parser.py
     test_state.py
@@ -155,8 +160,8 @@ Lives in the `cli/` subdirectory of the hexis repository.
 
 - Python ≥ 3.11
 - `typer` (CLI framework, includes `rich`)
+- `pyyaml` (YAML frontmatter parsing)
 - `pytest` (test runner)
-- No other runtime dependencies
 - Managed with `uv`; installable via `uv tool install ./cli`
 
 ## Out of Scope

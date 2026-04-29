@@ -77,6 +77,7 @@ Write to `docs/specs/YYYY-MM-DD-<topic>-design.md`. The file must match `docs/te
 ---
 issue: N
 status: READY_TO_PLAN
+depends_on: [M, ...]   # optional — omit if no dependencies
 checks:
   - item: "criterion description"
     done: false
@@ -85,7 +86,7 @@ checks:
 # <Title>
 ```
 
-Where `N` is the GitHub issue number this spec addresses (bare integer, no `#`). If there is no associated issue, omit `issue:`. The `issue: N` frontmatter field is required for `hexis:dispatch` to locate the spec by issue number.
+Where `N` is the GitHub issue number this spec addresses (bare integer, no `#`). If there is no associated issue, omit `issue:`. The `issue: N` frontmatter field is required for `hexis:dispatch` to locate the spec by issue number. `depends_on` lists issue numbers this spec depends on (bare integers); omit if none.
 
 **HARD RULE:** The `## Done Criteria` body section is FORBIDDEN. All acceptance criteria MUST be defined in `checks:` frontmatter as a list of `{item, done}` objects. A spec file with a `## Done Criteria` body section is malformed.
 

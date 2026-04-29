@@ -1,6 +1,7 @@
 ---
 issue: 23
 status: READY_TO_PLAN
+depends_on: [22]
 checks:
   - item: "`dispatch` routes via `hexis status read` output for all 5 state labels"
     done: false
@@ -8,7 +9,7 @@ checks:
     done: false
   - item: "`plan` gate runs `hexis status read` and blocks on non-`NEEDS_PLAN` state"
     done: false
-  - item: "`write-test` and `implement` gates run `hexis status read` and block on non-`IN_PROGRESS` state"
+  - item: "`implement` gate runs `hexis status read` and blocks on non-`IN_PROGRESS` state"
     done: false
   - item: "`verify` entry gate runs `hexis status read` and blocks on non-`NEEDS_VERIFY` state"
     done: false
@@ -81,7 +82,7 @@ Rules 1 (uncommitted changes) and 5–8 (PR state) remain unchanged — they sti
 - If state is `NEEDS_PLAN`: proceed
 - Otherwise: surface CLI output verbatim; stop
 
-### `write-test` and `implement`
+### `implement`
 
 **Gate position:** At skill start.
 
@@ -98,7 +99,7 @@ Rules 1 (uncommitted changes) and 5–8 (PR state) remain unchanged — they sti
 **Command:** `hexis status read <issue> --json`
 
 **Logic:**
-- If state is `NEEDS_VERIFY`: proceed — also surface the `done_when` array to the user so they know which AC items need verification
+- If state is `NEEDS_VERIFY`: proceed — also surface the `checks` array to the user so they know which items need verification
 - If state is `IN_PROGRESS`: surface blocking plan tasks from CLI output; stop — implement must complete first
 - Otherwise: surface CLI output verbatim; stop
 
@@ -106,7 +107,7 @@ Rules 1 (uncommitted changes) and 5–8 (PR state) remain unchanged — they sti
 
 **Command:** `hexis status update <issue> --checked <indices> --unchecked <indices>`
 
-**Logic:** LLM reads the `done_when` indices from the entry `read` output, determines which items have been satisfied, and calls `update` once with the complete AC state. Outputs the new state.
+**Logic:** LLM reads the `checks` indices from the entry `read` output, determines which items have been satisfied, and calls `update` once with the complete Checks state. Outputs the new state.
 
 ### `finish`
 
@@ -125,7 +126,6 @@ Rules 1 (uncommitted changes) and 5–8 (PR state) remain unchanged — they sti
 | `skills/dispatch/SKILL.md` | Replace Step 1b grep logic with `hexis status read` routing; remove `READY_TO_MERGE` from routing table |
 | `skills/specify/SKILL.md` | Add `## CLI Integration Gate` section |
 | `skills/plan/SKILL.md` | Add `## CLI Integration Gate` section |
-| `skills/write-test/SKILL.md` | Add `## CLI Integration Gate` section |
 | `skills/implement/SKILL.md` | Add `## CLI Integration Gate` section |
 | `skills/verify/SKILL.md` | Add `## CLI Integration Gate` section (entry + exit gates) |
 | `skills/finish/SKILL.md` | Add `## CLI Integration Gate` section |
