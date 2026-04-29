@@ -1,17 +1,17 @@
 ---
 issue: 32
-status: READY_TO_PLAN
+status: DONE
 checks:
   - item: "`skills/platform-capabilities/` directory does not exist"
-    done: false
+    done: true
   - item: "No skill file contains bold capability names: **ask-user**, **track-tasks**, **spawn-subagent**, **plan-mode**"
-    done: false
+    done: true
   - item: "No skill file contains `hexis:platform-capabilities` references"
-    done: false
+    done: true
   - item: "No skill file contains explicit fallback notes for capability unavailability"
-    done: false
+    done: true
   - item: "Task Tracking sections are removed from all skill files that had them"
-    done: false
+    done: true
 ---
 
 # Remove Platform-Capabilities Abstraction
