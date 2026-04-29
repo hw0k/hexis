@@ -4,7 +4,7 @@ from pathlib import Path
 
 import typer
 
-from hexis.parser import MultipleMatchError
+from hexis.parser import MultipleMatchError, find_spec_file, parse_frontmatter, write_checks
 from hexis.state import State, StateResult, determine_state
 
 app = typer.Typer()
@@ -68,3 +68,54 @@ def status_read(
         typer.echo(json_lib.dumps(output, indent=2))
     else:
         _render_plain(result)
+
+
+@status_app.command("update")
+def status_update(
+    issue: int,
+    checked: str = typer.Option(..., "--checked"),
+    unchecked: str = typer.Option(..., "--unchecked"),
+    root: Path = typer.Option(Path("."), "--root"),
+) -> None:
+    root = root.resolve()
+
+    try:
+        checked_idx = [int(i.strip()) for i in checked.split(",") if i.strip()]
+        unchecked_idx = [int(i.strip()) for i in unchecked.split(",") if i.strip()]
+    except ValueError:
+        typer.echo("Error: indices must be integers", err=True)
+        raise typer.Exit(1)
+
+    all_idx = sorted(checked_idx + unchecked_idx)
+
+    try:
+        spec_path = find_spec_file(root, issue)
+    except MultipleMatchError as e:
+        typer.echo(str(e), err=True)
+        raise typer.Exit(2)
+
+    if spec_path is None:
+        typer.echo(f"No spec file found for issue #{issue}", err=True)
+        raise typer.Exit(1)
+
+    fm = parse_frontmatter(spec_path.read_text())
+    n = len(fm.get("checks") or [])
+    expected = list(range(n))
+
+    if all_idx != expected:
+        typer.echo(
+            f"Error: indices {all_idx} do not cover all {n} checks exactly once "
+            f"(expected {expected})",
+            err=True,
+        )
+        raise typer.Exit(1)
+
+    checked_set = set(checked_idx)
+    new_checks = [
+        {"item": c["item"], "done": i in checked_set}
+        for i, c in enumerate(fm["checks"])
+    ]
+    write_checks(spec_path, new_checks)
+
+    result = determine_state(root, issue)
+    _render_plain(result)

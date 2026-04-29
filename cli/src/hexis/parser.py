@@ -1,7 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
+import os
 from pathlib import Path
 import re
+import tempfile
 import yaml
 
 
@@ -79,3 +81,19 @@ def parse_plan_tasks(content: str) -> PlanTasks:
     checked = len(re.findall(r"^- \[x\]", body, re.MULTILINE))
     unchecked = len(re.findall(r"^- \[ \]", body, re.MULTILINE))
     return PlanTasks(complete=checked, total=checked + unchecked)
+
+
+def write_checks(path: Path, new_checks: list[dict]) -> None:
+    content = path.read_text()
+    end = content.find("\n---\n", 4)
+    fm = yaml.safe_load(content[4:end]) or {}
+    body = content[end + 5:]
+    fm["checks"] = new_checks
+    new_fm = yaml.dump(fm, default_flow_style=False, allow_unicode=True, sort_keys=False)
+    new_content = f"---\n{new_fm}---\n{body}"
+    with tempfile.NamedTemporaryFile(
+        mode="w", dir=path.parent, delete=False, suffix=".tmp", encoding="utf-8"
+    ) as f:
+        f.write(new_content)
+        tmp = f.name
+    os.replace(tmp, path)

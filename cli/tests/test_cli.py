@@ -67,3 +67,75 @@ def test_status_read_missing_docs_graceful(tmp_path):
     result = runner.invoke(app, ["status", "read", "99", "--root", str(tmp_path)])
     assert result.exit_code == 0
     assert "STATE: NEEDS_SPEC" in result.output
+
+
+from hexis.parser import parse_frontmatter
+
+
+def _setup_spec_with_plan(tmp_path, issue, checks_done):
+    specs_dir = tmp_path / "docs" / "specs"
+    plans_dir = tmp_path / "docs" / "plans"
+    specs_dir.mkdir(parents=True, exist_ok=True)
+    plans_dir.mkdir(parents=True, exist_ok=True)
+    checks_yaml = "\n".join(
+        f"  - item: Item {i}\n    done: {'true' if d else 'false'}"
+        for i, d in enumerate(checks_done)
+    )
+    spec_path = specs_dir / "spec.md"
+    spec_path.write_text(
+        f"---\nissue: {issue}\nchecks:\n{checks_yaml}\n---\n\n# Spec\n"
+    )
+    (plans_dir / "plan.md").write_text(
+        f"---\nissue: {issue}\n---\n\n- [x] Step 1\n"
+    )
+    return spec_path
+
+
+def test_status_update_sets_checked(tmp_path):
+    spec_path = _setup_spec_with_plan(tmp_path, 5, [False, False])
+    result = runner.invoke(
+        app,
+        ["status", "update", "5", "--checked", "0", "--unchecked", "1", "--root", str(tmp_path)],
+    )
+    assert result.exit_code == 0
+    fm = parse_frontmatter(spec_path.read_text())
+    assert fm["checks"][0]["done"] is True
+    assert fm["checks"][1]["done"] is False
+    assert "STATE:" in result.output
+
+
+def test_status_update_all_checked_yields_done(tmp_path):
+    _setup_spec_with_plan(tmp_path, 5, [False])
+    result = runner.invoke(
+        app,
+        ["status", "update", "5", "--checked", "0", "--unchecked", "", "--root", str(tmp_path)],
+    )
+    assert result.exit_code == 0
+    assert "STATE: DONE" in result.output
+
+
+def test_status_update_incomplete_coverage_exits_1(tmp_path):
+    _setup_spec_with_plan(tmp_path, 5, [False, False])
+    result = runner.invoke(
+        app,
+        ["status", "update", "5", "--checked", "0", "--unchecked", "", "--root", str(tmp_path)],
+    )
+    assert result.exit_code == 1
+
+
+def test_status_update_overlapping_indices_exits_1(tmp_path):
+    _setup_spec_with_plan(tmp_path, 5, [False, False])
+    result = runner.invoke(
+        app,
+        ["status", "update", "5", "--checked", "0,1", "--unchecked", "0", "--root", str(tmp_path)],
+    )
+    assert result.exit_code == 1
+
+
+def test_status_update_no_spec_exits_1(tmp_path):
+    (tmp_path / "docs" / "specs").mkdir(parents=True)
+    result = runner.invoke(
+        app,
+        ["status", "update", "99", "--checked", "", "--unchecked", "", "--root", str(tmp_path)],
+    )
+    assert result.exit_code == 1
