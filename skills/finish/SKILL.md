@@ -14,6 +14,15 @@ Verify → commit → choose integration method → execute → clean up.
 
 If `$ARGUMENTS` contains a branch or feature description, use it as context.
 
+## CLI Integration Gate
+
+Before any commit, push, or PR creation:
+
+1. Obtain the issue number: use the number in `$ARGUMENTS` if provided; otherwise infer from the current branch name (first integer after the last `/`) or ask the user.
+2. Run: `hexis status read <issue>`
+3. If output shows `STATE: DONE`: proceed.
+4. If output shows any other state: surface the full CLI output verbatim to the user; stop. Do not proceed with commit, push, or PR creation.
+
 ## Process
 
 ### Step 1: Run verify
