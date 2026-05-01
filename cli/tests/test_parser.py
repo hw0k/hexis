@@ -1,4 +1,4 @@
-from hexis.parser import parse_frontmatter
+from hexis.parser import parse_frontmatter, write_checks
 
 def test_parse_frontmatter_valid():
     content = "---\nissue: 5\nstatus: READY_TO_PLAN\n---\n\n# Title\n"
@@ -110,3 +110,22 @@ def test_parse_plan_tasks_none():
 def test_parse_plan_tasks_excludes_frontmatter():
     content = "---\nchecks:\n  - item: x\n    done: false\n---\n\n- [x] Real task\n"
     assert parse_plan_tasks(content) == PlanTasks(complete=1, total=1)
+
+
+def test_write_checks_indents_items_under_checks(tmp_path):
+    spec_path = tmp_path / "spec.md"
+    spec_path.write_text(
+        "---\nissue: 5\nchecks:\n  - item: Old\n    done: false\n---\n\n# Spec\n"
+    )
+
+    write_checks(
+        spec_path,
+        [
+            {"item": "First criterion", "done": True},
+            {"item": "Second criterion", "done": False},
+        ],
+    )
+
+    content = spec_path.read_text()
+    assert "checks:\n  - item: First criterion\n    done: true\n  - item: Second criterion\n    done: false\n" in content
+    assert "checks:\n- item:" not in content

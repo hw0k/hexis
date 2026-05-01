@@ -14,6 +14,14 @@ Execute an implementation plan. Default: dispatch subagents per task. Inline exe
 
 If `$ARGUMENTS` is a plan file path, load that file. Otherwise ask the user for the plan file path.
 
+## CLI Integration Gate
+
+After loading the plan and reading the `issue:` value from its frontmatter, before writing any code:
+
+1. Run: `hexis status read <issue>`
+2. If output shows `STATE: IN_PROGRESS`: proceed.
+3. If output shows any other state: surface the full CLI output verbatim to the user; stop. Do not begin implementation.
+
 ## Complexity Check
 
 Before starting, assess task complexity against these criteria (any one is sufficient):

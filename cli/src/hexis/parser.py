@@ -7,6 +7,11 @@ import tempfile
 import yaml
 
 
+class _IndentedYAMLDumper(yaml.SafeDumper):
+    def increase_indent(self, flow: bool = False, indentless: bool = False):
+        return super().increase_indent(flow, False)
+
+
 @dataclass
 class Check:
     index: int
@@ -89,7 +94,13 @@ def write_checks(path: Path, new_checks: list[dict]) -> None:
     fm = yaml.safe_load(content[4:end]) or {}
     body = content[end + 5:]
     fm["checks"] = new_checks
-    new_fm = yaml.dump(fm, default_flow_style=False, allow_unicode=True, sort_keys=False)
+    new_fm = yaml.dump(
+        fm,
+        Dumper=_IndentedYAMLDumper,
+        default_flow_style=False,
+        allow_unicode=True,
+        sort_keys=False,
+    )
     new_content = f"---\n{new_fm}---\n{body}"
     with tempfile.NamedTemporaryFile(
         mode="w", dir=path.parent, delete=False, suffix=".tmp", encoding="utf-8"

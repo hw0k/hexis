@@ -18,6 +18,16 @@ Turn blurry inputs into clear, precise specs. The goal is not to generate ideas 
 
 If `$ARGUMENTS` is provided, treat it as the initial blurry input. Otherwise ask the user what needs to be specified.
 
+## CLI Integration Gate
+
+If an issue number is known from `$ARGUMENTS` or session context (e.g., the current branch is `feat/23-something`):
+
+1. Run: `hexis status read <issue>`
+2. If output shows `STATE: NEEDS_SPEC`: proceed.
+3. If output shows any other state: a spec already exists for this issue. Surface the full CLI output verbatim to the user and ask for explicit confirmation before overwriting. Do not proceed without confirmation.
+
+If no issue number is known (genuinely new work with no GitHub issue yet): skip this gate and proceed.
+
 ## Checklist
 
 - [ ] Identify what is blurry — list specific ambiguities

@@ -14,6 +14,14 @@ Write a detailed implementation plan from a spec. Real code, exact file paths, n
 
 If `$ARGUMENTS` is a file path, read that spec and start. Otherwise ask the user for the spec path.
 
+## CLI Integration Gate
+
+After loading the spec and reading the `issue:` value from its frontmatter, before writing any plan content:
+
+1. Run: `hexis status read <issue>`
+2. If output shows `STATE: NEEDS_PLAN`: proceed.
+3. If output shows any other state: surface the full CLI output verbatim to the user; stop. Do not write any plan content.
+
 ## Scope Check
 
 After loading the spec, check whether the work can be split:

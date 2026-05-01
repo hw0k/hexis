@@ -6,7 +6,7 @@ linked_spec: docs/specs/2026-04-08-skill-integration-gate-design.md
 
 # Skill Integration Gate Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. For TDD tasks, follow `hexis:testing-principles`. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `hexis:implement` to execute task by task. For TDD tasks, follow `hexis:testing-principles`. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Add CLI integration gates to all 6 hexis workflow skills, replacing LLM-driven state judgment with `hexis status read/update` output.
 
@@ -50,7 +50,7 @@ linked_spec: docs/specs/2026-04-08-skill-integration-gate-design.md
 **Files:**
 - Modify: `skills/dispatch/SKILL.md`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Replace the Step 1b bash block and variable descriptions (lines 56–67 of current file):
 
@@ -134,13 +134,13 @@ Replace the first bullet in `## Notes`:
 - `hexis status read` is the authoritative source for issue state. The LLM does not infer state from file presence independently — CLI output determines routing.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep -n "hexis status read\|status\.state\|Rule 10" skills/dispatch/SKILL.md`
 
 Expected: Lines showing `hexis status read N --json` in Step 1b, five `status.state` routing conditions in Step 2, and `Rule 10 — PR merged` in the rule description section.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/dispatch/SKILL.md
@@ -154,7 +154,7 @@ git commit -m "feat(dispatch): route via hexis status read instead of grep (#23)
 **Files:**
 - Modify: `skills/specify/SKILL.md`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Insert the following section after `## $ARGUMENTS` and before `## Checklist` in `skills/specify/SKILL.md`:
 
@@ -170,13 +170,13 @@ If an issue number is known from `$ARGUMENTS` or session context (e.g., the curr
 If no issue number is known (genuinely new work with no GitHub issue yet): skip this gate and proceed.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep -A 12 "## CLI Integration Gate" skills/specify/SKILL.md`
 
 Expected: Shows the 4-line gate section ending with "skip this gate and proceed."
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/specify/SKILL.md
@@ -190,7 +190,7 @@ git commit -m "feat(specify): add CLI integration gate (#23)"
 **Files:**
 - Modify: `skills/plan/SKILL.md`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Insert the following section after `## $ARGUMENTS` and before `## Scope Check` in `skills/plan/SKILL.md`:
 
@@ -204,13 +204,13 @@ After loading the spec and reading the `issue:` value from its frontmatter, befo
 3. If output shows any other state: surface the full CLI output verbatim to the user; stop. Do not write any plan content.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep -A 7 "## CLI Integration Gate" skills/plan/SKILL.md`
 
 Expected: Shows the 3-step gate section ending with "Do not write any plan content."
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/plan/SKILL.md
@@ -224,7 +224,7 @@ git commit -m "feat(plan): add CLI integration gate (#23)"
 **Files:**
 - Modify: `skills/implement/SKILL.md`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Insert the following section after `## $ARGUMENTS` and before `## Complexity Check` in `skills/implement/SKILL.md`:
 
@@ -238,13 +238,13 @@ After loading the plan and reading the `issue:` value from its frontmatter, befo
 3. If output shows any other state: surface the full CLI output verbatim to the user; stop. Do not begin implementation.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep -A 7 "## CLI Integration Gate" skills/implement/SKILL.md`
 
 Expected: Shows the 3-step gate section ending with "Do not begin implementation."
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/implement/SKILL.md
@@ -258,7 +258,7 @@ git commit -m "feat(implement): add CLI integration gate (#23)"
 **Files:**
 - Modify: `skills/verify/SKILL.md`
 
-- [ ] **Step 1: Implement — entry gate section**
+- [x] **Step 1: Implement — entry gate section**
 
 Insert the following section after `## $ARGUMENTS` and before `## Complexity Check` in `skills/verify/SKILL.md`:
 
@@ -276,7 +276,7 @@ At skill start, before running any verification commands:
 5. If `state` is any other value: surface the full CLI output verbatim to the user; stop.
 ```
 
-- [ ] **Step 2: Implement — exit gate inside existing `## Gate Function`**
+- [x] **Step 2: Implement — exit gate inside existing `## Gate Function`**
 
 In `## Gate Function`, the current step sequence is:
 
@@ -293,7 +293,7 @@ Replace it with:
 7. ONLY THEN: claim
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `grep -A 15 "## CLI Integration Gate" skills/verify/SKILL.md`
 
@@ -305,7 +305,7 @@ grep -A 10 "## Gate Function" skills/verify/SKILL.md
 
 Expected: Steps 5 UPDATE, 6 SYNC, 7 ONLY THEN visible in sequence.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/verify/SKILL.md
@@ -319,7 +319,7 @@ git commit -m "feat(verify): add CLI integration gate with exit update (#23)"
 **Files:**
 - Modify: `skills/finish/SKILL.md`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
 Insert the following section after `## $ARGUMENTS` and before `## Process` in `skills/finish/SKILL.md`:
 
@@ -334,13 +334,13 @@ Before any commit, push, or PR creation:
 4. If output shows any other state: surface the full CLI output verbatim to the user; stop. Do not proceed with commit, push, or PR creation.
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `grep -A 8 "## CLI Integration Gate" skills/finish/SKILL.md`
 
 Expected: Shows the 4-step gate section ending with "Do not proceed with commit, push, or PR creation."
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add skills/finish/SKILL.md
