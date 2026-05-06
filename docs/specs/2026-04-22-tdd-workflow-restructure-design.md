@@ -2,17 +2,20 @@
 issue: 27
 status: DONE
 checks:
-  - item: "`skills/write-test/` directory does not exist"
+  - item: '`skills/write-test/` directory does not exist'
     done: true
-  - item: "`skills/testing-principles/SKILL.md` exists with all sections listed above"
+  - item: '`skills/testing-principles/SKILL.md` exists with all sections listed above'
     done: true
-  - item: "`skills/plan/SKILL.md` includes TDD applicability criteria and both TDD/non-TDD step structures"
+  - item: '`skills/plan/SKILL.md` includes TDD applicability criteria and both TDD/non-TDD
+      step structures'
     done: true
-  - item: "`skills/implement/SKILL.md` references testing-principles for TDD tasks"
+  - item: '`skills/implement/SKILL.md` references testing-principles for TDD tasks'
     done: true
-  - item: "`agents/principles-reviewer.md` includes testing-principles in scope and output"
+  - item: '`agents/principles-reviewer.md` includes testing-principles in scope and
+      output'
     done: true
-  - item: "All changes committed; no references to `hexis:write-test` remain in the repo"
+  - item: All changes committed; no references to `hexis:write-test` remain in the
+      repo
     done: true
 ---
 
