@@ -1,8 +1,7 @@
 ---
 issue: 37
 status: READY_TO_PLAN
-depends_on:
-  - 22
+depends_on: [22]
 checks:
   - item: '`hexis status update <issue>` rewrites both spec.status and plan.status
       from the to-be derived workflow state'
