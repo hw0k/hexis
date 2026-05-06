@@ -4,8 +4,23 @@ from pathlib import Path
 
 import typer
 
-from hexis.parser import MultipleMatchError, find_spec_file, parse_frontmatter, write_checks
-from hexis.state import State, StateResult, determine_state
+from hexis.parser import (
+    FrontmatterFormatError,
+    MultipleMatchError,
+    find_plan_file,
+    find_spec_file,
+    parse_frontmatter,
+    read_frontmatter_file,
+    write_checks,
+    write_frontmatter,
+)
+from hexis.state import (
+    State,
+    StateResult,
+    determine_state,
+    plan_status_for_state,
+    spec_status_for_state,
+)
 
 app = typer.Typer()
 status_app = typer.Typer()
@@ -48,6 +63,9 @@ def status_read(
     except MultipleMatchError as e:
         typer.echo(str(e), err=True)
         raise typer.Exit(2)
+    except FrontmatterFormatError as e:
+        typer.echo(str(e), err=True)
+        raise typer.Exit(1)
 
     if json:
         output = {
@@ -68,6 +86,28 @@ def status_read(
         typer.echo(json_lib.dumps(output, indent=2))
     else:
         _render_plain(result)
+
+
+def _rewrite_status_frontmatter(root: Path, issue: int, result: StateResult) -> None:
+    spec_path = find_spec_file(root, issue)
+    if spec_path is None:
+        return
+
+    spec_fm, spec_body = read_frontmatter_file(spec_path)
+    spec_fm["status"] = spec_status_for_state(result.state)
+    write_frontmatter(spec_path, spec_fm, spec_body)
+
+    plan_status = plan_status_for_state(result.state)
+    if plan_status is None:
+        return
+
+    plan_path = find_plan_file(root, issue)
+    if plan_path is None:
+        return
+
+    plan_fm, plan_body = read_frontmatter_file(plan_path)
+    plan_fm["status"] = plan_status
+    write_frontmatter(plan_path, plan_fm, plan_body)
 
 
 @status_app.command("update")
@@ -93,12 +133,15 @@ def status_update(
     except MultipleMatchError as e:
         typer.echo(str(e), err=True)
         raise typer.Exit(2)
+    except FrontmatterFormatError as e:
+        typer.echo(str(e), err=True)
+        raise typer.Exit(1)
 
     if spec_path is None:
         typer.echo(f"No spec file found for issue #{issue}", err=True)
         raise typer.Exit(1)
 
-    fm = parse_frontmatter(spec_path.read_text())
+    fm, body = read_frontmatter_file(spec_path)
     n = len(fm.get("checks") or [])
     expected = list(range(n))
 
@@ -111,11 +154,13 @@ def status_update(
         raise typer.Exit(1)
 
     checked_set = set(checked_idx)
-    new_checks = [
+    fm["checks"] = [
         {"item": c["item"], "done": i in checked_set}
         for i, c in enumerate(fm["checks"])
     ]
-    write_checks(spec_path, new_checks)
+    write_frontmatter(spec_path, fm, body)
 
+    result = determine_state(root, issue)
+    _rewrite_status_frontmatter(root, issue, result)
     result = determine_state(root, issue)
     _render_plain(result)

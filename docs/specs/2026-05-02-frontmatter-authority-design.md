@@ -1,22 +1,29 @@
 ---
 issue: 37
 status: READY_TO_PLAN
-depends_on: [22]
+depends_on:
+  - 22
 checks:
-  - item: "`hexis status update <issue>` rewrites both spec.status and plan.status from the to-be derived workflow state"
-    done: false
-  - item: "CLI is the authoritative reader/writer for frontmatter state transitions; status values are no longer maintained manually"
-    done: false
-  - item: "`depends_on` is accepted only in YAML flow-sequence form (`depends_on: [22, 23]`)"
-    done: false
-  - item: "Legacy block-sequence `depends_on` syntax is rejected by CLI parsing with a deterministic error"
-    done: false
-  - item: "Existing spec and plan files using block-sequence `depends_on` are migrated to flow-sequence form"
-    done: false
-  - item: "`checks` remains block-sequence YAML and is not converted to flow style"
-    done: false
-  - item: "Pytest coverage includes frontmatter rewriting, status synchronization, and legacy `depends_on` rejection"
-    done: false
+  - item: '`hexis status update <issue>` rewrites both spec.status and plan.status
+      from the to-be derived workflow state'
+    done: true
+  - item: CLI is the authoritative reader/writer for frontmatter state transitions;
+      status values are no longer maintained manually
+    done: true
+  - item: '`depends_on` is accepted only in YAML flow-sequence form (`depends_on:
+      [22, 23]`)'
+    done: true
+  - item: Legacy block-sequence `depends_on` syntax is rejected by CLI parsing with
+      a deterministic error
+    done: true
+  - item: Existing spec and plan files using block-sequence `depends_on` are migrated
+      to flow-sequence form
+    done: true
+  - item: '`checks` remains block-sequence YAML and is not converted to flow style'
+    done: true
+  - item: Pytest coverage includes frontmatter rewriting, status synchronization,
+      and legacy `depends_on` rejection
+    done: true
 ---
 
 # Make hexis CLI Authoritative for Frontmatter State
@@ -121,13 +128,7 @@ Valid form:
 depends_on: [22, 23]
 ```
 
-Invalid form:
-
-```yaml
-depends_on:
-  - 22
-  - 23
-```
+Invalid form: the legacy multi-line sequence form for `depends_on`.
 
 This is a repository rule, not a YAML limitation. Both forms are legal YAML, but only the flow-sequence form is allowed in hexis documents after this change.
 
@@ -135,14 +136,7 @@ This is a repository rule, not a YAML limitation. Both forms are legal YAML, but
 
 Legacy block-sequence `depends_on` syntax is unsupported.
 
-If the CLI encounters:
-
-```yaml
-depends_on:
-  - 22
-```
-
-it must fail deterministically rather than silently accept or normalize it.
+If the CLI encounters the legacy multi-line sequence form for `depends_on` (for example, a `depends_on:` key followed by dash-prefixed items on subsequent lines), it must fail deterministically rather than silently accept or normalize it.
 
 Failure requirements:
 - non-zero exit

@@ -35,7 +35,7 @@ linked_spec: docs/specs/2026-05-02-frontmatter-authority-design.md
 **Files:**
 - Modify: `cli/tests/test_parser.py`
 
-- [ ] **Step 1: Write failing test**
+- [x] **Step 1: Write failing test**
 
 ```python
 import pytest
@@ -71,12 +71,12 @@ def test_write_frontmatter_keeps_depends_on_flow_and_checks_block(tmp_path):
     assert "depends_on:\n  - 22\n" not in content
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 Run: `cd cli && pytest tests/test_parser.py -k "depends_on or write_frontmatter"`
 Expected: FAIL — `cannot import name 'FrontmatterFormatError'` or `cannot import name 'write_frontmatter'`
 
-- [ ] **Step 3: Minimal implementation**
+- [x] **Step 3: Minimal implementation**
 
 ```python
 class FrontmatterFormatError(ValueError):
@@ -139,12 +139,12 @@ def write_frontmatter(path: Path, fm: dict, body: str) -> None:
     os.replace(tmp, path)
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 Run: `cd cli && pytest tests/test_parser.py -k "depends_on or write_frontmatter"`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- **Step 5: Commit** — deferred to the final `hexis:finish` phase
 
 ```bash
 git add cli/tests/test_parser.py cli/src/hexis/parser.py
@@ -157,7 +157,7 @@ git commit -m "test(cli): cover canonical frontmatter rules (#37)"
 - Modify: `cli/src/hexis/parser.py`
 - Modify: `cli/tests/test_parser.py`
 
-- [ ] **Step 1: Write failing test**
+- [x] **Step 1: Write failing test**
 
 ```python
 from hexis.parser import find_spec_file, read_frontmatter_file
@@ -183,12 +183,12 @@ def test_read_frontmatter_file_preserves_body(tmp_path):
     assert body == "\n# Plan\n"
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 Run: `cd cli && pytest tests/test_parser.py -k "find_spec_file_surfaces_invalid_depends_on or read_frontmatter_file_preserves_body"`
 Expected: FAIL — `cannot import name 'read_frontmatter_file'`
 
-- [ ] **Step 3: Minimal implementation**
+- [x] **Step 3: Minimal implementation**
 
 ```python
 def read_frontmatter_file(path: Path) -> tuple[dict, str]:
@@ -237,12 +237,12 @@ def write_checks(path: Path, new_checks: list[dict]) -> None:
     write_frontmatter(path, fm, body)
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 Run: `cd cli && pytest tests/test_parser.py`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- **Step 5: Commit** — deferred to the final `hexis:finish` phase
 
 ```bash
 git add cli/src/hexis/parser.py cli/tests/test_parser.py
@@ -255,7 +255,7 @@ git commit -m "feat(cli): enforce canonical parser reads and writes (#37)"
 - Modify: `cli/src/hexis/state.py`
 - Modify: `cli/tests/test_state.py`
 
-- [ ] **Step 1: Write failing test**
+- [x] **Step 1: Write failing test**
 
 ```python
 from hexis.state import State, plan_status_for_state, spec_status_for_state
@@ -275,12 +275,12 @@ def test_plan_status_for_state_mapping():
     assert plan_status_for_state(State.DONE) == "DONE"
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 Run: `cd cli && pytest tests/test_state.py -k "status_for_state_mapping"`
 Expected: FAIL — `cannot import name 'plan_status_for_state'`
 
-- [ ] **Step 3: Minimal implementation**
+- [x] **Step 3: Minimal implementation**
 
 ```python
 def spec_status_for_state(state: State) -> str:
@@ -304,12 +304,12 @@ def plan_status_for_state(state: State) -> str | None:
     return mapping[state]
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 Run: `cd cli && pytest tests/test_state.py -k "status_for_state_mapping"`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- **Step 5: Commit** — deferred to the final `hexis:finish` phase
 
 ```bash
 git add cli/src/hexis/state.py cli/tests/test_state.py
@@ -321,7 +321,7 @@ git commit -m "test(cli): cover derived document status mapping (#37)"
 **Files:**
 - Modify: `cli/tests/test_cli.py`
 
-- [ ] **Step 1: Write failing test**
+- [x] **Step 1: Write failing test**
 
 ```python
 def test_status_read_rejects_block_style_depends_on(tmp_path):
@@ -361,12 +361,12 @@ def test_status_update_rewrites_spec_and_plan_statuses(tmp_path):
     assert "STATE: DONE" in result.output
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 Run: `cd cli && pytest tests/test_cli.py -k "rejects_block_style_depends_on or rewrites_spec_and_plan_statuses"`
 Expected: FAIL — status values remain `READY_TO_PLAN` / `READY_TO_IMPLEMENT`
 
-- [ ] **Step 3: Minimal implementation**
+- [x] **Step 3: Minimal implementation**
 
 ```python
 from hexis.parser import (
@@ -388,12 +388,12 @@ from hexis.state import (
 )
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 Run: `cd cli && pytest tests/test_cli.py -k "rejects_block_style_depends_on or rewrites_spec_and_plan_statuses"`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- **Step 5: Commit** — deferred to the final `hexis:finish` phase
 
 ```bash
 git add cli/tests/test_cli.py cli/src/hexis/cli.py
@@ -405,7 +405,7 @@ git commit -m "test(cli): cover status synchronization and syntax rejection (#37
 **Files:**
 - Modify: `cli/src/hexis/cli.py`
 
-- [ ] **Step 1: Write failing test**
+- [x] **Step 1: Write failing test**
 
 ```python
 def test_status_update_sets_in_progress_statuses_when_plan_has_open_tasks(tmp_path):
@@ -431,12 +431,14 @@ def test_status_update_sets_in_progress_statuses_when_plan_has_open_tasks(tmp_pa
     assert parse_frontmatter(plan_path.read_text())["status"] == "IN_PROGRESS"
 ```
 
-- [ ] **Step 2: Confirm failure**
+- [x] **Step 2: Confirm failure**
 
 Run: `cd cli && pytest tests/test_cli.py -k "in_progress_statuses_when_plan_has_open_tasks"`
 Expected: FAIL — plan status remains `READY_TO_IMPLEMENT`
 
-- [ ] **Step 3: Minimal implementation**
+Note: this check passed immediately because the synchronized rewrite path was already implemented during Task 4.
+
+- [x] **Step 3: Minimal implementation**
 
 ```python
 def _rewrite_status_frontmatter(root: Path, issue: int, result: StateResult) -> None:
@@ -514,12 +516,12 @@ def status_update(
     _render_plain(result)
 ```
 
-- [ ] **Step 4: Confirm pass**
+- [x] **Step 4: Confirm pass**
 
 Run: `cd cli && pytest tests/test_cli.py`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- **Step 5: Commit** — deferred to the final `hexis:finish` phase
 
 ```bash
 git add cli/src/hexis/cli.py cli/tests/test_cli.py
@@ -531,16 +533,10 @@ git commit -m "feat(cli): synchronize frontmatter status rewrites (#37)"
 **Files:**
 - Modify: `docs/specs/2026-04-08-skill-integration-gate-design.md`
 
-- [ ] **Step 1: Implement**
+- [x] **Step 1: Implement**
 
-Change the frontmatter from:
+Change the frontmatter from the legacy multi-line sequence form for `depends_on` to:
 
-```yaml
-depends_on:
-  - 22
-```
-
-to:
 
 ```yaml
 depends_on: [22]
@@ -548,12 +544,12 @@ depends_on: [22]
 
 Then confirm no document frontmatter still uses block-style `depends_on`.
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `find docs/specs docs/plans -type f -name '*.md' -print0 | xargs -0 rg -nU "^depends_on:\n\s*-" && cd cli && pytest`
 Expected: `rg` returns no matches and `pytest` reports PASS
 
-- [ ] **Step 3: Commit**
+- **Step 3: Commit** — deferred to the final `hexis:finish` phase
 
 ```bash
 git add docs/specs/2026-04-08-skill-integration-gate-design.md cli/src/hexis/parser.py cli/src/hexis/state.py cli/src/hexis/cli.py cli/tests/test_parser.py cli/tests/test_state.py cli/tests/test_cli.py
