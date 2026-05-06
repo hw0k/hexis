@@ -176,5 +176,4 @@ After writing: spec coverage, placeholder scan, type/method name consistency.
 
 ## Execution Handoff
 
-After saving:
-> "Plan saved to `docs/plans/<filename>`. Run `hexis:implement` to execute."
+After saving, tell the user that the plan was saved at `docs/plans/<filename>` and that `hexis:implement` is the next step.

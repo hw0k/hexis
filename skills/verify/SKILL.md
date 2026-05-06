@@ -69,7 +69,7 @@ Run: <test command>
 Expected: all pass, 0 failures
 ```
 
-If no static tool exists for the domain, declare it explicitly: "No static validator available for this format. Manual review required."
+If no static tool exists for the domain, state that clearly to the user and note that manual review is required.
 
 ## P3 Requirement
 

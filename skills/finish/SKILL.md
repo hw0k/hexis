@@ -35,16 +35,12 @@ If uncommitted changes exist, commit them following `hexis:commit-principles` ru
 
 ### Step 3: Present options
 
-Ask the user:
+Ask the user how they want to integrate the completed work. Present these four options:
 
-```
-Implementation complete. How should we integrate?
-
-1. Merge locally into <base-branch>
+1. Merge locally into `<base-branch>`
 2. Push and create a PR
-3. Keep the branch (handle manually later)
+3. Keep the branch and handle it manually later
 4. Discard the work
-```
 
 ### Step 4: Execute
 
@@ -83,14 +79,13 @@ Report branch location. No further action.
 #### Option 4: Discard
 
 **Confirm first:**
-```
-The following will be permanently deleted:
-- Branch: <name>
-- Commits: <list>
-- Worktree: <path> (if applicable)
 
-Type 'discard' exactly to confirm.
-```
+Tell the user exactly what will be permanently deleted:
+- Branch: `<name>`
+- Commits: `<list>`
+- Worktree: `<path>` (if applicable)
+
+Require an explicit destructive confirmation before proceeding, but do not require any exact phrase. Any unambiguous confirmation is acceptable.
 
 After confirmation:
 ```bash

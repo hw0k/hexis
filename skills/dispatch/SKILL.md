@@ -16,12 +16,7 @@ Invoke at any point: session start, after returning from a break, when unsure of
 
 ## On Every Run
 
-Output this header before anything else:
-
-```
-hexis:dispatch — active
-Routing rules: CLAUDE.md skill table enforced for this session.
-```
+Before anything else, tell the user that dispatch is active and that the CLAUDE.md routing rules are being enforced for this session.
 
 ## Step 1: State Detection
 
@@ -44,10 +39,10 @@ Take the branch name substring after the last `/`, then extract the first contig
 
 **If no issue number detected:**
 
-Ask the user: "What issue number are you working on? Enter the number, or 'none' if starting new work."
+Ask the user which issue number they are working on. Accept either a numeric issue number or an explicit indication that this is brand-new work with no issue yet.
 
 - Number provided → use as `N`, proceed to Step 1b
-- "none" → invoke `hexis:specify`
+- No issue / brand-new work → invoke `hexis:specify`
 
 **Step 1b — with issue number `N`:**
 
@@ -75,7 +70,7 @@ Apply the **first matching rule** in this order:
 | 3 | `status.state` is `NEEDS_PLAN` | `plan` |
 | 4 | `status.state` is `IN_PROGRESS` | `implement` |
 | 5 | `status.state` is `NEEDS_VERIFY` | `verify` |
-| 6 | `status.state` is `DONE` AND no open PR | — (stop: output "Issue #N is complete. Nothing to dispatch.") |
+| 6 | `status.state` is `DONE` AND no open PR | — (stop: tell the user that issue #N is already complete and there is nothing to dispatch) |
 | 7 | PR open AND any check is failing | `verify` |
 | 8 | PR open AND all checks passing AND review not approved | `review` |
 | 9 | PR open AND approved | `finish` |
@@ -83,31 +78,19 @@ Apply the **first matching rule** in this order:
 
 **Rule 1 — sync-working-status special handling:**
 
-Output:
-```
-State: uncommitted changes detected. Running hexis:sync-working-status.
-After it completes, re-run hexis:dispatch to continue.
-```
+Tell the user that uncommitted changes were detected, that `hexis:sync-working-status` is being run now, and that they should re-run `hexis:dispatch` after it finishes.
 
 Invoke `hexis:sync-working-status`. Do NOT continue routing after sync — stop dispatch here. The user re-invokes dispatch manually.
 
 **Rule 10 — PR merged:**
 
-Output:
-```
-State: PR for #N is merged. Work is complete. Nothing to dispatch.
-```
+Tell the user that the PR for issue #N is already merged, the work is complete, and there is nothing left to dispatch.
 
 Stop. Do not invoke any skill.
 
 ## Step 3: Dispatch Output
 
-For all rules except Rule 1 and Rule 8, output before invoking:
-
-```
-State: <one-line summary of detected state>
-Dispatching → hexis:<skill>
-```
+For all rules except Rule 1 and Rule 8, briefly tell the user the detected state and which `hexis:<skill>` will be invoked next.
 
 Then immediately invoke the determined skill. No confirmation prompt.
 
