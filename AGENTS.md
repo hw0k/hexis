@@ -53,9 +53,25 @@ When creating a git worktree, run `uvx pre-commit install && uvx pre-commit inst
 
 Run a scenario: open it, start a fresh Claude Code session, paste the Pressure prompt verbatim.
 
-## Documentation Language
+## Public-Facing Language
 
-All documents in this repository (specs, plans, skill files, comments) must be written in **English**. This includes `docs/specs/`, `docs/plans/`, `skills/`, `agents/`, and `tests/`.
+**English is the default language for all public-facing artifacts in this repository unless an explicit exception is defined.**
+
+**Public-facing artifacts include:**
+- Repository documents and markdown files
+- Skill files, agent definitions, plans, specs, tests, and code comments
+- Commit messages and commit history
+- GitHub issues, pull requests, review comments, and discussion text
+- Code identifiers, configuration keys, CLI examples, and user-facing copy stored in the repository
+
+This includes `docs/specs/`, `docs/plans/`, `skills/`, `agents/`, and `tests/`.
+
+**Explicit exclusions:**
+- Direct chat responses to the user inside the current agent session, which follow the higher-priority session language rule
+- Exact quoted text that must preserve its original language
+- External interfaces that are already defined in another language and cannot be renamed safely
+
+When in doubt, treat the artifact as public-facing and write it in English.
 
 ## Adding a New Skill
 
