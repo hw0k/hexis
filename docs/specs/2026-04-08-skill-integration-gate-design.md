@@ -1,8 +1,7 @@
 ---
 issue: 23
 status: IN_PROGRESS
-depends_on:
-  - 22
+depends_on: [22]
 checks:
   - item: '`dispatch` routes via `hexis status read` output for all 5 state labels'
     done: true

@@ -12,6 +12,21 @@ class _IndentedYAMLDumper(yaml.SafeDumper):
         return super().increase_indent(flow, False)
 
 
+class FrontmatterFormatError(ValueError):
+    pass
+
+
+class _FlowSequence(list):
+    pass
+
+
+def _flow_sequence_representer(dumper, data):
+    return dumper.represent_sequence("tag:yaml.org,2002:seq", data, flow_style=True)
+
+
+_IndentedYAMLDumper.add_representer(_FlowSequence, _flow_sequence_representer)
+
+
 @dataclass
 class Check:
     index: int
@@ -25,17 +40,45 @@ class PlanTasks:
     total: int
 
 
-def parse_frontmatter(content: str) -> dict:
+def _extract_frontmatter_parts(content: str) -> tuple[str, str]:
     if not content.startswith("---\n"):
-        return {}
+        return "", content
     end = content.find("\n---\n", 4)
     if end == -1:
+        return "", content
+    return content[4:end], content[end + 5:]
+
+
+def _validate_depends_on_syntax(frontmatter_text: str) -> None:
+    match = re.search(r"(?m)^depends_on:(?P<value>[^\n]*)$", frontmatter_text)
+    if match and not re.fullmatch(r"\s*\[[^\n]*\]\s*", match.group("value")):
+        raise FrontmatterFormatError(
+            "depends_on must use flow-sequence syntax like depends_on: [22, 23]"
+        )
+
+
+def parse_frontmatter(content: str) -> dict:
+    frontmatter_text, _ = _extract_frontmatter_parts(content)
+    if not frontmatter_text:
         return {}
-    return yaml.safe_load(content[4:end]) or {}
+    _validate_depends_on_syntax(frontmatter_text)
+    return yaml.safe_load(frontmatter_text) or {}
 
 
 class MultipleMatchError(Exception):
     pass
+
+
+def read_frontmatter_file(path: Path) -> tuple[dict, str]:
+    content = path.read_text()
+    frontmatter_text, body = _extract_frontmatter_parts(content)
+    if not frontmatter_text:
+        return {}, content
+    try:
+        _validate_depends_on_syntax(frontmatter_text)
+    except FrontmatterFormatError as exc:
+        raise FrontmatterFormatError(f"{path}: {exc}") from exc
+    return yaml.safe_load(frontmatter_text) or {}, body
 
 
 def find_spec_file(root: Path, issue: int) -> Path | None:
@@ -44,7 +87,7 @@ def find_spec_file(root: Path, issue: int) -> Path | None:
         return None
     matches = [
         p for p in specs_dir.glob("*.md")
-        if parse_frontmatter(p.read_text()).get("issue") == issue
+        if read_frontmatter_file(p)[0].get("issue") == issue
     ]
     if len(matches) > 1:
         names = ", ".join(p.name for p in sorted(matches))
@@ -58,7 +101,7 @@ def find_plan_file(root: Path, issue: int) -> Path | None:
         return None
     matches = [
         p for p in plans_dir.glob("*.md")
-        if parse_frontmatter(p.read_text()).get("issue") == issue
+        if read_frontmatter_file(p)[0].get("issue") == issue
     ]
     if len(matches) > 1:
         names = ", ".join(p.name for p in sorted(matches))
@@ -88,14 +131,12 @@ def parse_plan_tasks(content: str) -> PlanTasks:
     return PlanTasks(complete=checked, total=checked + unchecked)
 
 
-def write_checks(path: Path, new_checks: list[dict]) -> None:
-    content = path.read_text()
-    end = content.find("\n---\n", 4)
-    fm = yaml.safe_load(content[4:end]) or {}
-    body = content[end + 5:]
-    fm["checks"] = new_checks
+def write_frontmatter(path: Path, fm: dict, body: str) -> None:
+    fm_to_dump = dict(fm)
+    if "depends_on" in fm_to_dump and fm_to_dump["depends_on"] is not None:
+        fm_to_dump["depends_on"] = _FlowSequence(fm_to_dump["depends_on"])
     new_fm = yaml.dump(
-        fm,
+        fm_to_dump,
         Dumper=_IndentedYAMLDumper,
         default_flow_style=False,
         allow_unicode=True,
@@ -108,3 +149,9 @@ def write_checks(path: Path, new_checks: list[dict]) -> None:
         f.write(new_content)
         tmp = f.name
     os.replace(tmp, path)
+
+
+def write_checks(path: Path, new_checks: list[dict]) -> None:
+    fm, body = read_frontmatter_file(path)
+    fm["checks"] = new_checks
+    write_frontmatter(path, fm, body)

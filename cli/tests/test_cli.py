@@ -69,6 +69,66 @@ def test_status_read_missing_docs_graceful(tmp_path):
     assert "STATE: NEEDS_SPEC" in result.output
 
 
+def test_status_read_rejects_block_style_depends_on(tmp_path):
+    specs_dir = tmp_path / "docs" / "specs"
+    specs_dir.mkdir(parents=True)
+    (specs_dir / "spec.md").write_text(
+        "---\nissue: 5\nstatus: READY_TO_PLAN\ndepends_on:\n  - 22\nchecks:\n  - item: A\n    done: false\n---\n\n# Spec\n"
+    )
+
+    result = runner.invoke(app, ["status", "read", "5", "--root", str(tmp_path)])
+    assert result.exit_code == 1
+    assert "depends_on must use flow-sequence syntax" in result.output
+
+
+def test_status_update_rewrites_spec_and_plan_statuses(tmp_path):
+    specs_dir = tmp_path / "docs" / "specs"
+    plans_dir = tmp_path / "docs" / "plans"
+    specs_dir.mkdir(parents=True)
+    plans_dir.mkdir(parents=True)
+    spec_path = specs_dir / "spec.md"
+    plan_path = plans_dir / "plan.md"
+    spec_path.write_text(
+        "---\nissue: 5\nstatus: READY_TO_PLAN\ndepends_on: [22]\nchecks:\n  - item: A\n    done: false\n---\n\n# Spec\n"
+    )
+    plan_path.write_text(
+        "---\nissue: 5\nstatus: READY_TO_IMPLEMENT\nlinked_spec: docs/specs/spec.md\n---\n\n- [x] Step 1\n"
+    )
+
+    result = runner.invoke(
+        app,
+        ["status", "update", "5", "--checked", "0", "--unchecked", "", "--root", str(tmp_path)],
+    )
+
+    assert result.exit_code == 0
+    assert parse_frontmatter(spec_path.read_text())["status"] == "DONE"
+    assert parse_frontmatter(plan_path.read_text())["status"] == "DONE"
+    assert "STATE: DONE" in result.output
+
+
+def test_status_update_sets_in_progress_statuses_when_plan_has_open_tasks(tmp_path):
+    specs_dir = tmp_path / "docs" / "specs"
+    plans_dir = tmp_path / "docs" / "plans"
+    specs_dir.mkdir(parents=True)
+    plans_dir.mkdir(parents=True)
+    spec_path = specs_dir / "spec.md"
+    plan_path = plans_dir / "plan.md"
+    spec_path.write_text(
+        "---\nissue: 5\nstatus: READY_TO_PLAN\nchecks:\n  - item: A\n    done: false\n---\n\n# Spec\n"
+    )
+    plan_path.write_text(
+        "---\nissue: 5\nstatus: READY_TO_IMPLEMENT\nlinked_spec: docs/specs/spec.md\n---\n\n- [x] Step 1\n- [ ] Step 2\n"
+    )
+
+    runner.invoke(
+        app,
+        ["status", "update", "5", "--checked", "0", "--unchecked", "", "--root", str(tmp_path)],
+    )
+
+    assert parse_frontmatter(spec_path.read_text())["status"] == "IN_PROGRESS"
+    assert parse_frontmatter(plan_path.read_text())["status"] == "IN_PROGRESS"
+
+
 from hexis.parser import parse_frontmatter
 
 

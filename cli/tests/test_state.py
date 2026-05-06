@@ -1,4 +1,9 @@
-from hexis.state import State, determine_state
+from hexis.state import (
+    State,
+    determine_state,
+    plan_status_for_state,
+    spec_status_for_state,
+)
 
 
 def _write_spec(path, issue, checks, depends_on=None):
@@ -85,3 +90,17 @@ def test_depends_on_surfaced(tmp_path):
     _write_spec(specs_dir / "spec.md", 5, [{"item": "A", "done": False}], depends_on=[22])
     result = determine_state(tmp_path, 5)
     assert result.depends_on == [22]
+
+
+def test_spec_status_for_state_mapping():
+    assert spec_status_for_state(State.NEEDS_PLAN) == "READY_TO_PLAN"
+    assert spec_status_for_state(State.IN_PROGRESS) == "IN_PROGRESS"
+    assert spec_status_for_state(State.NEEDS_VERIFY) == "NEEDS_VERIFY"
+    assert spec_status_for_state(State.DONE) == "DONE"
+
+
+def test_plan_status_for_state_mapping():
+    assert plan_status_for_state(State.NEEDS_PLAN) is None
+    assert plan_status_for_state(State.IN_PROGRESS) == "IN_PROGRESS"
+    assert plan_status_for_state(State.NEEDS_VERIFY) == "DONE"
+    assert plan_status_for_state(State.DONE) == "DONE"

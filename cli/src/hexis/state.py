@@ -24,6 +24,27 @@ class State(str, Enum):
     DONE = "DONE"
 
 
+def spec_status_for_state(state: State) -> str:
+    mapping = {
+        State.NEEDS_PLAN: "READY_TO_PLAN",
+        State.IN_PROGRESS: "IN_PROGRESS",
+        State.NEEDS_VERIFY: "NEEDS_VERIFY",
+        State.DONE: "DONE",
+    }
+    return mapping[state]
+
+
+def plan_status_for_state(state: State) -> str | None:
+    if state == State.NEEDS_PLAN:
+        return None
+    mapping = {
+        State.IN_PROGRESS: "IN_PROGRESS",
+        State.NEEDS_VERIFY: "DONE",
+        State.DONE: "DONE",
+    }
+    return mapping[state]
+
+
 @dataclass
 class StateResult:
     state: State
