@@ -121,14 +121,11 @@ def parse_depends_on(fm: dict) -> list[int]:
 
 
 def parse_plan_tasks(content: str) -> PlanTasks:
-    body = content
-    if content.startswith("---\n"):
-        end = content.find("\n---\n", 4)
-        if end != -1:
-            body = content[end + 5:]
-    checked = len(re.findall(r"^- \[x\]", body, re.MULTILINE))
-    unchecked = len(re.findall(r"^- \[ \]", body, re.MULTILINE))
-    return PlanTasks(complete=checked, total=checked + unchecked)
+    """Compatibility shim: progress is derived from frontmatter checks, not body checkboxes."""
+    fm = parse_frontmatter(content)
+    checks = parse_checks(fm)
+    complete = sum(1 for check in checks if check.checked)
+    return PlanTasks(complete=complete, total=len(checks))
 
 
 def write_frontmatter(path: Path, fm: dict, body: str) -> None:

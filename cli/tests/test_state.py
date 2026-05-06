@@ -17,11 +17,8 @@ def _write_spec(path, issue, checks, depends_on=None):
     )
 
 
-def _write_plan(path, issue, tasks):
-    task_lines = "\n".join(
-        f"- [{'x' if done else ' '}] Task {i + 1}" for i, done in enumerate(tasks)
-    )
-    path.write_text(f"---\nissue: {issue}\n---\n\n{task_lines}\n")
+def _write_plan(path, issue, status="READY_TO_IMPLEMENT", body="# Plan\n"):
+    path.write_text(f"---\nissue: {issue}\nstatus: {status}\n---\n\n{body}")
 
 
 def test_needs_spec_missing_dir(tmp_path):
@@ -53,12 +50,10 @@ def test_in_progress(tmp_path):
     specs_dir.mkdir(parents=True)
     plans_dir.mkdir(parents=True)
     _write_spec(specs_dir / "spec.md", 5, [{"item": "A", "done": False}])
-    _write_plan(plans_dir / "plan.md", 5, [True, False])
+    _write_plan(plans_dir / "plan.md", 5, status="READY_TO_IMPLEMENT")
     result = determine_state(tmp_path, 5)
     assert result.state == State.IN_PROGRESS
-    assert result.plan_tasks is not None
-    assert result.plan_tasks.complete == 1
-    assert result.plan_tasks.total == 2
+    assert result.plan_tasks is None
 
 
 def test_needs_verify(tmp_path):
@@ -67,7 +62,7 @@ def test_needs_verify(tmp_path):
     specs_dir.mkdir(parents=True)
     plans_dir.mkdir(parents=True)
     _write_spec(specs_dir / "spec.md", 5, [{"item": "A", "done": False}])
-    _write_plan(plans_dir / "plan.md", 5, [True, True])
+    _write_plan(plans_dir / "plan.md", 5, status="DONE")
     result = determine_state(tmp_path, 5)
     assert result.state == State.NEEDS_VERIFY
 
@@ -78,7 +73,7 @@ def test_done(tmp_path):
     specs_dir.mkdir(parents=True)
     plans_dir.mkdir(parents=True)
     _write_spec(specs_dir / "spec.md", 5, [{"item": "A", "done": True}])
-    _write_plan(plans_dir / "plan.md", 5, [True])
+    _write_plan(plans_dir / "plan.md", 5, status="DONE")
     result = determine_state(tmp_path, 5)
     assert result.state == State.DONE
 
@@ -90,6 +85,23 @@ def test_depends_on_surfaced(tmp_path):
     _write_spec(specs_dir / "spec.md", 5, [{"item": "A", "done": False}], depends_on=[22])
     result = determine_state(tmp_path, 5)
     assert result.depends_on == [22]
+
+
+def test_body_checkboxes_do_not_affect_state(tmp_path):
+    specs_dir = tmp_path / "docs" / "specs"
+    plans_dir = tmp_path / "docs" / "plans"
+    specs_dir.mkdir(parents=True)
+    plans_dir.mkdir(parents=True)
+    _write_spec(specs_dir / "spec.md", 5, [{"item": "A", "done": False}])
+    _write_plan(
+        plans_dir / "plan.md",
+        5,
+        status="DONE",
+        body="```md\n- [ ] Example checkbox\n```\n\n- [x] Actual note\n",
+    )
+
+    result = determine_state(tmp_path, 5)
+    assert result.state == State.NEEDS_VERIFY
 
 
 def test_spec_status_for_state_mapping():

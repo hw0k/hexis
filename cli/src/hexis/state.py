@@ -12,7 +12,6 @@ from hexis.parser import (
     parse_frontmatter,
     parse_checks,
     parse_depends_on,
-    parse_plan_tasks,
 )
 
 
@@ -78,14 +77,14 @@ def determine_state(root: Path, issue: int) -> StateResult:
             blocking=[f"No plan file found in docs/plans/ for issue #{issue}"],
         )
 
-    plan_tasks = parse_plan_tasks(plan_path.read_text())
+    plan_fm = parse_frontmatter(plan_path.read_text())
+    plan_status = plan_fm.get("status")
 
-    if plan_tasks.total > 0 and plan_tasks.complete < plan_tasks.total:
+    if plan_status != "DONE":
         return StateResult(
             state=State.IN_PROGRESS,
             issue=issue,
             depends_on=depends_on,
-            plan_tasks=plan_tasks,
             checks=checks,
         )
 
@@ -94,7 +93,6 @@ def determine_state(root: Path, issue: int) -> StateResult:
             state=State.NEEDS_VERIFY,
             issue=issue,
             depends_on=depends_on,
-            plan_tasks=plan_tasks,
             checks=checks,
         )
 
@@ -102,6 +100,5 @@ def determine_state(root: Path, issue: int) -> StateResult:
         state=State.DONE,
         issue=issue,
         depends_on=depends_on,
-        plan_tasks=plan_tasks,
         checks=checks,
     )

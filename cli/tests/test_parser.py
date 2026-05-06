@@ -125,21 +125,24 @@ def test_parse_depends_on_null():
 
 from hexis.parser import parse_plan_tasks, PlanTasks
 
-def test_parse_plan_tasks_mixed():
-    content = "---\nissue: 5\n---\n\n- [x] Task one\n- [ ] Task two\n- [x] Task three\n"
-    assert parse_plan_tasks(content) == PlanTasks(complete=2, total=3)
+def test_parse_plan_tasks_uses_frontmatter_checks_not_body_checkboxes():
+    content = (
+        "---\n"
+        "checks:\n"
+        "  - item: First criterion\n"
+        "    done: true\n"
+        "  - item: Second criterion\n"
+        "    done: false\n"
+        "---\n\n"
+        "- [ ] Body checkbox that should be ignored\n"
+        "- [x] Another ignored body checkbox\n"
+    )
+    assert parse_plan_tasks(content) == PlanTasks(complete=1, total=2)
 
-def test_parse_plan_tasks_all_done():
-    content = "---\nissue: 5\n---\n\n- [x] Task one\n- [x] Task two\n"
-    assert parse_plan_tasks(content) == PlanTasks(complete=2, total=2)
 
-def test_parse_plan_tasks_none():
-    content = "---\nissue: 5\n---\n\n# No tasks\n"
+def test_parse_plan_tasks_without_frontmatter_checks_returns_zero():
+    content = "---\nissue: 5\n---\n\n- [x] Task one\n- [ ] Task two\n"
     assert parse_plan_tasks(content) == PlanTasks(complete=0, total=0)
-
-def test_parse_plan_tasks_excludes_frontmatter():
-    content = "---\nchecks:\n  - item: x\n    done: false\n---\n\n- [x] Real task\n"
-    assert parse_plan_tasks(content) == PlanTasks(complete=1, total=1)
 
 
 def test_write_checks_indents_items_under_checks(tmp_path):
