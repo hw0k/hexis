@@ -1,111 +1,25 @@
-# hexis
+**English** | [한국어](README.ko.md)
 
-A heavily opinionated plugin covering the full development workflow — from spec to merge. Works on Claude Code, Codex, and OpenCode.
+---
 
-## Install
+# hexis — Development Suspended
 
-### Claude Code
+This project is indefinitely suspended.
 
-```
-/plugin marketplace add hw0k/hexis
-/plugin install hexis@hexis-marketplace
-```
+## Why
 
-### Codex
+**1. A harness evolves with the project.**
 
-```bash
-codex plugin marketplace add hw0k/hexis
-codex plugin install hexis
-```
+Through work on and around hexis, one thing became clear: a harness that doesn't match a project's current situation and maturity level becomes over-engineering. The right move is to develop the judgment and skill to build exactly as much harness as a project needs — when it needs it — rather than reaching for a one-size-fits-all solution.
 
-### OpenCode
+**2. LLMs don't stand still.**
 
-Tell OpenCode:
+A shared harness only stays useful if it keeps pace with how LLMs change — what they can handle on their own, what still needs scaffolding. Maintaining that as an individual is unsustainable. More importantly, the direction LLMs are heading is toward *working well without intervention*. The future harness will be leaner, not more elaborate.
 
-> Fetch and follow https://raw.githubusercontent.com/hw0k/hexis/refs/heads/main/.opencode/INSTALL.md
+## What was here
 
-## Quick Start
+hexis was a heavily opinionated plugin covering the full development workflow — from spec to merge — for Claude Code, Codex, and OpenCode. The original README is preserved as [`README.old.md`](README.old.md).
 
-After installing, onboard your project once:
+---
 
-```
-hexis:setup-new-project
-```
-
-Then start working — let dispatch route you:
-
-```
-hexis:dispatch
-```
-
-> **Tip:** When in doubt, run `hexis:dispatch`. It reads your current state and invokes the right skill automatically.
-
-## Workflow
-
-Skills follow a linear flow. Each skill hands off to the next.
-
-```
-specify → plan → [use-worktree] → implement → verify → review → finish
-```
-
-| Situation | Skill to invoke |
-|-----------|----------------|
-| Unsure of next step / resuming work | `dispatch` |
-| Requirement or task is vague | `specify` |
-| Need an implementation plan | `plan` |
-| Starting feature work in isolation | `use-worktree` |
-| Executing an implementation plan | `implement` |
-| Debugging a failure | `debug` |
-| Claiming work is done | `verify` |
-| Before merging | `review` |
-| Received code review feedback | `receive-review` |
-| Branch is complete | `finish` |
-
-## Skills
-
-### Workflow Skills
-
-| Skill | When to use |
-|-------|-------------|
-| `hexis:dispatch` | Session start, resuming work, or when unsure of the next step — reads current state and routes automatically |
-| `hexis:specify` | Any time a requirement, task, or idea is blurry — produces an unambiguous, actionable spec |
-| `hexis:plan` | After spec is complete — produces a step-by-step implementation plan with checkboxes |
-| `hexis:use-worktree` | Before executing a plan — sets up an isolated git worktree for the feature branch |
-| `hexis:implement` | When a written plan exists — executes it task-by-task, subagent-first |
-| `hexis:debug` | On any bug, test failure, or unexpected behavior — investigates root cause before proposing a fix |
-| `hexis:verify` | Before claiming any work is complete — runs verification commands and confirms actual output |
-| `hexis:review` | Before merging — runs the principles reviewer against all changes |
-| `hexis:receive-review` | When review feedback arrives — technical evaluation before accepting or rejecting suggestions |
-| `hexis:finish` | When implementation is verified and reviewed — commits, opens a PR, or merges |
-| `hexis:sync-working-status` | To check alignment between local git, specs/plans, and remote GitHub |
-
-### Principle Skills
-
-Reference standards enforced across the workflow.
-
-| Skill | Covers |
-|-------|--------|
-| `hexis:core-principles` | Five foundational principles (environment independence, human gate, static verification, no reinvention, prefer official methods) |
-| `hexis:commit-principles` | Conventional Commits 1.0.0 — type, scope, description rules, breaking change syntax |
-| `hexis:http-api-principles` | HTTP API design — Richardson Level 2, `/api/{version}/{resource}`, JSON camelCase, RFC 9457 errors |
-| `hexis:exception-and-logging-principles` | Exception handling and structured logging — failure classification, log levels, correlation IDs |
-| `hexis:general-naming-principles` | Language-agnostic naming conventions — follow each language's official style guide, consistency rules |
-| `hexis:testing-principles` | Testing standards — Red-Green-Refactor, test type selection, mock guidelines, naming, and coverage approach |
-
-### Setup Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `hexis:setup-new-project` | Onboard a project — installs pre-commit hooks, configures commitlint, sets up CLAUDE.md directives |
-
-## Agents
-
-| Agent | Purpose |
-|-------|---------|
-| `hexis:principles-reviewer` | Reviews code against all five principle skills — invoked automatically by `hexis:review` |
-
-## Design
-
-Skills activate via the Claude Code `Skill` tool. Principle skills are referenced by `principles-reviewer` automatically. Workflow skills are invoked explicitly or triggered by CLAUDE.md directives.
-
-Each skill lives in `skills/<name>/SKILL.md`. Large skills split into a main file and a companion `reference.md` or `examples.md`.
+No new issues or PRs will be reviewed.
